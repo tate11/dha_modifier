@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_department_form" model="ir.ui.view">
+            <field name="name">hr.department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="type"/>
+                    <field name="buildings_type" attrs="{'invisible': [('type','!=','buildings')],'required':[('type','=','buildings')]}"/>
+                    <field name="code" attrs="{'invisible': [('type','!=','center')], 'required':[('type','!=','center')]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="open_module_tree_department_center" model="ir.actions.act_window">
+            <field name="name">Center</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('type','=','center')]</field>
+            <field name="context">{'default_type':'center'}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a department.
+              </p><p>
+                Odoo's department structure is used to manage all documents
+                related to employees by departments: expenses, timesheets,
+                leaves and holidays, recruitments, etc.
+              </p>
+            </field>
+        </record>
+        <record id="open_module_tree_department_building" model="ir.actions.act_window">
+            <field name="name">Buildings</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('type','=','buildings')]</field>
+            <field name="context">{'default_type':'buildings'}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a department.
+              </p><p>
+                Odoo's department structure is used to manage all documents
+                related to employees by departments: expenses, timesheets,
+                leaves and holidays, recruitments, etc.
+              </p>
+            </field>
+        </record>
+
+        <record id="open_module_tree_department_room" model="ir.actions.act_window">
+            <field name="name">Room</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('type','=','room')]</field>
+            <field name="context">{'default_type':'room'}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a department.
+              </p><p>
+                Odoo's department structure is used to manage all documents
+                related to employees by departments: expenses, timesheets,
+                leaves and holidays, recruitments, etc.
+              </p>
+            </field>
+        </record>
+
+        <record id="open_module_tree_department_pharma" model="ir.actions.act_window">
+            <field name="name">Pharmacies</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('type','=','pharmacies')]</field>
+            <field name="context">{'default_type':'pharmacies'}</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a department.
+              </p><p>
+                Odoo's department structure is used to manage all documents
+                related to employees by departments: expenses, timesheets,
+                leaves and holidays, recruitments, etc.
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_medic_healthcenter" parent="menu_medic_lab_test_configurations" sequence="20" name="Health Center"/>
+
+        <menuitem id="menu_medic_center" parent="menu_medic_healthcenter" sequence="5" name="Center" action="open_module_tree_department_center"/>
+
+        <menuitem id="menu_medic_building" parent="menu_medic_healthcenter" sequence="10" name="Buildings" action="open_module_tree_department_building"/>
+
+        <menuitem id="menu_medic_room" parent="menu_medic_healthcenter" sequence="15" name="Room" action="open_module_tree_department_room"/>
+
+        <menuitem id="menu_medic_phamacy" parent="menu_medic_healthcenter" sequence="20" name="Pharmacies" action="open_module_tree_department_pharma"/>
+
+
+    </data>
+</odoo>

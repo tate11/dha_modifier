@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="medic_invoice_tree" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <tree string="Invoice">
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="customer_id"/>
+                    <field name="partner_id"/>
+                    <field name="sex_id"/>
+                    <field name="day_of_birth"/>
+                    <field name="amount_total"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="sex_id"/>
+                    <field name="day_of_birth" invisible="1"/>
+                    <field name="mobile"/>
+                    <field name="insurrance_ids" widget="many2many_tags"/>
+                </field>
+                <xpath expr="//notebook" position="before">
+                    <group>
+                        <field name="center_id" invisible="1" readonly="1"/>
+                        <field name="building_id" invisible="1"/>
+                        <field name="room_id" invisible="1"/>
+                        <field name="doctor_assign" invisible="1"/>
+                        <field name="package_ids" widget="many2many_tags"
+                               attrs="{'invisible':['|',('medical_bill_id','!=',False),('medicine_order_id','!=',False)]}"/>
+                        <field name="medicine_order_id" invisible="1"/>
+                        <field name="order_type" invisible="1"/>
+                        <field name="medical_bill_id" invisible="1"/>
+                    </group>
+                    <group col="4">
+                        <group colspan="2">
+                            <field name="reason"
+                                   attrs="{'invisible':['|',('medical_bill_id','!=',False),('medicine_order_id','!=',False)]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="prognostic"
+                                   attrs="{'invisible':['|',('medical_bill_id','!=',False),('medicine_order_id','!=',False)]}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <!-- Counter-->
+        <record id="medic_action_invoice_counter" model="ir.actions.act_window">
+            <field name="name">Customer Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','in',('out_invoice', 'out_refund')),('order_type','=', 'medical')]</field>
+            <field name="context">{'type':'out_invoice', 'journal_type': 'sale', 'default_order_type' : 'medical'}
+            </field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a customer invoice.
+                </p>
+                <p>
+                    Odoo's electronic invoicing allows to ease and fasten the
+                    collection of customer payments. Your customer receives the
+                    invoice by email and he can pay online and/or import it
+                    in his own system.
+                </p>
+                <p>
+                    The discussions with your customer are automatically displayed at
+                    the bottom of each invoice.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="medic_action_invoice_tree1_view1_counter" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="medic_invoice_tree"/>
+            <field name="act_window_id" ref="medic_action_invoice_counter"/>
+        </record>
+
+        <record id="medic_action_invoice_tree1_view2_counter" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="medic_action_invoice_counter"/>
+        </record>
+
+        <menuitem id="menu_medic_counter_root" parent="menu_medic_root" sequence="5" name="Counter"/>
+        <menuitem id="menu_medic_counter" parent="menu_medic_counter_root" sequence="5" name="Counter"
+                  action="medic_action_invoice_counter"/>
+
+    </data>
+</odoo>

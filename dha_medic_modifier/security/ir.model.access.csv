@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dha_medic_modifier_res_partner_sex,dha_medic_modifier.res_partner_sex,model_res_partner_sex,,1,1,1,1

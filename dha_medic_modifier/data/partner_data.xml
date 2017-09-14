@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="partner_sex_male" model="res.partner.sex">
+            <field name="name">Male</field>
+        </record>
+        <record id="partner_sex_female" model="res.partner.sex">
+            <field name="name">Female</field>
+        </record>
+        <record id="partner_sex_other" model="res.partner.sex">
+            <field name="name">Other</field>
+        </record>
+
+        <record id="partner_insuran_type" model="res.partner.insurrance.type">
+            <field name="name">BHYT</field>
+        </record>
+
+    </data>
+</odoo>

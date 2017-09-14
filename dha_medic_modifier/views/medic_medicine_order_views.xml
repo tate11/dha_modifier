@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="medic_medicine_order_form" model="ir.ui.view">
+            <field name="name">medicine.order.form</field>
+            <field name="model">medicine.order</field>
+            <field name="arch" type="xml">
+                <form string="Prescriptions">
+                    <header>
+                        <button name="action_validate" string="Validate" type="object"/>
+                        <field name="state" statusbar_visible="new,validate" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="customer_id"/>
+                                <field name="customer"/>
+                                <field name="sex_id"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="day_of_birth"/>
+                                <field name="doctor_assign"/>
+                                <field name="assign_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="center_id" invisible="1"/>
+                            <field name="building_id" invisible="1"/>
+                            <field name="room_id" invisible="1"/>
+                            <field name="check_created" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Prescriptions Lines">
+                                <field name="line_ids" attrs="{'readonly':[('check_created','=',True)]}">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="qty_dose"/>
+                                        <field name="dose"/>
+                                        <field name="product_qty"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="description"/>
+                                            <field name="product_qty"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="medic_medicine_order_tree" model="ir.ui.view">
+            <field name="name">medicine.order.tree</field>
+            <field name="model">medicine.order</field>
+            <field name="arch" type="xml">
+                <tree string="Prescriptions">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="customer"/>
+                    <field name="sex_id"/>
+                    <field name="day_of_birth"/>
+                    <field name="doctor_assign"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medic_medicine_order_action" model="ir.actions.act_window">
+            <field name="name">Prescriptions</field>
+            <field name="res_model">medicine.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="medic_action_invoice_pharmacies" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','in',('out_invoice', 'out_refund')),('state', '=', ('open','paid')),('order_type','=', 'medicine')]</field>
+            <field name="context">{'type':'out_invoice', 'journal_type': 'sale', 'default_order_type' : 'medicine', 'form_view_ref': 'account.invoice_form'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a customer invoice.
+                </p>
+                <p>
+                    Odoo's electronic invoicing allows to ease and fasten the
+                    collection of customer payments. Your customer receives the
+                    invoice by email and he can pay online and/or import it
+                    in his own system.
+                </p>
+                <p>
+                    The discussions with your customer are automatically displayed at
+                    the bottom of each invoice.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_medic_pharmacies" parent="menu_medic_root" sequence="40" name="Pharmacies" />
+
+        <menuitem id="menu_medic_medicine_order" parent="menu_medic_pharmacies" sequence="5" name="Prescriptions" action="medic_medicine_order_action"/>
+
+        <menuitem id="menu_medic_medicine_order_invoice" parent="menu_medic_pharmacies" sequence="10" name="Invoices" action="medic_action_invoice_pharmacies"/>
+
+    </data>
+</odoo>

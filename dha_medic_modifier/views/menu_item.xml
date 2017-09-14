@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_medic_root" sequence="20" name="DHA Medic"
+                  web_icon="dha_medic_modifier,static/icon/logoxanh.jpg"/>
+
+        <menuitem id="menu_medic_lab_test_configurations" name="Configurations" parent="menu_medic_root"
+                  sequence="100"/>
+    </data>
+</odoo>

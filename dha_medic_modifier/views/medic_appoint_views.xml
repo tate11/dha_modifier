@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="medic_medic_appoint_form" model="ir.ui.view">
+            <field name="name">medic.appoint.form</field>
+            <field name="model">medic.appoint</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_validate" string="Validate" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,validate"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="customer_id"/>
+                                <field name="customer"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="sex_id"/>
+                                <field name="day_of_birth"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="doctor_assign"/>
+                            <field name="assign_date"/>
+                            <field name="package_ids" widget="many2many_tags"/>
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="qty"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="qty"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="medic_medic_appoint_tree" model="ir.ui.view">
+            <field name="name">medic.appoint.tree</field>
+            <field name="model">medic.appoint</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="assign_date" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="medic_medic_appoint_action" model="ir.actions.act_window">
+            <field name="name">Appoint</field>
+            <field name="res_model">medic.appoint</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_medic_appoint" parent="menu_medic_counter_root" sequence="15" name="Appoint"
+                  action="medic_medic_appoint_action"/>
+
+    </data>
+</odoo>

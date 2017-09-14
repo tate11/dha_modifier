@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="medic_medical_bill_form" model="ir.ui.view">
+            <field name="name">medic.medical.bill.form</field>
+            <field name="model">medic.medical.bill</field>
+            <field name="arch" type="xml">
+                <form delete="0" create="0">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done"
+                               clickable="True"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="customer_id"/>
+                                <field name="customer"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="sex_id"/>
+                                <field name="day_of_birth"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="service_ids" widget="many2many_tags"/>
+                            <field name="doctor_assign"/>
+                            <field name="center_id"/>
+                            <field name="building_id"/>
+                            <field name="room_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Vital Sign">
+                                <group col="4">
+                                    <group colspan="2">
+                                        <field name="blood_pressure"/>
+                                        <field name="pulse"/>
+                                        <field name="temperatures"/>
+                                        <field name="pace_of_breathe"/>
+                                    </group>
+                                    <group colspan="2">
+                                        <field name="height"/>
+                                        <field name="weight"/>
+                                        <field name="bmi"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="allergy" widget="many2many_tags"/>
+                                    <field name="special"/>
+                                    <field name="note"/>
+                                </group>
+                            </page>
+                            <page string="Appoint">
+                                <field name="appoint_ids"
+                                       context="{'default_customer': customer, 'default_doctor_assign': doctor_assign}"/>
+                            </page>
+                            <page string="Treatment">
+                                <group col="4">
+                                    <group colspan="2">
+                                        <field name="prognostic"/>
+                                    </group>
+                                    <group colspan="2">
+                                        <field name="diagnose_icd" widget="many2many_tags"/>
+                                        <field name="diagnose"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="treatment_note"/>
+                                </group>
+                            </page>
+                            <page string="Lab Tests">
+                                <field name="medic_lab_test_compute_ids">
+                                    <tree create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="type"/>
+                                        <field name="product_test"/>
+                                        <field name="note"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Image Tests">
+                                <field name="medic_image_test_compute_ids">
+                                    <tree create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="type"/>
+                                        <field name="product_test"/>
+                                        <field name="note"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Prescriptions">
+                                <field name="medicine_orders"
+                                       context="{'default_customer': customer, 'default_doctor_assign': doctor_assign}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="medic_medical_bill_tree" model="ir.ui.view">
+            <field name="name">medic.medical.bill.tree</field>
+            <field name="model">medic.medical.bill</field>
+            <field name="arch" type="xml">
+                <tree delete="0" create="0">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="customer"/>
+                    <field name="sex_id"/>
+                    <field name="day_of_birth"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medic_medical_bill_action" model="ir.actions.act_window">
+            <field name="name">Medical Bill</field>
+            <field name="res_model">medic.medical.bill</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('state','in',('new', 'processing'))]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_medic_doctor" parent="menu_medic_root" sequence="15" name="Doctor"
+                  action="medic_medical_bill_action"/>
+    </data>
+</odoo>

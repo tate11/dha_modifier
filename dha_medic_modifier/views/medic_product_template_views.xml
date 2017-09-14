@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="sex_id"/>
+                    <field name="create_medical_bill" attrs="{'invisible': [('type','!=','service')]}"/>
+                    <field name="buildings_type" attrs="{'invisible':[('create_medical_bill', '!=', True)],'required': [('create_medical_bill','=',True)]}"/>
+                    <field name="service_type"
+                           attrs="{'invisible': [('type','!=','service')], 'required': [('type','=','service'),('create_medical_bill','=',False)]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

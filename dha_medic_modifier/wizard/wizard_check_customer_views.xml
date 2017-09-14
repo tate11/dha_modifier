@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_medic_wizard_check_customer_form" model="ir.ui.view">
+            <field name="name">wizard.check.partner.form</field>
+            <field name="model">wizard.check.partner</field>
+            <field name="arch" type="xml">
+                <form string="Check Customer">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="mobile"/>
+                            <!--<field name="cmnd"/>-->
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_check_customer" type="object" string="Check"/>
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

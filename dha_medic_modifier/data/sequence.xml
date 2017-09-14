@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_medical_bill" model="ir.sequence">
+            <field name="name">Medical Bill</field>
+            <field name="code">medic.medical.bill</field>
+            <field name="prefix">MB</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_medic_appoint" model="ir.sequence">
+            <field name="name">Medic Appoint</field>
+            <field name="code">medic.appoint.seq</field>
+            <field name="prefix">MA</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_medicine_bill" model="ir.sequence">
+            <field name="name">Medicine Order</field>
+            <field name="code">medicine.order.code</field>
+            <field name="prefix">MO</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+            <!-- Medic Test Seq -->
+        <record id="seq_medic_test_no_type" model="ir.sequence">
+            <field name="name">Medic Test No Type</field>
+            <field name="code">no.type.test.seq</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_medic_test_image_test" model="ir.sequence">
+            <field name="name">Medic Test Image Test</field>
+            <field name="code">image.test.seq</field>
+            <field name="prefix">IM</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_medic_test_lab_test" model="ir.sequence">
+            <field name="name">Medic Test LAB Test</field>
+            <field name="code">lab.test.seq</field>
+            <field name="prefix">LT</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_medic_test_echograph" model="ir.sequence">
+            <field name="name">Medic Test Echograph</field>
+            <field name="code">echograph.test.seq</field>
+            <field name="prefix">EG</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_medic_test_electrocardiogram" model="ir.sequence">
+            <field name="name">Medic Test Electrocardiogram</field>
+            <field name="code">electrocardiogram.test.seq</field>
+            <field name="prefix">EC</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+
+        <!--sequence for customer id-->
+        <record id="seq_medic_customer_id" model="ir.sequence">
+            <field name="name">Customer ID</field>
+            <field name="code">customer.id.seq</field>
+            <field name="prefix"></field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">3</field>
+        </record>
+
+    </data>
+</odoo>

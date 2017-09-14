@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="view_email_server_form" model="ir.ui.view">
+            <field name="name">fetchmail.server.form.inherit</field>
+            <field name="model">fetchmail.server</field>
+            <field name="inherit_id" ref="fetchmail.view_email_server_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="helpdesk_team" attrs="{'invisible': [('object_model','!=','helpdesk.ticket')]}"/>
+                </field>
+                <xpath expr="//form/sheet" position="inside">
+                    <field name="object_model" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
