@@ -10,7 +10,7 @@
                 <field name="name" position="after">
                     <field name="type"/>
                     <field name="buildings_type" attrs="{'invisible': [('type','!=','buildings')],'required':[('type','=','buildings')]}"/>
-                    <field name="code" attrs="{'invisible': [('type','!=','center')], 'required':[('type','!=','center')]}"/>
+                    <field name="code" attrs="{'invisible': [('type','!=','center')], 'required':[('type','=','center')]}"/>
                 </field>
             </field>
         </record>

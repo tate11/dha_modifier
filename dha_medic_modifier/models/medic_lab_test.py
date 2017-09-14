@@ -54,7 +54,13 @@ class MedicLabTest(models.Model):
     image_res5 = fields.Binary("Image 5", attachment=True)
     image_res6 = fields.Binary("Image 6", attachment=True)
 
+    @api.multi
+    def action_processing(self):
+        self.write({'state': 'processing'})
 
+    @api.multi
+    def action_done(self):
+        self.write({'state': 'done'})
 
     @api.model
     def create(self, vals):

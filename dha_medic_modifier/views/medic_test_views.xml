@@ -26,8 +26,11 @@
             <field name="arch" type="xml">
                 <form string="Test">
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done"
-                               clickable="True"/>
+                        <button type="object" name="action_processing" string="Processing"
+                                attrs="{'invisible':[('state','!=','new')]}"/>
+                        <button type="object" name="action_done" string="Done"
+                                attrs="{'invisible':[('state','!=','processing')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -37,11 +40,11 @@
                             </h1>
                         </div>
                         <label for="type" class="oe_edit_only"/>
-                        <h3>
-                            <field name="type"/>,
-                            <field name="product_test"/>
+                        <h2>
+                            <field name="type" invisible="1"/>
+                            <field name="product_test" readonly="1"/>
                             <field name="show_image" invisible="1"/>
-                        </h3>
+                        </h2>
                         <group col="4">
                             <group colspan="2">
                                 <field name="customer_id"/>
@@ -118,7 +121,8 @@
             <field name="res_model">medic.test</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_lab_test', False))]"/>
+            <field name="domain"
+                   eval="[('type','=', ref('dha_medic_modifier.medic_test_type_lab_test', False)),('state','!=','done')]"/>
             <field name="context" eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_lab_test', False)}"/>
         </record>
 
@@ -128,7 +132,7 @@
             <field name="res_model">medic.test</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_image_test', False))]"/>
+            <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_image_test', False)),('state','!=','done')]"/>
             <field name="context"
                    eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_image_test', False)}"/>
             <field name="context">{}</field>
@@ -140,7 +144,7 @@
             <field name="res_model">medic.test</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_echograph', False))]"/>
+            <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_echograph', False)),('state','!=','done')]"/>
             <field name="context" eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_echograph', False)}"/>
             <field name="context">{}</field>
         </record>
@@ -152,7 +156,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain"
-                   eval="[('type','=', ref('dha_medic_modifier.medic_test_type_electrocardiogram', False))]"/>
+                   eval="[('type','=', ref('dha_medic_modifier.medic_test_type_electrocardiogram', False)),('state','!=','done')]"/>
             <field name="context"
                    eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_electrocardiogram', False)}"/>
             <field name="context">{}</field>

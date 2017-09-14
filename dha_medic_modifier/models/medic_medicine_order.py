@@ -26,6 +26,19 @@ class MedicineOrder(models.Model):
     room_id = fields.Many2one('hr.department', 'Room', related='medical_id.room_id', readonly=1, store=True)
     check_created = fields.Boolean('Check Created', default=False)
 
+    medicine_package = fields.Many2many('medicine.order.package', 'medicine_order_medicine_order_package_rel',
+                                        'medicine_order', 'package_id', 'Packages')
+
+    @api.onchange('medicine_package')
+    def onchange_medicine_package(self):
+        self.line_ids = False
+        lists = self.medicine_package.parse_multi_package()
+        for data in lists:
+            self.line_ids += self.line_ids.new({
+                'product_id': data[0],
+                'product_qty' : data[1],
+            })
+
     @api.model
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('medicine.order.code')
@@ -42,17 +55,18 @@ class MedicineOrder(models.Model):
         default_account_id = False
         default_journal = AccountInvoice._default_journal() or False
         if default_journal:
-            default_account_id = AccountInvoiceLine.with_context(journal_id = default_journal.id)._default_account() or False
+            default_account_id = AccountInvoiceLine.with_context(
+                journal_id=default_journal.id)._default_account() or False
         invoice_line_ids = []
         for line in self.line_ids:
             invoice_line_ids.append({
                 'product_id': line.product_id.id,
-                'uom_id' : line.product_id.uom_id.id or False,
-                'price_unit' : line.product_id.lst_price,
-                'invoice_line_tax_ids' : line.product_id.taxes_id.ids or [],
+                'uom_id': line.product_id.uom_id.id or False,
+                'price_unit': line.product_id.lst_price,
+                'invoice_line_tax_ids': line.product_id.taxes_id.ids or [],
                 'name': line.description.name or '',
                 'quantity': line.product_qty,
-                'account_id' : default_account_id,
+                'account_id': default_account_id,
             })
         return {
             'view_type': 'form',
@@ -63,7 +77,7 @@ class MedicineOrder(models.Model):
             'res_id': False,
             'context': {'default_partner_id': self.customer.id, 'default_medicine_order_id': self.id,
                         'default_invoice_line_ids': invoice_line_ids, 'form_view_ref': 'account.invoice_form'
-                , 'default_order_type': 'medicine', 'no_onchange_package' : True}
+                , 'default_order_type': 'medicine', 'no_onchange_package': True}
         }
 
 
@@ -86,7 +100,42 @@ class MedicineOrderLine(models.Model):
     def onchange_product_id(self):
         self.product_uom = self.product_id.id if self.product_id else False
 
+
 class MedicineDescription(models.Model):
     _name = 'medicine.description'
 
     name = fields.Char('Name', required=1)
+
+
+class MedicineOrderPackage(models.Model):
+    _name = 'medicine.order.package'
+
+    name = fields.Char('Name', required=1)
+    line_ids = fields.One2many('medicine.order.package.line', 'parent_id', 'Lines', required=1)
+
+
+    @api.model
+    def parse_multi_package(self):
+        product_dict = {}
+        res = []
+        for record in self:
+            for line in record.line_ids:
+                if str(line.product_id.id) not in product_dict:
+                    product_dict[str(line.product_id.id)] = line.quantity
+                else:
+                    if line.quantity > product_dict[str(line.product_id.id)]:
+                        product_dict[str(line.product_id.id)] = line.quantity
+        product_dict = product_dict.items()
+        for product in product_dict:
+            res.append((int(product[0]), product[1]))
+        return res
+
+
+class MedicineOrderPackageLine(models.Model):
+    _name = 'medicine.order.package.line'
+
+    name = fields.Char('Name')
+    product_id = fields.Many2one('product.product', 'Product', required=1)
+    quantity = fields.Float('Quantity', default=1)
+    parent_id = fields.Many2one('medicine.order.package','Parent Id', ondelete='cascade', required=1)
+

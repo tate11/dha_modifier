@@ -50,6 +50,7 @@ class MedicMedicalBill(models.Model):
     # tab Dieu tri
     # trieu chung
     prognostic = fields.Text('Prognostic')
+    reason = fields.Text('Reason')
     # chuan doan
     diagnose_icd = fields.Many2many('medic.diseases', 'medical_bill_diseases_rel', 'medical_bill_id', 'diseases_id',
                                     'Diagnose ICD')
@@ -67,6 +68,19 @@ class MedicMedicalBill(models.Model):
     # services
     service_ids = fields.Many2many('product.product', 'medic_medical_bill_product_product_rel', 'medical_bill_id',
                                    'product_id', 'Services')
+    #Test Done Percent
+    done_percent = fields.Char('Tests Done', compute='_compute_test_done_status')
+
+    @api.multi
+    def _compute_test_done_status(self):
+        MedictTest = self.env['medic.test']
+        for record in self:
+            test_ids = MedictTest.search([('related_medical_bill', 'in', [record.id])])
+            if not test_ids:
+                record.done_percent = '0 / 0'
+                continue
+            done_test = test_ids.filtered(lambda r: r.state == 'done')
+            record.done_percent = '%s / %s' %(len(done_test), len(test_ids))
 
     def _get_medic_test_ids(self):
         MedictTest = self.env['medic.test']
@@ -79,6 +93,13 @@ class MedicMedicalBill(models.Model):
             record.medic_lab_test_compute_ids = MedictTest.search([('id', 'in', test_ids.ids),('type','in',lab_type)])
             record.medic_image_test_compute_ids = MedictTest.search([('id', 'in', test_ids.ids),('type','in',image_type)])
 
+    @api.multi
+    def action_processing(self):
+        self.write({'state': 'processing'})
+
+    @api.multi
+    def action_done(self):
+        self.write({'state': 'done'})
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'

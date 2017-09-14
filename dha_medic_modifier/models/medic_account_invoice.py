@@ -136,6 +136,8 @@ class AccountInvoice(models.Model):
                 'service_ids': [(6, 0, product_ids)],
                 'center_id': self.center_id.id or False,
                 'building_id': building.id or False,
+                'reason': self.reason,
+                'prognostic' : self.prognostic,
             })
             medical_bill_pro -= same_type_line
             MedicalBill += new_bill
@@ -159,6 +161,19 @@ class AccountInvoice(models.Model):
                     })
 
 
+class AccountInvoiceLine(models.Model):
+    _inherit = 'account.invoice.line'
+
+    order_type = fields.Selection([('none', 'None'), ('medical', 'Medical'), ('medicine', 'Medicine')],
+                                  string='Order Type', default='none')
+    @api.onchange('order_type')
+    def onchange_order_type(self):
+        if self.order_type == 'medical':
+            return {
+                'domain': {
+                    'product_id':[('type','=','service')]
+                }
+            }
 
 class account_payment(models.Model):
     _inherit = "account.payment"

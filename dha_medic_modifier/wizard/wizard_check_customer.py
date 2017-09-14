@@ -16,7 +16,7 @@ class WizardCheckCustomer(models.TransientModel):
         Partner = self.env['res.partner']
         for record in self:
             if record.mobile:
-                Partner += Partner.search([('mobile', '=', record.mobile)])
+                Partner += Partner.search([('mobile', 'like', record.mobile)])
             if record.name:
                 Partner += Partner.search([('name', '=', record.name)])
             if record.cmnd:
@@ -43,6 +43,6 @@ class WizardCheckCustomer(models.TransientModel):
                     'type': 'ir.actions.act_window',
                     'target': 'current',
                     'res_id': False,
-                    'context': {'default_name': record.name, 'default_mobile': record.mobile,
+                    'context': {'default_name': record.name, 'default_mobile': record.mobile, 'default_is_patient' : True,
                                 'default_cmnd_passport': record.cmnd, 'form_view_ref': 'dha_medic_modifier.view_patients_form'}
                 }

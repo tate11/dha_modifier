@@ -44,12 +44,12 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//sheet" position="before">
-                    <header>
-                        <button name="action_go_person_inv" string="To Invoice" type="object" class="oe_highlight"
-                                attrs="{'invisible': [('company_type','!=','person')]}"/>
-                    </header>
-                </xpath>
+                <!--<xpath expr="//sheet" position="before">-->
+                    <!--<header>-->
+                        <!--<button name="action_go_person_inv" string="To Invoice" type="object" class="oe_highlight"-->
+                                <!--attrs="{'invisible': [('company_type','!=','person')]}"/>-->
+                    <!--</header>-->
+                <!--</xpath>-->
                 <div name="button_box" position="inside">
                     <button type="object"
                             class="oe_stat_button"
@@ -215,6 +215,7 @@
                 </xpath>
             </field>
         </record>
+
         <record id="view_patients_form" model="ir.ui.view">
             <field name="name">res.patients.form</field>
             <field name="model">res.partner</field>
@@ -285,7 +286,7 @@
                                 <field name="function" placeholder="e.g. Sales Director"
                                        attrs="{'invisible': [('is_company','=', True)]}"/>
                                 <field name="phone" widget="phone"/>
-                                <field name="mobile" widget="phone"/>
+                                <field name="mobile" widget="phone" required="1"/>
                                 <field name="fax"/>
                                 <field name="user_ids" invisible="1"/>
                                 <field name="email" widget="email" attrs="{'required': [('user_ids','!=', [])]}"/>
@@ -300,9 +301,9 @@
                                   attrs="{'invisible': [('company_type','!=','person')]}">
                                 <group col="4">
                                     <group colspan="2">
-                                        <field name="sex_id"/>
+                                        <field name="sex_id" required="1"/>
                                         <field name="last_check_in_time"/>
-                                        <field name="day_of_birth"/>
+                                        <field name="day_of_birth" required="1"/>
                                         <field name="age"/>
                                     </group>
                                     <group colspan="2">
@@ -417,7 +418,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_customer":1, "search_default_type_person" : 1,'form_view_ref':
-                'dha_medic_modifier.view_patients_form'}
+                'dha_medic_modifier.view_patients_form', 'default_is_patient': 1}
             </field>
             <field name="domain">[('is_company','=',
                 False),('is_patient','=',True),'|',('medical_bill_domain_ids','!=',False),('medic_test_ids','!=',False)]
