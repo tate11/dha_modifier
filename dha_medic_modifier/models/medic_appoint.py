@@ -6,6 +6,7 @@ import datetime
 
 class MedicAppoint(models.Model):
     _name = 'medic.appoint'
+    _inherit = 'mail.thread'
 
     @api.model
     def get_default_doctor(self):

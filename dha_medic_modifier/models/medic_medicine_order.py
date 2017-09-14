@@ -6,6 +6,7 @@ import datetime
 
 class MedicineOrder(models.Model):
     _name = 'medicine.order'
+    _inherit = 'mail.thread'
 
     name = fields.Char('Number', readonly=1)
     medical_id = fields.Many2one('medic.medical.bill', 'Medical Bill')

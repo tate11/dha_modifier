@@ -160,14 +160,22 @@
                     </page>
                     <page name="history" string="History" attrs="{'invisible': [('company_type','!=','person')]}">
                         <field name="medical_bill_ids" readonly="1"/>
+                        <field name="medical_bill_domain_ids" invisible="1"/>
                     </page>
                     <page name="sale_order_page" string="Prescriptions"
                           attrs="{'invisible': [('company_type','!=','person')]}">
                         <field name="medicine_order_ids" readonly="1"/>
                     </page>
+                    <page name="dha_medic_info" string="DHA Medic"
+                          attrs="{'invisible': [('company_type','!=','person')]}">
+                        <group>
+                            <field name="is_patient"/>
+                        </group>
+                    </page>
                 </xpath>
                 <field name="phone" position="before">
                     <field name="customer_id"/>
+                    <field name="medic_test_ids" invisible="1"/>
                 </field>
             </field>
         </record>
@@ -195,10 +203,15 @@
                     <field name="sex_id"/>
                     <field name="day_of_birth"/>
                     <field name="age"/>
+                    <field name="medic_test_ids"/>
                 </xpath>
                 <xpath expr="//div[@class='oe_kanban_details']/ul" position="inside">
-                    <li t-if="record.sex_id.raw_value"><field name="sex_id"/></li>
-                    <li t-if="record.age.raw_value">Age: <field name="age"/></li>
+                    <li t-if="record.sex_id.raw_value">
+                        <field name="sex_id"/>
+                    </li>
+                    <li t-if="record.age.raw_value">Age:
+                        <field name="age"/>
+                    </li>
                 </xpath>
             </field>
         </record>
@@ -279,6 +292,7 @@
                                 <field name="title" options='{"no_open": True}'
                                        attrs="{'invisible': [('is_company', '=', True)]}"/>
                                 <field name="lang"/>
+                                <field name="medic_test_ids" invisible="1"/>
                             </group>
                         </group>
                         <notebook>
@@ -377,6 +391,13 @@
                             <page name="history" string="History"
                                   attrs="{'invisible': [('company_type','!=','person')]}">
                                 <field name="medical_bill_ids" readonly="1"/>
+                                <field name="medical_bill_domain_ids" invisible="1"/>
+                            </page>
+                            <page name="dha_medic_info" string="DHA Medic"
+                                  attrs="{'invisible': [('company_type','!=','person')]}">
+                                <group>
+                                    <field name="is_patient"/>
+                                </group>
                             </page>
                             <!--<page name="sale_order_page" string="Prescriptions"-->
                             <!--attrs="{'invisible': [('company_type','!=','person')]}">-->
@@ -398,7 +419,9 @@
             <field name="context">{"search_default_customer":1, "search_default_type_person" : 1,'form_view_ref':
                 'dha_medic_modifier.view_patients_form'}
             </field>
-            <field name="domain">[('is_company','=', False)]</field>
+            <field name="domain">[('is_company','=',
+                False),('is_patient','=',True),'|',('medical_bill_domain_ids','!=',False),('medic_test_ids','!=',False)]
+            </field>
             <field name="search_view_id" ref="base.view_res_partner_filter"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">

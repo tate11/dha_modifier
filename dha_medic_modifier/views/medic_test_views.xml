@@ -26,7 +26,8 @@
             <field name="arch" type="xml">
                 <form string="Test">
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="new,done" clickable="True"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done"
+                               clickable="True"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -38,7 +39,8 @@
                         <label for="type" class="oe_edit_only"/>
                         <h3>
                             <field name="type"/>,
-                            <field name="product_test" />
+                            <field name="product_test"/>
+                            <field name="show_image" invisible="1"/>
                         </h3>
                         <group col="4">
                             <group colspan="2">
@@ -53,10 +55,25 @@
                                 <field name="assign_date"/>
                             </group>
                         </group>
-                        <group >
+                        <group>
                             <field name="note"/>
                         </group>
                         <notebook>
+                            <page string="Images"
+                                  attrs="{'invisible' : [('show_image','!=', True)]}">
+                                <group>
+                                    <group>
+                                        <field name="image_res1" widget="image" nolable="1"/>
+                                        <field name="image_res2" widget="image" nolable="1"/>
+                                        <field name="image_res3" widget="image" nolable="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="image_res4" widget="image" nolable="1"/>
+                                        <field name="image_res5" widget="image" nolable="1"/>
+                                        <field name="image_res6" widget="image" nolable="1"/>
+                                    </group>
+                                </group>
+                            </page>
                             <page string="Consumable Supplies">
                                 <field name="consumable_supplies">
                                     <tree editable="bottom">
@@ -74,7 +91,7 @@
                                 </field>
                             </page>
                             <!--<page string="Attachments">-->
-                                <!--<field name="attachment_ids"-->
+                            <!--<field name="attachment_ids"-->
                             <!--</page>-->
                         </notebook>
                     </sheet>
@@ -112,7 +129,8 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_image_test', False))]"/>
-            <field name="context" eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_image_test', False)}"/>
+            <field name="context"
+                   eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_image_test', False)}"/>
             <field name="context">{}</field>
         </record>
 
@@ -133,8 +151,10 @@
             <field name="res_model">medic.test</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain" eval="[('type','=', ref('dha_medic_modifier.medic_test_type_electrocardiogram', False))]"/>
-            <field name="context" eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_electrocardiogram', False)}"/>
+            <field name="domain"
+                   eval="[('type','=', ref('dha_medic_modifier.medic_test_type_electrocardiogram', False))]"/>
+            <field name="context"
+                   eval="{'default_type' : ref('dha_medic_modifier.medic_test_type_electrocardiogram', False)}"/>
             <field name="context">{}</field>
         </record>
 
@@ -179,13 +199,17 @@
         <menuitem id="menu_medic_image_test" parent="menu_medic_root" sequence="30" name="Image Tests"/>
 
 
-        <menuitem id="menu_medic_lab_test_root" parent="menu_medic_lab_test" sequence="5" name="Lab Test" action="action_medic_test_lab"/>
+        <menuitem id="menu_medic_lab_test_root" parent="menu_medic_lab_test" sequence="5" name="Lab Test"
+                  action="action_medic_test_lab"/>
 
-        <menuitem id="menu_medic_image_root" parent="menu_medic_image_test" sequence="10" name="Image Test" action="action_medic_test_image"/>
+        <menuitem id="menu_medic_image_root" parent="menu_medic_image_test" sequence="10" name="Image Test"
+                  action="action_medic_test_image"/>
 
-        <menuitem id="menu_medic_echograph_root" parent="menu_medic_image_test" sequence="15" name="Echograph" action="action_medic_test_echograph"/>
+        <menuitem id="menu_medic_echograph_root" parent="menu_medic_image_test" sequence="15" name="Echograph"
+                  action="action_medic_test_echograph"/>
 
-        <menuitem id="menu_medic_electrocardiogram_root" parent="menu_medic_image_test" sequence="25" name="Electrocardiogram" action="action_medic_test_electrocardiogram"/>
+        <menuitem id="menu_medic_electrocardiogram_root" parent="menu_medic_image_test" sequence="25"
+                  name="Electrocardiogram" action="action_medic_test_electrocardiogram"/>
 
         <menuitem id="menu_medic_lab_test_configurations_type" action="action_medic_test_type"
                   parent="menu_medic_lab_test_configurations" sequence="5"/>

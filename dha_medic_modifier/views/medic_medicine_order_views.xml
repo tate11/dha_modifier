@@ -55,7 +55,12 @@
                                 </field>
                             </page>
                         </notebook>
+
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -92,8 +97,12 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
             <field eval="False" name="view_id"/>
-            <field name="domain">[('type','in',('out_invoice', 'out_refund')),('state', '=', ('open','paid')),('order_type','=', 'medicine')]</field>
-            <field name="context">{'type':'out_invoice', 'journal_type': 'sale', 'default_order_type' : 'medicine', 'form_view_ref': 'account.invoice_form'}</field>
+            <field name="domain">[('type','in',('out_invoice', 'out_refund')),('state', '=',
+                ('open','paid')),('order_type','=', 'medicine')]
+            </field>
+            <field name="context">{'type':'out_invoice', 'journal_type': 'sale', 'default_order_type' : 'medicine',
+                'form_view_ref': 'account.invoice_form'}
+            </field>
             <field name="search_view_id" ref="account.view_account_invoice_filter"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
@@ -112,11 +121,13 @@
             </field>
         </record>
 
-        <menuitem id="menu_medic_pharmacies" parent="menu_medic_root" sequence="40" name="Pharmacies" />
+        <menuitem id="menu_medic_pharmacies" parent="menu_medic_root" sequence="40" name="Pharmacies"/>
 
-        <menuitem id="menu_medic_medicine_order" parent="menu_medic_pharmacies" sequence="5" name="Prescriptions" action="medic_medicine_order_action"/>
+        <menuitem id="menu_medic_medicine_order" parent="menu_medic_pharmacies" sequence="5" name="Prescriptions"
+                  action="medic_medicine_order_action"/>
 
-        <menuitem id="menu_medic_medicine_order_invoice" parent="menu_medic_pharmacies" sequence="10" name="Invoices" action="medic_action_invoice_pharmacies"/>
+        <menuitem id="menu_medic_medicine_order_invoice" parent="menu_medic_pharmacies" sequence="10" name="Invoices"
+                  action="medic_action_invoice_pharmacies"/>
 
     </data>
 </odoo>

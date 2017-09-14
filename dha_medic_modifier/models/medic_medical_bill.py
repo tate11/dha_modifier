@@ -6,6 +6,7 @@ import datetime
 
 class MedicMedicalBill(models.Model):
     _name = 'medic.medical.bill'
+    _inherit = 'mail.thread'
 
     name = fields.Char('Number', default=lambda self: self.env['ir.sequence'].next_by_code('medic.medical.bill'))
     state = fields.Selection([('new', 'New'), ('processing', 'Processing'), ('done', 'Done')], default='new',
@@ -83,3 +84,4 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     medical_bill_ids = fields.One2many('medic.medical.bill', 'customer', 'Medical Bill')
+    medical_bill_domain_ids = fields.One2many('medic.medical.bill', 'customer', 'Medical Bill', domain=[('state','in',['new','processing'])])

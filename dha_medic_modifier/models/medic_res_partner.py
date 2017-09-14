@@ -9,6 +9,7 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+
     @api.depends('day_of_birth')
     def _compute_age(self):
         for record in self:
@@ -41,10 +42,13 @@ class ResPartner(models.Model):
     # TESTs
     medic_lab_test_compute_ids = fields.Many2many('medic.test', 'Lab Tests', compute='_get_medic_test_ids')
     medic_image_test_compute_ids = fields.Many2many('medic.test', 'Image Tests', compute='_get_medic_test_ids')
+    medic_test_ids = fields.One2many('medic.test', 'customer', 'Tests', domain=[('state','in',['new','processing'])])
 
     # tab kham cho cong ty
     company_medial_ids = fields.One2many('res.partner.company.check', 'company_id', 'Company Check')
     total_history = fields.Float('Check History', compute='_get_company_check_number')
+
+    is_patient = fields.Boolean('Patient', default=False)
 
     def _get_company_check_number(self):
         CompanyCheck = self.env['res.partner.company.check']

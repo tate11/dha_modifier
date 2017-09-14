@@ -17,9 +17,18 @@ class MedicLabTest(models.Model):
                 return employee_id[0].department_id.find_center()
         return False
 
+    @api.depends('type')
+    def _compute_show_image(self):
+        for record in self:
+            try:
+                record.show_image = (record.type != self.env.ref('dha_medic_modifier.medic_test_type_lab_test'))
+            except:
+                continue
+
     name = fields.Char('Number', readonly=1, default='/')
     state = fields.Selection([('new', 'New'), ('processing', 'Processing'), ('done', 'Done')], 'Status', default='new')
     type = fields.Many2one('medic.test.type', string='Type', required=1)
+    show_image = fields.Boolean('Show Image', compute='_compute_show_image')
     customer = fields.Many2one('res.partner', 'Customer')
     customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
     sex_id = fields.Many2one('res.partner.sex', string='Sex', related='customer.sex_id', readonly=1)
@@ -37,6 +46,15 @@ class MedicLabTest(models.Model):
                                             'medical_bill_id', 'Related Medical Bills')
 
     note = fields.Text('Note')
+
+    image_res1 = fields.Binary("Image 1", attachment=True)
+    image_res2 = fields.Binary("Image 2", attachment=True)
+    image_res3 = fields.Binary("Image 3", attachment=True)
+    image_res4 = fields.Binary("Image 4", attachment=True)
+    image_res5 = fields.Binary("Image 5", attachment=True)
+    image_res6 = fields.Binary("Image 6", attachment=True)
+
+
 
     @api.model
     def create(self, vals):
