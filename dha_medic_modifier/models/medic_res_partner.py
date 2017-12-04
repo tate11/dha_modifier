@@ -70,7 +70,7 @@ class ResPartner(models.Model):
         ('separated', 'Separated'),
     ], 'Married Status')
     # tab gia dinh
-    family_persons = fields.One2many('res.partner.family', 'partner_id', 'Family')
+    # family_persons = fields.One2many('res.partner.family', 'partner_id', 'Family')
     # tab bao hiem
     insurrance_ids = fields.One2many('res.partner.insurrance', 'partner_id', string='Partner ID')
     # don thuoc
@@ -82,13 +82,13 @@ class ResPartner(models.Model):
     medic_test_ids = fields.One2many('medic.test', 'customer', 'Tests', domain=[('state', 'in', ['new', 'processing'])])
 
     # Tien su benh
-    tien_su_gia_dinh = fields.Char('Family history of medical illness')
-    tien_can = fields.Char('Past medical and surgical history')
-    di_ung_thuoc = fields.Char('Drug allergy')
-    thuoc_la = fields.Char('Smoking')
-    ruou = fields.Char('Alcolhol')
-    the_thao = fields.Char('Exercises')
-    tiem_ngua = fields.Char('Vaccination')
+    # tien_su_gia_dinh = fields.Char('Family history of medical illness')
+    # tien_can = fields.Char('Past medical and surgical history')
+    # di_ung_thuoc = fields.Char('Drug allergy')
+    # thuoc_la = fields.Char('Smoking')
+    # ruou = fields.Char('Alcolhol')
+    # the_thao = fields.Char('Exercises')
+    # tiem_ngua = fields.Char('Vaccination')
 
 
     # tab kham cho cong ty
@@ -97,8 +97,6 @@ class ResPartner(models.Model):
 
     is_patient = fields.Boolean('Patient', default=False)
     description = fields.Char('Description')
-    barcode_image = fields.Binary('Barcode Image', attachment=True)
-    barcode_image_small = fields.Binary('Barcode Image Small', attachment=True)
 
     @api.onchange('country_id')
     def _onchange_address_country_id(self):
@@ -261,26 +259,12 @@ class ResPartner(models.Model):
                         code = center.code or '000'
             code = code + self.env['ir.sequence'].next_by_code('customer.id.seq')
             res.write({'customer_id': code})
-        if res.customer_id:
-            res.action_generate_barcode()
         return res
 
     @api.multi
     def write(self, vals):
         res = super(ResPartner, self).write(vals)
-        if 'customer_id' in vals:
-            self.action_generate_barcode()
         return res
-
-    @api.multi
-    def action_generate_barcode(self):
-        Report = self.env['report']
-        for record in self:
-            if record.customer_id:
-                data_image = base64.b64encode(Report.barcode('QR', record.customer_id, width=100, height=100))
-                data_image_small = base64.b64encode(Report.barcode('QR', record.customer_id, width=75, height=75))
-                if data_image:
-                    record.write({'barcode_image': data_image, 'barcode_image_small' : data_image_small})
 
     @api.multi
     def name_get(self):
