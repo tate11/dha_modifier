@@ -18,7 +18,21 @@ class dha_medic_script(models.Model):
         # self.fix_cxk()
         # self.add_doctor()
         # self.fix_partner_id()
+        self.move_data_partner()
         return
+
+    @api.model
+    def move_data_partner(self):
+        Patient = self.env['dham.patient']
+        for record in self.env['res.partner'].search([('is_patient','=',True)]):
+            Patient.create({
+                'day_of_birth': record.day_of_birth,
+                'patient_id': record.customer_id,
+                'sex': record.sex,
+                'married_status' : record.married_status,
+                'partner_id': record.id,
+            })
+
 
     @api.model
     def fix_partner_id(self):
