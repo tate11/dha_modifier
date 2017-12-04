@@ -1,0 +1,1 @@
+from . import  wizard_get_lab_res

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dhac_project_modifier_dhac_project_modifier,dhac_project_modifier.dhac_project_modifier,model_dhac_project_modifier_dhac_project_modifier,,1,0,0,0

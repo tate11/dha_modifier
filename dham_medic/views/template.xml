@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="assets_backend" name="dha_modifier assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/dham_medic/static/src/js/new_message_button.js"/>
+                <script type="text/javascript"
+                        src="/dham_medic/static/src/js/webcam.js"/>
+                <link rel="stylesheet" href="/dham_medic/static/src/less/company_contract_dashboard.less"/>
+                <link rel="stylesheet"
+                      href="/dham_medic/static/src/css/web_widget_image_webcam.css"/>
+                <link rel="stylesheet"
+                      href="/dham_medic/static/src/css/dha_modifier_css.css"/>
+                <script type="text/javascript"
+                        src="/dham_medic/static/src/js/webcam_widget.js"/>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

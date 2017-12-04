@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_lab_test_document">
+        <!-- Multicompany -->
+        <t t-if="not o and docs[0]">
+            <t t-set="o" t-value="docs[0]"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="max-height: 80px;"/>
+                </div>
+                <div class="col-xs-9">
+                    <h4 style="">PHÒNG KHÁM ĐA KHOA DHA</h4>
+                    <t t-if="docs[0].center_id.address" style="margin-left:25px">Địa chỉ:
+                        <span style="margin-left:5px" t-esc='docs[0].center_id.address'/>
+                    </t>
+                    <br/>
+                    <t t-if="docs[0].center_id.mobile" style="margin-left:25px">Điện thoại:
+                        <span style="margin-left:5px;margin-right:5px"
+                              t-esc='docs[0].center_id.mobile'/>
+                        <span t-if="docs[0].center_id.email">- Email :
+                            <span style="margin-left:10px;" t-esc='docs[0].center_id.email'/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+        </div>
+
+        <div class="page">
+            <h4 style="text-align:center;font-weight:bolder;margin-top:0px;margin-bottom:10px">KẾT QUẢ XÉT NGHIỆM</h4>
+            <div class="" style="margin-top:5px;">
+                <table class="" style="display:inline-block;width:550px">
+                    <tbody>
+                        <tr>
+                            <td style="width:50%">
+                                <t style="float:left">Họ tên BN:
+                                    <t style="margin-left:10px" t-esc='docs[0].customer.name'/>
+                                </t>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="margin-top:5px">
+                                <span t-if="docs[0].customer.sex" style="">Giới tính:
+                                    <t style="margin-left:10px"
+                                       t-esc=" 'Nam' if docs[0].customer.sex == 'male' else 'Nữ'"/>
+                                </span>
+                            </td>
+                            <td>
+                                <span t-if="docs[0].customer.day_of_birth" style="">Ngày sinh:
+                                    <t style="margin-left:10px"
+                                       t-esc="time.strftime('%d/%m/%Y', time.strptime(docs[0].customer.day_of_birth, '%Y-%m-%d'))"/>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="" colspan="2">
+                                <t t-if="docs[0].customer.contact_address" style="">Địa chỉ:
+                                    <span style="margin-left:5px" t-esc="docs[0].customer.contact_address"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-if="docs[0].create_date" style="">Ngày chỉ định:
+                                    <span style="margin-left:5px"
+                                          t-esc="time.strftime('%d/%m/%Y', time.strptime(docs[0].create_date, '%Y-%m-%d %H:%M:%S'))"/>
+                                </span>
+                            </td>
+                            <td>
+                                <span t-if="docs[0].doctor_assign.name" style="margin-left:50px">Bác sĩ chỉ định:
+                                    <span style="margin-left:5px" t-esc="docs[0].doctor_assign.name"/>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="" style="float:right">
+                    <img t-if="docs[0].customer.customer_id" class="barcode"
+                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', docs[0].customer.customer_id, 100, 100)"/>
+                </div>
+            </div>
+
+            <table class="table table-bordered" style="margin-top:30px">
+                <tr style="font-weight:bolder">
+                    <td style="width:55%;text-align:left">TÊN XÉT NGHIỆM</td>
+                    <td style="width:20%;text-align:center">KẾT QUẢ</td>
+                    <td style="width:25%;text-align:center">CHỈ SỐ BÌNH THƯỜNG</td>
+                    <!--<td style="width:10%;text-align:center">ĐƠN VỊ</td>-->
+                </tr>
+                <tbody>
+                    <t t-foreach="docs" t-as="doc">
+                        <tr>
+                            <td style="text-align:left;font-weight:bolder">
+                                <t style="" t-esc="doc.name + ': ' + doc.product_test.name "/>
+                                <!--<t t-esc="doc.product_test.name"/>-->
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <!--<td></td>-->
+                        </tr>
+                        <tr t-foreach="doc.lab_test_criteria" t-as="res">
+                            <td style="text-align:unset">
+                                <t t-raw="res.name"/>
+                            </td>
+                            <td style="text-align:center">
+                                <t t-if="res.result">
+                                    <t t-esc="res.result"/>
+                                </t>
+                            </td>
+                            <td style="text-align:center">
+                                <t t-if="res.normal_range">
+                                    <t t-esc="res.normal_range"/>
+                                </t>
+                            </td>
+                            <!--<td style="text-align:center">-->
+                                <!--<t t-if="res.units.name">-->
+                                    <!--<t t-esc="res.units.name"/>-->
+                                <!--</t>-->
+                            <!--</td>-->
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <div class="row" style="float:right; margin-top: 20px; margin-right: 20px; text-align:center">
+                <span t-esc="datetime.datetime.now().strftime('Ngày %d Tháng %m Năm %Y')"/>
+                <p>PHÒNG XÉT NGHIỆM</p>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline">
+                    <li>Trang:</li>
+                    <li>
+                        <span class="page"/>
+                    </li>
+                    <li>/</li>
+                    <li>
+                        <span class="topage"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_lab_test">
+        <t t-call="report.html_container">
+            <t t-call="dha_medic_report.report_lab_test_document"/>
+        </t>
+    </template>
+</odoo>
+

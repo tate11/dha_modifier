@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <function name="create_template_attachment" model="wizard.import.employee"/>
+        <record id="view_medic_wizard_import_employee_form" model="ir.ui.view">
+            <field name="name">wizard.import.employee.form</field>
+            <field name="model">wizard.import.employee</field>
+            <field name="arch" type="xml">
+                <form string="Import Employee">
+                    <sheet>
+                        <group>
+                            <field name="name" invisible="1"/>
+
+                            <field name="file"/>
+                            <button name="download_template_file" type="object" string="Download Template File"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="wizard_type" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="do_action" type="object" string="Import"/>
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_medic_wizard_import_employee_action" model="ir.actions.act_window">
+            <field name="name">Wizard Import Employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.import.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

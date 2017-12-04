@@ -1,0 +1,87 @@
+body {
+    background-color: white;
+}
+#map {
+    position: absolute;
+    left: 300px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+#custom_layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    background-color: white;
+    padding: 20px;
+    text-align: left;
+    height: 100%;
+}
+
+.all_type input,
+.all_type .all_type_checker {
+    display: inline-block;
+}
+
+.map_control > li,
+.map_control > li > a {
+    border-radius: 5px 5px 0 0;
+}
+
+.map_control .nav-tabs > li.active > a,
+.map_control .nav-tabs > li.active > a:hover,
+.map_control .nav-tabs > li.active > a:focus {
+    background-color: #875A7B;
+    color: white;
+}
+
+#custom_layer div.active {
+    display: visible;
+}
+
+#custom_layer div.unactive {
+    display: none;
+}
+
+.type_layer_wrap {
+    list-style-type: none;
+}
+.all_type,
+.type_layer_wrap {
+    cursor: pointer;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.type_layer_wrap span.badge.badge-pill.badge-primary {
+    margin-left: 10px;
+}
+
+ul.tree, ul.tree ul {
+    list-style-type: none;
+    background: url('/dha_medic_gis/static/src/img/vline.png') repeat-y;
+    margin: 0;
+    padding: 0;
+}
+
+ul.tree ul {
+    margin-left: 10px;
+}
+
+ul.tree li {
+    margin: 0;
+    padding: 0 12px;
+    line-height: 20px;
+    background: url('/dha_medic_gis/static/src/img/node.png') no-repeat;
+    color: #369;
+    font-weight: bold;
+}
+
+ul.tree li.last {
+    background: #fff url('/dha_medic_gis/static/src/img/lastnode.png') no-repeat;
+}

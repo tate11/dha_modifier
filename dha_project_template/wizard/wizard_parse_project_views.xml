@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="dha_wizard_project_template_form">
+            <field name="name">wizard.project.template.form</field>
+            <field name="model">wizard.project.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="assign_time" />
+                            <field name="template_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="do_action" type="object" string="Go" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="dha_project_template_wizard_action_window">
+            <field name="name">Wizard Project Templates</field>
+            <field name="res_model">wizard.project.template</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

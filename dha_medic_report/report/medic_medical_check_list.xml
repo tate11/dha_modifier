@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_medic_medical_check_list_the_luc">
+        <div style="text-decoration: underline;margin-top:20px;font-weight: bold;">KHÁM THỂ LỰC:</div>
+        <table style="width:100%">
+            <tr>
+                <td style="width:33%">Chiều cao: ..........cm</td>
+                <td style="width:33%">Mạch: ...............lần/phút</td>
+                <td style=""></td>
+            </tr>
+            <tr>
+                <td style="width:33%">Cân nặng: ...........kg</td>
+                <td style="width:33%">Huyết áp: ........./mmHg</td>
+                <td style="">Nhịp thở: ........lần/phút</td>
+            </tr>
+            <tr>
+                <td style="width:33%">Chỉ số BMI: ... ...</td>
+                <td style="width:33%">Nhiệt độ: ..........<sup>o</sup>C
+                </td>
+                <td style="">Phân loại:</td>
+            </tr>
+        </table>
+    </template>
+
+    <template id="report_medic_medical_check_list_can_lam_sang">
+        <div style="margin-top:20px;font-weight: bold;margin-left:20px">
+            <span style="">II.</span>
+            <span style="text-decoration: underline;margin-left:20px">KHÁM CẬN LÂM SÀNG:</span>
+        </div>
+        <div name="dot_space" style="height:60px">
+            Kết luận các xét nghiệm đính kèm: ..................................................................................................................................................................................................................................................................................................................................................................
+        </div>
+        <div style="height:60px">
+            Kết luận các chuẩn đoán hình ảnh đính kèm: ..................................................................................................................................................................................................................................................................................................................................................................
+        </div>
+    </template>
+
+    <template id="report_medic_medical_check_list_ket_luan">
+        <div style="margin-top:20px;font-weight: bold;margin-left:20px">
+            <span style="">III.</span>
+            <span style="text-decoration: underline;margin-left:20px">KẾT LUẬN:</span>
+        </div>
+        <div>
+            Sức khoẻ loại:<br/>
+            <span>&#x25a2;  Đủ sức khoẻ làm việc</span>
+            <span style="margin-left:100px">&#x25a2;  Không đủ sức khoẻ làm việc</span>
+        </div>
+        <div style="height:60px">
+            Tên bệnh: ..................................................................................................................................................................................................................................................................................................................................................................
+        </div>
+        <div style="height:60px">
+            Lời khuyên: ..................................................................................................................................................................................................................................................................................................................................................................
+        </div>
+        <div style="float:right;margin-top:20px">
+            THỦ TRƯỞNG CƠ QUAN KHÁM SỨC KHOẺ<br/>
+            (Chức danh, ký tên, đóng dấu và ghi rõ họ tên)
+        </div>
+    </template>
+
+    <template id="report_medic_medical_check_list_lam_sang">
+        <div style="margin-top:20px;font-weight: bold;margin-left:20px">
+            <span style="">I.</span>
+            <span style="text-decoration: underline;margin-left:20px">KHÁM LÂM SÀNG:</span>
+        </div>
+        <table class="table table-bordered" style="border: 1px solid black;margin-top:10px">
+            <tr>
+                <td style="border: 1px solid black;width:70%;text-align:center">Nội dung khám</td>
+                <td style="border: 1px solid black;width:30%;text-align:center">Họ và tên, chữ ký của bác sĩ</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>1.</b>Tuần hoàn:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>2.</b>Hô hấp:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>3.</b>Tiêu hoá:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>4.</b>Thận-tiết niệu-sinh dục:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>5.</b>Thần kinh:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>6.</b>Tâm Thần:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>7.</b>Cơ xương khớp:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>8.</b>Nội tiết:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>9.</b>Ngoại khoa:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>10.</b>Da liễu:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>11.</b>Sản phụ khoa:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>12.</b>Mắt:
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:20%">Không kính:</td>
+                            <td style="width:40%">Mắt phải:</td>
+                            <td style="width:40%">Mắt trái:</td>
+                        </tr>
+                        <tr>
+                            <td style="width:20%">Có kính:</td>
+                            <td style="width:40%">Mắt phải:</td>
+                            <td style="width:40%">Mắt trái:</td>
+                        </tr>
+                    </table>
+                    Các bệnh về mắt:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>13.</b>Tai - Mũi - Họng:
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:20%">Tai trái:</td>
+                            <td style="width:40%">Nói thường:
+                                <span style="margin-left:90px">m,</span>
+                            </td>
+                            <td style="width:40%">Nói thầm:
+                                <span style="margin-left:90px">m</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:20%">Tai phải:</td>
+                            <td style="width:40%">Nói thường:
+                                <span style="margin-left:90px">m,</span>
+                            </td>
+                            <td style="width:40%">Nói thầm:
+                                <span style="margin-left:90px">m</span>
+                            </td>
+                        </tr>
+                    </table>
+                    Các bệnh về tai mũi họng:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>14.</b>Răng - Hàm - Mặt:
+                    <br/>
+                    <br/>
+                    Phân loại: .......
+                </td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+        </table>
+    </template>
+
+    <template id="report_medic_medical_check_list_report_document">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="page">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="max-height: 80px;"/>
+                </div>
+                <div class="col-xs-9">
+                    <h4 style="">PHÒNG KHÁM ĐA KHOA DHA</h4>
+                    <t t-if="doc.center_id.address" style="margin-left:25px">Địa chỉ:
+                        <span style="margin-left:5px" t-esc='doc.center_id.address'/>
+                    </t>
+                    <br/>
+                    <t t-if="doc.center_id.mobile" style="margin-left:25px">Điện thoại:
+                        <span style="margin-left:5px;margin-right:5px"
+                              t-esc='doc.center_id.mobile'/>
+                        <span t-if="doc.center_id.email">- Email :
+                            <span style="margin-left:10px;" t-esc='doc.center_id.email'/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+            <h3 style="text-align:center;font-weight:bolder;margin-top:0px;margin-bottom:10px">KHÁM SỨC KHOẺ ĐỊNH KỲ
+            </h3>
+            <div class="" style="margin-top:5px;">
+                <table class="" style="display:inline-block;width:550px">
+                    <tbody>
+                        <tr>
+                            <td style="width:50%">
+                                <b style="float:left">Họ tên:
+                                    <t style="margin-left:10px" t-esc='doc.customer.name'/>
+                                </b>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="margin-top:5px">
+                                <b t-if="doc.customer.sex" style="">Giới tính:
+                                    <t style="margin-left:10px"
+                                       t-esc=" 'Nam' if doc.customer.sex == 'male' else 'Nữ'"/>
+                                </b>
+                            </td>
+                            <td>
+                                <b t-if="doc.customer.day_of_birth" style="">Ngày sinh:
+                                    <t style="margin-left:10px"
+                                       t-esc="time.strftime('%d/%m/%Y', time.strptime(doc.customer.day_of_birth, '%Y-%m-%d'))"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <b t-if="doc.customer_parent_id" style="">Công ty:
+                                    <span style="margin-left:5px"
+                                          t-esc="doc.customer_parent_id.name"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <b t-if="doc.description" style="">Ghi chú:
+                                    <span style="margin-left:5px"
+                                          t-esc="doc.description"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="" style="float:right;margin-top:-5px;">
+                    <img t-if="doc.customer.customer_id" class="barcode"
+                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', doc.customer.customer_id, 75, 75)"/>
+                </div>
+            </div>
+            <t t-call="dha_medic_report.report_medic_medical_check_list_the_luc"/>
+            <t t-call="dha_medic_report.report_medic_medical_check_list_lam_sang"/>
+            <t t-call="dha_medic_report.report_medic_medical_check_list_can_lam_sang"/>
+            <t t-call="dha_medic_report.report_medic_medical_check_list_ket_luan"/>
+        </div>
+        <div class="footer">
+        </div>
+    </template>
+
+
+    <template id="report_medic_medical_check_list_report">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="dha_medic_report.report_medic_medical_check_list_report_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>

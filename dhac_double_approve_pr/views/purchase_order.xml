@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="replace">
+                    <header>
+                        <button name="action_rfq_send" states="draft" string="Send RFQ by Email" type="object"
+                                context="{'send_rfq':True}" class="oe_highlight"/>
+                        <button name="action_rfq_send" states="sent" string="Re-Send RFQ by Email" type="object"
+                                context="{'send_rfq':True}"/>
+                        <button name="print_quotation" string="Print RFQ" type="object" states="draft"
+                                class="oe_highlight" groups="base.group_user"/>
+                        <button name="print_quotation" string="Print RFQ" type="object" states="sent"
+                                groups="base.group_user"/>
+                        <button name="button_accept" type="object" class="oe_highlight" states="draft,sent" string="Accept"/>
+                        <button name="button_confirm" type="object" states="accepted" string="Confirm Order"
+                                id="draft_confirm" groups="dhac_double_approve_pr.group_purchase_leader,purchase.group_purchase_manager"/>
+                        <button name="button_approve" type="object" states='to approve' string="Approve Order"
+                                class="oe_highlight" groups="purchase.group_purchase_manager"/>
+                        <button name="action_rfq_send" states="purchase" string="Send PO by Email" type="object"
+                                context="{'send_rfq':False}"/>
+                        <button name="action_view_picking" string="Receive Products" class="oe_highlight" type="object"
+                                attrs="{'invisible': ['|', '|' , ('is_shipped', '=', True), ('state','not in', ('purchase','done')), ('picking_count', '=', 0)]}"/>
+                        <button name="button_draft" states="cancel" string="Set to Draft" type="object"/>
+                        <button name="button_cancel" states="draft,accepted,to approve,sent,purchase" string="Cancel"
+                                type="object"/>
+                        <button name="button_done" type="object" string="Lock" states="purchase"/>
+                        <button name="button_unlock" type="object" string="Unlock" states="done"
+                                groups="purchase.group_purchase_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,accepted,purchase"
+                               readonly="1"/>
+                    </header>
+                </xpath>
+                <field name="partner_id" position="after">
+                    <field name="respond_id"/>
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page string="References">
+                        <field name="referent_po_ids"/>
+                    </page>
+                </xpath>
+                <xpath expr="//div[@name='button_box']/button[@name='action_view_picking']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('state', 'in', ('draft','sent','accepted','to approve')),('picking_ids','=',[])]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('state', 'in', ('draft','sent','to approve','accepted')),('invoice_ids','=',[])]}
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+            <field name="name">Requests for Quotation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="context">{'search_default_todo':1}</field>
+            <field name="domain">[('state','in',('draft','sent','bid','cancel', 'confirmed','accepted'))]</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar</field>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a request for quotation.
+                </p>
+                <p>
+                    The quotation contains the history of the discussion/negotiation
+                    you had with your vendor. Once confirmed, a request for
+                    quotation is converted into a purchase order.
+                </p>
+                <p>
+                    Most propositions of purchase orders are created automatically
+                    by Odoo based on inventory needs.
+                </p>
+            </field>
+        </record>
+
+        <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+            <field name="name">Purchase Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar</field>
+            <field name="context">{'search_default_todo':1, 'show_purchase': True}</field>
+            <field name="domain">[('state','not in',('draft','sent','bid', 'confirmed','accepted'))]</field>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a quotation that will be converted into a purchase order.
+                </p>
+                <p>
+                    Use this menu to search within your purchase orders by
+                    references, vendor, products, etc. For each purchase order,
+                    you can track the related discussion with the vendor, control
+                    the products received and control the vendor bills.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

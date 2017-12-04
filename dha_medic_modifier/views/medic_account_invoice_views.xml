@@ -11,7 +11,7 @@
                     <field name="number"/>
                     <field name="customer_id"/>
                     <field name="partner_id"/>
-                    <field name="sex_id"/>
+                    <field name="sex"/>
                     <field name="day_of_birth"/>
                     <field name="amount_total"/>
                     <field name="state" invisible="1"/>
@@ -25,19 +25,26 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
-                    <field name="sex_id"/>
+                    <field name="sex"/>
                     <field name="day_of_birth" invisible="1"/>
                     <field name="mobile"/>
                     <field name="insurrance_ids" widget="many2many_tags"/>
                 </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="context">{'medical_bill_id' : medical_bill_id}</attribute>
+                </field>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="pricelist_id"/>
+                </xpath>
                 <xpath expr="//notebook" position="before">
                     <group>
                         <field name="center_id" invisible="1" readonly="1"/>
                         <field name="building_id" invisible="1"/>
                         <field name="room_id" invisible="1"/>
                         <field name="doctor_assign" invisible="1"/>
+                        <field name="company_check_id" invisible="1"/>
                         <field name="package_ids" widget="many2many_tags"
-                               attrs="{'invisible':['|',('medical_bill_id','!=',False),('medicine_order_id','!=',False)]}"/>
+                               attrs="{'invisible':['|',('medical_bill_id','!=',False), '|', ('medicine_order_id','!=',False), ('company_check_id','!=',False)]}"/>
                         <field name="medicine_order_id" invisible="1"/>
                         <field name="order_type" invisible="1"/>
                         <field name="medical_bill_id" invisible="1"/>
@@ -45,11 +52,11 @@
                     <group col="4">
                         <group colspan="2">
                             <field name="reason"
-                                   attrs="{'invisible':['|',('medical_bill_id','!=',False),('medicine_order_id','!=',False)]}"/>
+                                   attrs="{'invisible':['|',('medical_bill_id','!=',False), '|', ('medicine_order_id','!=',False), ('company_check_id','!=',False)]}"/>
                         </group>
                         <group colspan="2">
                             <field name="prognostic"
-                                   attrs="{'invisible':['|',('medical_bill_id','!=',False),('medicine_order_id','!=',False)]}"/>
+                                   attrs="{'invisible':['|',('medical_bill_id','!=',False), '|', ('medicine_order_id','!=',False), ('company_check_id','!=',False)]}"/>
                         </group>
                     </group>
                 </xpath>

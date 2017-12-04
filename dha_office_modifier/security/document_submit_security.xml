@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="module_doc_submit_category">
+            <field name="name">DHA Document Submit</field>
+            <field name="sequence">12</field>
+            <field name="visible" eval="1"/>
+        </record>
+
+        <record id="group_doc_sub_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_doc_submit_category"/>
+            <field name="users" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_doc_sub_leader" model="res.groups">
+            <field name="name">Leader</field>
+            <field name="category_id" ref="module_doc_submit_category"/>
+            <field name="implied_ids" eval="[(4, ref('group_doc_sub_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="group_doc_sub_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_doc_submit_category"/>
+            <field name="implied_ids" eval="[(4, ref('group_doc_sub_leader'))]"/>
+        </record>
+
+        <!-- RECORD RULE -->
+        <record id="doc_submit_followers_user_rule" model="ir.rule">
+            <field name="name">Follow Document Submit user</field>
+            <field name="model_id" ref="model_dha_document_submit"/>
+            <field name="groups" eval="[(6,0, [ref('group_doc_sub_user')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">['|',('request_by','=',user.id),
+                ('message_partner_ids', 'in', [user.partner_id.id])]
+            </field>
+        </record>
+
+        <record id="doc_submit_user_rule" model="ir.rule">
+            <field name="name">Document Submit User</field>
+            <field name="model_id" ref="model_dha_document_submit"/>
+            <field name="groups" eval="[(6,0, [ref('group_doc_sub_user')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('request_by','=',user.id)]</field>
+        </record>
+
+        <record id="doc_submit_leader_rule" model="ir.rule">
+            <field name="name">Document Submit Leader</field>
+            <field name="model_id" ref="model_dha_document_submit"/>
+            <field name="groups" eval="[(6,0, [ref('group_doc_sub_leader')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+        <record id="doc_submit_leader_own_rule" model="ir.rule">
+            <field name="name">Document Submit Leader Own</field>
+            <field name="model_id" ref="model_dha_document_submit"/>
+            <field name="groups" eval="[(6,0, [ref('group_doc_sub_leader')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('request_by','=',user.id)]</field>
+        </record>
+
+        <record id="doc_submit_manager_rule" model="ir.rule">
+            <field name="name">Document Submit Manager</field>
+            <field name="model_id" ref="model_dha_document_submit"/>
+            <field name="groups" eval="[(6,0, [ref('group_doc_sub_manager')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+
+    </data>
+</odoo>

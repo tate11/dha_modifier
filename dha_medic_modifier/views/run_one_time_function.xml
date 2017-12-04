@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <function name="change_viet_nam_address_format" model="res.country"/>
+        <function name="import_template_country_data" model="res.country"/>
+    </data>
+</odoo>

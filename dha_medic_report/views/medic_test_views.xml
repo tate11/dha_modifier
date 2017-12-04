@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_medic_test_form" model="ir.ui.view">
+            <field name="name">medic.test.form</field>
+            <field name="model">medic.test</field>
+            <field name="inherit_id" ref="dha_medic_modifier.view_medic_test_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button type="object" name="print_lab_test" string="Print"
+                                attrs="{'invisible':[('state','!=','done')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

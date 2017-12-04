@@ -2,10 +2,20 @@
 <odoo>
     <data>
 
-       <template id="assets_backend" name="dha_modifier assets" inherit_id="web.assets_backend">
+        <template id="assets_backend" name="dha_modifier assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/dha_medic_modifier/static/src/js/new_message_button.js"></script>
+                <script type="text/javascript"
+                        src="/dha_medic_modifier/static/src/js/webcam.js"/>
+                <link rel="stylesheet" href="/dha_medic_modifier/static/src/less/company_contract_dashboard.less"/>
+                <link rel="stylesheet"
+                      href="/dha_medic_modifier/static/src/css/web_widget_image_webcam.css"/>
+                <link rel="stylesheet"
+                      href="/dha_medic_modifier/static/src/css/dha_modifier_css.css"/>
+                <script type="text/javascript"
+                        src="/dha_medic_modifier/static/src/js/webcam_widget.js"/>
             </xpath>
         </template>
+
     </data>
 </odoo>

@@ -23,8 +23,10 @@ class HelpdeskTicket(models.Model):
         Stage = self.env['helpdesk.stage'].sudo()
         Project = self.env['project.task']
         ProjectStage = self.env['project.task.type']
+
         project = False
         stage_name = False
+        stage_id = False
         if vals.get('stage_id', False):
             stage_id = Stage.browse(vals.get('stage_id'))
             if stage_id:
@@ -49,6 +51,17 @@ class HelpdeskTicket(models.Model):
                 }
                 new_project = Project.create(task_vals)
                 new_message.write({'model': 'project.task', 'res_id' : new_project.id})
+        else:
+            if stage_id and stage_id.name == 'Done':
+                for record in self:
+                    project_id = Project.search([('helpdesk_id','=',record.id)],limit=1)
+                    project_state = ProjectStage.search([('project_ids','in',project_id.project_id.ids),('name','=',stage_id.name)],limit=1)
+                    if project_id and project_state:
+                        self._cr.execute("""
+                            UPDATE project_task
+                            SET stage_id = %s
+                            WHERE id= %s
+                        """%(project_state.id, project_id.id))
         return super(HelpdeskTicket, self).write(vals)
 
     @api.multi

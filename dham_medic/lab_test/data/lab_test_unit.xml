@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="medic.medical.lab.units" id="lab_units_gmdl0">
+            <field name="name">g/dL</field>
+            <field name="code">g/dL</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_ul0">
+            <field name="name">10^6/uL</field>
+            <field name="code">10^6/uL</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_millionscc0">
+            <field name="name">Millions/cc</field>
+            <field name="code">mcc</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_0">
+            <field name="name">%</field>
+            <field name="code">%</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_fl0">
+            <field name="name">fl</field>
+            <field name="code">fl</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_pg0">
+            <field name="name">pg</field>
+            <field name="code">pg</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_ul1">
+            <field name="name">10^3/uL</field>
+            <field name="code">10^3/uL</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_mmhr0">
+            <field name="name">mm/hr</field>
+            <field name="code">mm/hr</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_mgdl0">
+            <field name="name">mg/dl</field>
+            <field name="code">mg/dl</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_ul2">
+            <field name="name">U/L</field>
+            <field name="code">U/L</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_hpf0">
+            <field name="name">/hpf</field>
+            <field name="code">/hpf</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_iul0">
+            <field name="name">IU/l</field>
+            <field name="code">IU/l</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_miul0">
+            <field name="name">mIU/l</field>
+            <field name="code">mIU/l</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_ngml0">
+            <field name="name">ng/ml</field>
+            <field name="code">ng/ml</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_ml0">
+            <field name="name">mL</field>
+            <field name="code">mL</field>
+        </record>
+        <record model="medic.medical.lab.units" id="lab_units_minutes0">
+            <field name="name">minutes</field>
+            <field name="code">minutes</field>
+        </record>
+
+    </data>
+</odoo>

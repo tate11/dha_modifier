@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_medic_root" sequence="20" name="DHA Medic"
+                  web_icon="dham_medic,static/icon/logoxanh.jpg"/>
+
+        <menuitem id="menu_medic_lab_test_configurations" name="Configurations" parent="menu_medic_root"
+                  sequence="100" groups="dham_medic.group_medical_manager"/>
+
+       <menuitem id="menu_medic_counter_root" parent="menu_medic_root" sequence="5" name="Counter"/>
+    </data>
+</odoo>

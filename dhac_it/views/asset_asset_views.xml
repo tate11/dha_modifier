@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="assets_search_inherit_it" model='ir.ui.view'>
+            <field name="name">asset.asset.search.inherit.it</field>
+            <field name="model">asset.asset</field>
+            <field name="inherit_id" ref="asset.assets_search"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="type" groups="dhac_it.group_it_user"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="assets_form_view_form_inherit" model="ir.ui.view">
+            <field name="name">asset.asset.it.form</field>
+            <field name="model">asset.asset</field>
+            <field name="inherit_id" ref="asset.assets_form_view"/>
+            <field name="arch" type="xml">
+                <field name="criticality" position="before">
+                    <field name="type" groups="dhac_it.group_it_user"/>
+                </field>
+                <xpath expr="//div[@class='oe_title']" position="inside">
+                    <br/>
+                    <label string="IP Address" class="oe_edit_only" attrs="{'invisible':[('type','!=','it')]}"
+                           groups="dhac_it.group_it_user"/>
+                    <h2>
+                        <field groups="dhac_it.group_it_user" name="ip_address" placeholder="Eg: 192.168.1.1"
+                               class="oe_inline"
+                               attrs="{'invisible':[('type','!=','it')]}"/>
+                    </h2>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Access Credentials" attrs="{'invisible':[('type','!=','it')]}"
+                          groups="dhac_it.group_it_user">
+                        <field name="access_credential_ids" groups="dhac_it.group_it_user">
+                            <tree editable="bottom">
+                                <field name="user"/>
+                                <field name="pwd"/>
+                                <field name="description"/>
+                                <field name="user_id"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="user"/>
+                                    <field name="pwd"/>
+                                    <field name="description"/>
+                                    <field name="user_id"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                    <page string="IT Infomation" attrs="{'invisible':[('type','!=','it')]}"
+                          groups="dhac_it.group_it_user">
+                        <field name="net_info_ids" groups="dhac_it.group_it_user">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="value"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="value"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="it_asset_action" model="ir.actions.act_window">
+            <field name="name">IT Assets</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">asset.asset</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="context">{'default_type': 'it','search_default_type': 'it'}</field>
+        </record>
+
+    </data>
+</odoo>

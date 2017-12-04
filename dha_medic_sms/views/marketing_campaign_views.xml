@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="marketing_campaign_activity_view_form_inherit" model="ir.ui.view">
+            <field name="name">marketing.campaign.activity.view.form.inherit</field>
+            <field name="model">marketing.campaign.activity</field>
+            <field name="inherit_id" ref="marketing_campaign.view_marketing_campaign_activity_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='action_type']" position="after">
+                    <field name="sms_id" attrs="{'invisible':[('action_type','!=','sms')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

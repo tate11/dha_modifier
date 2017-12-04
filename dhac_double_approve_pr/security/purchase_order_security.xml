@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="group_purchase_leader" model="res.groups">
+            <field name="name">Leader</field>
+            <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+            <field name="category_id" ref="base.module_category_purchase_management"/>
+        </record>
+
+        <record id="purchase.group_purchase_manager" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_purchase_leader'))]"/>
+        </record>
+
+    </data>
+</odoo>

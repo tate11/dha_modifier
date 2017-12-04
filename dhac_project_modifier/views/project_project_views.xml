@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="dhac_project_modifier_tree">
+            <field name="name">dhac_project_modifier tree</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" delete="0" create="0">
+                    <field name="name" readonly="1"/>
+                    <field name="partner_follower_char"/>
+                    <field name="message_follower_ids" widget="many2many_tags" groups="base.group_system"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_dhac_project_modifier" model="ir.actions.act_window">
+            <field name="name">Project Followers</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem name="Project Followers"
+            id="menu_dhac_project_modifier_follower"
+            groups="project.group_project_manager,project.group_project_user" action="action_dhac_project_modifier" parent="project.menu_main_pm"
+            sequence="20"/>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="phone" position="replace">
+                    <field name="phone" widget="phone" groups="dha_res_partner_modifier.group_partner_info_manager"/>
+                </field>
+                <field name="mobile" position="replace">
+                    <field name="mobile" widget="phone" groups="dha_res_partner_modifier.group_partner_info_manager"/>
+                </field>
+                <field name="email" position="replace">
+                    <field name="email" widget="email" groups="dha_res_partner_modifier.group_partner_info_manager"  attrs="{'required': [('user_ids','!=', [])]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

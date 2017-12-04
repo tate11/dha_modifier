@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="medic_medilcal_template_title">
+        <h4 style="background:#00B948;padding:10px;color:white;text-align:center;margin-bottom:15px;font-weight:900;">
+            <t t-esc="o_title"/>
+        </h4>
+        <table class="table table-bordered">
+            <tr style="">
+                <td style="width:15%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1">ID:</td>
+                <td style="width:10%;border: 1px solid #555354;">
+                    <t t-esc="doc.customer.customer_id"/>
+                </td>
+                <td style="width:10%;background:#D9E5F1;color:#137EC1;border: 1px solid #555354;">Họ tên:</td>
+                <td style="width:30%;border: 1px solid #555354;">
+                    <t t-esc="doc.customer.name"/>
+                </td>
+                <td style="width:15%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1">Ngày khám:</td>
+                <td style="width:15%;border: 1px solid #555354;">
+                    <t t-if="doc.process_date"
+                       t-esc="time.strftime('%d/%m/%Y', time.strptime(doc.process_date, '%Y-%m-%d %H:%M:%S'))"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:15%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1">Giới tính:</td>
+                <td style="width:10%;border: 1px solid #555354;">
+                    <t t-if="doc.customer.sex == 'male'">Nam</t>
+                    <t t-if="doc.customer.sex == 'female'">Nữ</t>
+                </td>
+                <td style="width:10%;background:#D9E5F1;color:#137EC1;border: 1px solid #555354;">Tuổi:</td>
+                <td style="width:30%;border: 1px solid #555354;">
+                    <t t-if="doc.customer.day_of_birth"
+                       t-esc="int((datetime.datetime.now() - datetime.datetime.strptime(doc.customer.day_of_birth, '%Y-%m-%d')).days/365)"/>
+                </td>
+                <td style="width:15%;background:#D9E5F1;color:#137EC1;border: 1px solid #555354;">Năm sinh:</td>
+                <td style="width:15%;border: 1px solid #555354;">
+                    <t t-if="doc.customer.day_of_birth"
+                       t-esc="time.strftime('%Y', time.strptime(doc.customer.day_of_birth, '%Y-%m-%d'))"/>
+                </td>
+            </tr>
+        </table>
+    </template>
+
+    <template id="page_1">
+        <div class="page">
+            <img src="/dha_medic_report/static/img/medical-report-fisrt-page-new-01.jpg" style="position:absolute"/>
+            <div style="position:relative;top:425px;text-align:center;max-with:800px">
+                <img src="/dha_medic_report/static/img/title_head.jpg"
+                     style="display:inline-block;height:150px;margin-bottom: 19px;"/>
+                <div style="background:#027CC7;color:white;display: inline-block;margin: 0 -4px !important;padding:8px;height:72px;font-size:40px">
+                    <span style="text-align:center;white-space: nowrap;" t-esc="doc.customer.name"/>
+                </div>
+                <img src="/dha_medic_report/static/img/title_end.jpg"
+                     style="display:inline-block;max-height:150px;margin-bottom:19px;"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="page_tong_quat1">
+        <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
+            <t t-set="o_title" t-value="'BẢNG ĐÁNH GIÁ TỔNG HỢP'"/>
+            <t t-call="dha_medic_report.medic_medilcal_template_title"/>
+            <div class="">
+                <t t-call="dha_medic_report.page_sinh_hieu"/>
+                <table class="table table-bordered"
+                       style="float:left;width:49%;text-align:center;vertical-align: middle;">
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            HẠNG MỤC
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            LẦN NÀY
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            LẦN TRƯỚC
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            TRƯỚC NỮA
+                        </td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Tuần Hoàn
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_tuan_hoan.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Hô Hấp
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_ho_hap.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Tiêu Hoá
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_tieu_hoa.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Thận Tiết Niệu
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_than_tiet_nieu.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Cơ Xương Khớp
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_co_xuong_khop.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Thần Kinh
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_than_kinh.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
+                            Tâm Thần
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai_tam_than.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered" style="float:left;width:49%;margin-left:2%;">
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            HẠNG MỤC
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            LẦN NÀY
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            LẦN TRƯỚC
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center;vertical-align: middle;">
+                            TRƯỚC NỮA
+                        </td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);text-align:center;color:white;">
+                            Nội Khoa
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
+                            Ngoại Khoa
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_ngoai').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_ngoai').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
+                            Sản Phụ Khoa
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_san').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_san').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
+                            Mắt
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_mat').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_mat').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
+                            Tai Mũi Họng
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_tai_mui_hong').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_tai_mui_hong').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
+                            Răng Hàm Mặt
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_rang_ham_mat').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_rang_ham_mat').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                    <tr style="">
+                        <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
+                            Da Liễu
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
+                            <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_da_lieu').id)"
+                               t-esc="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_da_lieu').id)[0].phan_loai.code"></t>
+                        </td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                        <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;"></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-bottom:10px;">
+                <span style="">Loại I: Rất khoẻ</span>
+                <span style="margin-left:45px">Loại II: Khoẻ</span>
+                <span style="margin-left:45px">Loại III: Trung bình</span>
+                <span style="margin-left:45px">Loại IV: Yếu</span>
+                <span style="margin-left:45px">Loại V: Rất yếu</span>
+            </div>
+            <strong style="margin-top:10px;margin-bottom:10px;">Kết luận tổng thể:</strong>
+            <!--<div style="width:100%;min-height: 50px;border: 2px solid #D9E5F1;border-top-left-radius: 20px;border-bottom-right-radius: 20px;color:#00B948;vertical-align: middle;margin-top:10px;margin-bottom:10px">-->
+            <div style="margin-left:20px;margin-top:10px;margin-bottom:10px;color:#00B948;">
+                <t t-if="doc.treatment_note" t-raw="doc.treatment_note"/>
+            </div>
+            <!--</div>-->
+            <strong style="margin-top:10px;margin-bottom:10px;">Đề nghị:</strong>
+            <!--<div style="width:100%;min-height: 50px;border: 2px solid #D9E5F1;border-top-left-radius: 20px;border-bottom-right-radius: 20px;color:#00B948;vertical-align: middle;margin-top:10px;margin-bottom:10px">-->
+            <div style="margin-left:20px;margin-top:10px;margin-bottom:10px;color:#00B948;">
+                <t t-if="doc.de_nghi" t-raw="doc.de_nghi"/>
+            </div>
+            <!--</div>-->
+            <div>
+                Đạt sức khoẻ loại:
+                <span style="margin-left:5px" t-if="doc.phan_loai" t-esc="doc.phan_loai.code"/>
+
+                <t t-if="doc.phan_loai_char and doc.phan_loai_char == '1'">
+                    <br/>
+                    <h5 style="text-align:center;color:red;font-weight:bold">
+                        ĐỦ SỨC KHOẺ LÀM VIỆC
+                    </h5>
+                </t>
+                <t t-if="doc.phan_loai_char and doc.phan_loai_char == '0'">
+                    <br/>
+                    <h5 style="text-align:center;color:red;font-weight:bold">
+                        KHÔNG ĐỦ SỨC KHOẺ LÀM VIỆC
+                    </h5>
+                </t>
+            </div>
+            <table class="table table-bordered" style="margin-top:15px">
+                <tr style="height:110px">
+                    <td style="width:20%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1;text-align:center;vertical-align: middle;">
+                        <strong>Bác sĩ đánh giá tổng quát</strong>
+                    </td>
+                    <td style="width:80%;border: 1px solid #555354;;text-align:center;vertical-align: bottom;">
+                        <img t-if="doc.doctor_assign.img_sign" style="width:175px;height:75px"
+                             t-att-src="'data:image/png;base64,%s' % doc.doctor_assign.img_sign"/>
+                        <br/>
+                        <strong>
+                            <t t-if="doc.doctor_assign" t-esc="doc.doctor_assign.name"/>
+                        </strong>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <template id="page_time_hr">
+        <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 40px;"/>
+        /
+        <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 40px;"/>
+        /
+        <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 40px;"/>
+    </template>
+    <template id="page_tong_quat">
+        <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:20px;margin-right:5px">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="max-height: 80px;"/>
+                </div>
+                <div class="col-xs-9" style="text-align:center;font-weight: bold;margin-left:-25px">
+                    <h5 style="text-align:center;font-weight: bold">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</h5>
+                    <h5>Độc lập - Tự do - Hạnh phúc</h5>
+                    <p style="text-align:center">---------</p>
+                </div>
+            </div>
+            <h4 style="text-align:center;font-weight: bold;margin-left:-25px">SỔ KHÁM SỨC KHOẺ ĐỊNH KỲ</h4>
+            <h5 style="text-align:center;margin-left:-25px">(Theo thông tư số 14/2013/TT-BYT ngày 02/6/2014 của Bộ Y
+                tế)
+            </h5>
+            <div class="row" style="margin-top:20px">
+                <div class="col-xs-3">
+                    <div style="border:1px solid black;height:155;width:115px;text-align:center;vertical:centre">
+                        <p style="margin-top:50px">Ảnh<br/>(4 x 6cm)
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xs-9" style="text-align:left;margin-left:-25px">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:32%">
+                                <div>1. Họ và tên (chữ in hoa):</div>
+                            </td>
+                            <td style="width:68%">
+                                <span style="text-transform: uppercase;position: absolute;margin-left:20px"
+                                      t-if="doc.customer.name" t-esc="doc.customer.name"/>
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <div>2. Giới tính:
+                        <span style="margin-left:40px">Nam
+                            <span style="font-size:20px" t-if="doc.sex == 'male'" t-esc="'&#x2611;'"/>
+                            <span style="font-size:20px" t-if="doc.sex != 'male'" t-esc="'&#x2610;'"/>
+                        </span>
+                        <span style="margin-left:40px">Nữ
+                            <span style="font-size:20px" t-if="doc.sex == 'female'" t-esc="'&#x2611;'"/>
+                            <span style="font-size:20px" t-if="doc.sex != 'female'" t-esc="'&#x2610;'"/>
+                        </span>
+                    </div>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:38%">
+                                <div>3. Số CMND hoặc Hộ chiếu:</div>
+                            </td>
+                            <td style="width:62%">
+                                <span style="position: absolute;margin-left:20px" t-if="doc.customer.cmnd_passport"
+                                      t-esc="doc.customer.cmnd_passport"/>
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:7%">
+                                <div>Tại:</div>
+                            </td>
+                            <td style="width:93%">
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:31%">
+                                <div>4. Hộ khẩu thường trú:</div>
+                            </td>
+                            <td style="width:69%">
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+                <div class="col-xs-12" style="margin-right:25px;width:97%">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:18%">
+                                <div>5. Chỗ ở hiện tại:</div>
+                            </td>
+                            <td style="width:82%">
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:17%">
+                                <div>6. Nghề nghiệp:</div>
+                            </td>
+                            <td style="width:85%">
+                                <span style="position: absolute;margin-left:20px" t-if="doc.customer.function"
+                                      t-esc="doc.customer.function"/>
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:25%">
+                                <div>7. Nơi công tác, học tập:</div>
+                            </td>
+                            <td style="width:75%">
+                                <span style="position: absolute;margin-left:20px" t-if="doc.customer_parent_id"
+                                      t-esc="doc.customer_parent_id.name"/>
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:55%">
+                                <div>8. Ngày bắt đầu vào học/làm việc tại đơn vị hiện nay:</div>
+                            </td>
+                            <td style="width:45%">
+                                <t t-call="dha_medic_report.page_time_hr"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td colspan="2">
+                                <div>9. Nghề, công việc trước đây (liệt kê các công việc đã làm trong 10 năm gần đây,
+                                    tính từ thời điểm gần nhất):
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:3%">
+                                <div>a)</div>
+                            </td>
+                            <td>
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Thời gian làm việc
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 43px;"/>
+                                năm
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 43px;"/>
+                                tháng từ ngày
+                                <t t-call="dha_medic_report.page_time_hr"/>
+                                đến
+                                <t t-call="dha_medic_report.page_time_hr"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:3%">
+                                <div>b)</div>
+                            </td>
+                            <td>
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Thời gian làm việc
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 43px;"/>
+                                năm
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 43px;"/>
+                                tháng từ ngày
+                                <t t-call="dha_medic_report.page_time_hr"/>
+                                đến
+                                <t t-call="dha_medic_report.page_time_hr"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:35%">
+                                <div>10. Tiền sử bệnh, tật của gia đình:</div>
+                            </td>
+                            <td style="width:65%">
+                                <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <hr style="border-top: 1px dotted #8c8b8b; padding: 0px; margin-bottom: 0px;width: 100%;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%;margin-top:5px">
+                        <tr>
+                            <td>
+                                11.Tiền sử bản thân:
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered" style="border: 1px solid black;">
+                        <tr>
+                            <td style="border: 1px solid black;width:30%;text-align:center">
+                                Tên bệnh
+                            </td>
+                            <td style="border: 1px solid black;width:18%;text-align:center">
+                                Phát hiện năm
+                            </td>
+                            <td style="border: 1px solid black;width:30%;text-align:center">
+                                Tên bệnh nghề nghiệp
+                            </td>
+                            <td style="border: 1px solid black;width:22%;text-align:center">
+                                Phát hiện năm
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black;">a)</td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">a)</td>
+                            <td style="border: 1px solid black;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black;">b)</td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">b)</td>
+                            <td style="border: 1px solid black;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black;">c)</td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">c)</td>
+                            <td style="border: 1px solid black;"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row" style="width:97%">
+                <div class="col-xs-4" style="text-align:center">
+                    <br></br>
+                    <div style="">Người lao động xác nhận</div>
+                    <div>(Ký và ghi rõ họ, tên)</div>
+                </div>
+                <div class="col-xs-2" style="text-align:center"></div>
+                <div class="col-xs-6" style="text-align:center;">
+                    <div style="text-align:right">Tp.HCM, ngày
+                        <hr
+                                style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 33px;"/>
+                        tháng
+                        <hr
+                                style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 33px;"/>
+                        năm
+                        <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 33px;"/>
+                    </div>
+                    <div>Người lập sổ KSK định kỳ</div>
+                    <div>(Ký và ghi rõ họ, tên)</div>
+                </div>
+            </div>
+
+        </div>
+    </template>
+
+    <template id="page_sinh_hieu">
+        <table class="table table-bordered" style="float:left;width:100%;text-align:center;margin-bottom:0;">
+            <tr style="height:50px">
+                <td style="padding: 3px;background:rgb(101, 156, 248);color:white;width:15%;font-weight: 800;">Số đo cơ
+                    thể
+                </td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">Kết Quả</td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">KQ lần trước</td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">KQ lần trước nữa
+                </td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">Đơn vị</td>
+                <td style="padding: 3px;font-weight: bold;width:7%;font-weight: 800;">Chỉ số tiêu chuẩn</td>
+
+                <td style="padding: 3px;background:rgb(101, 156, 248);color:white;width:15%;font-weight: 800;">Mạch,
+                    huyết áp
+                </td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">Kết Quả</td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">KQ lần trước</td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">KQ lần trước nữa
+                </td>
+                <td style="padding: 3px;background:#D9E5F1;color:#137EC1;width:7%;font-weight: 800;">Đơn vị</td>
+                <td style="padding: 3px;font-weight: bold;width:7%;font-weight: 800;">Chỉ số tiêu chuẩn</td>
+            </tr>
+            <tr>
+                <td style="padding: 3px;width: 15%">Chiều cao</td>
+                <td style="padding: 3px;width: 7%">
+                    <t t-if="doc.height" t-esc="doc.height"/>
+                </td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%">Cm</td>
+                <td style="padding: 3px;width: 7%"></td>
+
+                <td style="padding: 3px;width: 15%">HA tối đa</td>
+                <td style="padding: 3px;width: 7%">
+                    <t t-if="doc.blood_pressure" t-esc="doc.blood_pressure.split('/')[0]"/>
+                </td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%">mmHg</td>
+                <td style="padding: 3px;width: 7%">~ 120</td>
+            </tr>
+            <tr>
+                <td style="padding: 3px;width: 15%">Cân nặng</td>
+                <td style="padding: 3px;width: 7%">
+                    <t t-if="doc.weight" t-esc="doc.weight"/>
+                </td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%">Kg</td>
+                <td style="padding: 3px;width: 7%"></td>
+
+
+                <td style="padding: 3px;width: 15%">HA tối thiểu</td>
+                <td style="padding: 3px;width: 7%">
+                    <t t-if="doc.blood_pressure" t-esc="doc.blood_pressure.split('/')[1]"/>
+                </td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%">mmHg</td>
+                <td style="padding: 3px;width: 7%">~ 80</td>
+            </tr>
+            <tr>
+                <td style="padding: 3px;width: 15%">BMI *</td>
+                <td style="padding: 3px;width: 7%">
+                    <t t-if="doc.bmi and doc.bmi != 0" t-esc="doc.bmi"/>
+                </td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%">Kg/m&amp;sup2;</td>
+                <td style="padding: 3px;width: 7%;white-space: nowrap;">18.5 - 22.99</td>
+
+                <td style="padding: 3px;width: 15%">Mạch</td>
+                <td style="padding: 3px;width: 7%">
+                    <t t-if="doc.pulse" t-esc="doc.pulse"/>
+                </td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%"></td>
+                <td style="padding: 3px;width: 7%">Lần/phút</td>
+                <td style="padding: 3px;width: 7%;white-space: nowrap;">60 - 100</td>
+            </tr>
+        </table>
+        <div style="margin-bottom:20px;"><span style="font-style:italic;">(*) Theo IDI &amp; WPRO</span></div>
+        <!--</div>-->
+    </template>
+
+    <template id="page_image_test">
+        <t t-foreach="doc.medic_image_test_compute_ids"
+           t-as="dtd">
+            <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
+                <t t-set="o_title" t-value="dtd.product_test.uper_name or '' "/>
+                <t t-call="dha_medic_report.medic_medilcal_template_title"/>
+                <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
+                    <tr>
+                        <th rowspan="3"
+                            style="background:rgb(101, 156, 248);color:white;width:15%;font-weight:900;text-align:center;vertical-align: middle;">
+                            <t t-if="dtd.product_test.name" t-esc="dtd.product_test.name"/>
+                        </th>
+                        <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;text-align:left;vertical-align: middle;">
+                            Kết quả
+                        </td>
+                        <td id="ket_qua_test">
+                            <div style="margin-left:10px" t-if="dtd.result" t-raw="dtd.result"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;">KQ lần trước</td>
+                        <td>
+                            <p></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;">KQ lần trước nữa
+                        </td>
+                        <td>
+                            <p></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align:center">
+                            <div t-if="dtd.image_res1">
+                                <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res1)"
+                                     style="max-height:500px;max-width:100%;margin-top:10px"/>
+                            </div>
+                            <div t-if="dtd.image_res2">
+                                <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res2)"
+                                     style="max-height:500px;max-width:100%;margin-top:10px"/>
+                            </div>
+                            <div t-if="dtd.image_res3">
+                                <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res3)"
+                                     style="max-height:500px;max-width:100%;margin-top:10px"/>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="">
+                            <h5 style="color:#137EC1;display: inline-block">KẾT LUẬN:</h5>
+                            <span t-if="dtd.note" t-raw="dtd.note" style="font-weight:200;color:#00B948"/>
+                        </th>
+                    </tr>
+                </table>
+                <table style="margin-top:20px;width:100%">
+                    <tr>
+                        <td style="width:50%"></td>
+                        <td style="text-align:center">
+                            <strong>Bác sĩ</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%"></td>
+                        <td style="text-align:center">
+                            <div style="width:100%;height:80px;text-align:center">
+                                <img t-if="dtd.doctor_id.img_sign" style="width:80%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % dtd.doctor_id.img_sign"/>
+                            </div>
+                            <br/>
+                            <strong t-if="dtd.doctor_id" t-esc="dtd.doctor_id.name"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="page_lab_test">
+        <t t-if="doc.medic_lab_test_compute_ids">
+            <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
+                <t t-set="o_title" t-value=" 'XÉT NGHIỆM' "/>
+                <t t-call="dha_medic_report.medic_medilcal_template_title"/>
+                <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
+                    <t t-foreach="doc.medic_lab_test_compute_ids.sorted(key=lambda x: x.product_test.re_sequence)" t-as="lab">
+                        <tr>
+                            <td style="background:rgb(101, 156, 248);color:white;width:35%;font-weight:900;text-align:center;vertical-align: middle;">
+                                <t t-if="lab.product_test.name" t-esc="lab.product_test.name"/>
+                            </td>
+                            <td style="background:#D9E5F1;color:#137EC1;width:15%;font-weight: 800;text-align:center;vertical-align: middle;">
+                                Kết Quả
+                            </td>
+                            <td style="background:#D9E5F1;color:#137EC1;width:15%;font-weight: 800;text-align:center;vertical-align: middle;">
+                                KQ XN trước
+                            </td>
+                            <td style="background:#D9E5F1;color:#137EC1;width:15%;font-weight: 800;text-align:center;vertical-align: middle;">
+                                KQ XN trước nữa
+                            </td>
+                            <td style="background:#D9E5F1;color:#137EC1;width:20%;font-weight: 800;text-align:center;vertical-align: middle;">
+                                Chỉ số BT
+                            </td>
+                        </tr>
+
+                        <t t-foreach="lab.lab_test_criteria" t-as="res">
+                            <tr>
+                                <td style="width:35%">
+                                    <t t-if="res.name" t-esc="res.name"/>
+                                </td>
+                                <td style="width:15%;text-align:center">
+                                    <t t-if="res.result" t-esc="res.result"/>
+                                </td>
+                                <td style="width:15%;text-align:center">
+                                    <p></p>
+                                </td>
+                                <td style="width:15%;text-align:center">
+                                    <p></p>
+                                </td>
+                                <td style="width:20%;text-align:center">
+                                    <t t-if="res.normal_range" t-esc="res.normal_range"/>
+                                    <t t-if="res.units.name" t-esc=" '' + res.units.name"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </table>
+                <t t-if="doc.medic_lab_test_compute_ids">
+
+                    <table style="margin-top:20px;width:100%">
+                        <tr>
+                            <td style="width:50%"></td>
+                            <td style="text-align:center">
+                                <strong>Trưởng phòng xét nghiệm</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:50%"></td>
+                            <td style="text-align:center">
+                                <t t-set="lab_captain" t-value="env['hr.employee'].search([('job_id.name','=','Trưởng Phòng Xét Nghiệm')],limit=1)"/>
+                                <div style="width:100%;height:80px;text-align:center">
+                                    <img t-if="lab_captain and lab_captain.img_sign" style="width:80%;height:75px"
+                                         t-att-src="'data:image/png;base64,%s' % lab_captain.img_sign"/>
+                                </div>
+                                <br/>
+                                <strong t-if="lab_captain" t-esc="lab_captain.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="page_ket_qua_lam_sang">
+        <t t-set="noi_khoa"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"/>
+        <t t-set="da_lieu"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_da_lieu').id)"/>
+        <t t-set="khoa_san"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_san').id)"/>
+        <t t-set="khoa_mat"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_mat').id)"/>
+        <t t-set="khoa_tmh"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_tai_mui_hong').id)"/>
+        <t t-set="khoa_rhm"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_rang_ham_mat').id)"/>
+
+        <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
+            <t t-set="o_title" t-value="'KẾT QUẢ KHÁM LÂM SÀNG'"/>
+            <t t-call="dha_medic_report.medic_medilcal_template_title"/>
+            <div class="" style="margin-top:30px">
+                <strong>TIỀN SỬ BỆNH (MEDICAL HISTORY)</strong>
+                <div style="margin-left:20px">
+                    <div>- Tiền sử gia đình
+                        <span style="font-size: small;margin-left:5px">(Family history of medical illness):
+                            <span style="margin-left:5px" t-if="doc.customer.tien_su_gia_dinh"
+                                  t-esc="doc.customer.tien_su_gia_dinh"/>
+                            <span style="margin-left:5px" t-if="not doc.customer.tien_su_gia_dinh"
+                                  t-esc="'Chưa ghi nhận tiền sử bệnh lý'"/>
+                        </span>
+                    </div>
+                    <div>- Tiền căn
+                        <span style="font-size: small;margin-left:5px">(Bệnh lý &amp; Phẩu thuật) (Past medical and
+                            surgical history):
+                            <span style="margin-left:5px" t-if="doc.customer.tien_can" t-esc="doc.customer.tien_can"/>
+                        </span>
+                    </div>
+                    <div style="margin-top:10px">- Dị ứng thuốc
+                        <span style="font-size: small;margin-left:5px">(drug allergy):
+                            <span style="margin-left:5px" t-if="doc.customer.di_ung_thuoc"
+                                  t-esc="doc.customer.di_ung_thuoc"/>
+                        </span>
+                    </div>
+                    <div>- Hút thuốc lá
+                        <span style="font-size: small;margin-left:5px">(Smoking):
+                            <span style="margin-left:5px" t-if="doc.customer.thuoc_la" t-esc="doc.customer.thuoc_la"/>
+                        </span>
+                        <span style="margin-left: 70px">- Rượu
+                            <span style="font-size: small;margin-left:5px">(alcolhol):
+                                <span style="margin-left:5px" t-if="doc.customer.ruou" t-esc="doc.customer.ruou"/>
+                            </span>
+                        </span>
+                        <span style="margin-left: 70px">- Thể thao
+                            <span style="font-size: small;margin-left:5px">(Exercises):
+                                <span style="margin-left:5px" t-if="doc.customer.the_thao"
+                                      t-esc="doc.customer.the_thao"/>
+                            </span>
+                        </span>
+                    </div>
+                    <div>- Tiêm ngừa
+                        <span style="font-size: small;margin-left:5px">(Vaccination):
+                            <span style="margin-left:5px" t-if="doc.customer.tiem_ngua" t-esc="doc.customer.tiem_ngua"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
+                <tr>
+                    <th rowspan="8"
+                        style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        NỘI KHOA
+                    </th>
+                    <td style="width:70%">
+                        <h5 style="font-weight:900">Hệ tuần hoàn</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.tuan_hoan" t-esc="noi_khoa.tuan_hoan"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_tuan_hoan"
+                                      t-esc="noi_khoa.phan_loai_tuan_hoan.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Hệ hô hấp</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.ho_hap" t-esc="noi_khoa.ho_hap"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_ho_hap"
+                                      t-esc="noi_khoa.phan_loai_ho_hap.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Thần kinh</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.than_kinh" t-esc="noi_khoa.than_kinh"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_than_kinh"
+                                      t-esc="noi_khoa.phan_loai_than_kinh.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Tâm thần</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.tam_than" t-esc="noi_khoa.tam_than"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_tam_than"
+                                      t-esc="noi_khoa.phan_loai_tam_than.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Hệ tiêu hoá</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.tieu_hoa" t-esc="noi_khoa.tieu_hoa"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_tieu_hoa"
+                                      t-esc="noi_khoa.phan_loai_tieu_hoa.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Hệ vận động</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.co_xuong_khop"
+                                      t-esc="noi_khoa.co_xuong_khop"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_co_xuong_khop"
+                                      t-esc="noi_khoa.phan_loai_co_xuong_khop.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Thận tiết niệu</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.than_tiet_nieu"
+                                      t-esc="noi_khoa.than_tiet_nieu"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_than_tiet_nieu"
+                                      t-esc="noi_khoa.phan_loai_than_tiet_nieu.code"/>
+                            </li>
+                        </ul>
+
+                        <h5 style="font-weight:900">Nội tiết</h5>
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="noi_khoa.noi_tiet" t-esc="noi_khoa.noi_tiet"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="noi_khoa.phan_loai_noi_tiet"
+                                      t-esc="noi_khoa.phan_loai_noi_tiet.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td rowspan="8" style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px">Bác sĩ
+                            <img t-if="noi_khoa.doctor_id.img_sign" style="width:100%;height:75px"
+                                 t-att-src="'data:image/png;base64,%s' % noi_khoa.doctor_id.img_sign"/>
+                            <br/>
+                            <span t-if="noi_khoa.doctor_id" t-esc="noi_khoa.doctor_id.name"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
+            <t t-set="o_title" t-value="'KẾT QUẢ KHÁM LÂM SÀNG'"/>
+            <t t-call="dha_medic_report.medic_medilcal_template_title"/>
+            <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
+                <tr style="min-height:200px">
+                    <th
+                            style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        DA LIỄU
+                    </th>
+                    <td style="width:70%;vertical-align: middle;">
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="da_lieu.treatment_note"
+                                      t-esc="da_lieu.treatment_note"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="da_lieu.phan_loai" t-esc="da_lieu.phan_loai.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px;position: relative;">
+                            <span style="display:-webkit-box;-webkit-box-align:end;-webkit-box-pack:center;display:-moz-box;-moz-box-align:end;-moz-box-pack:center;display:box;box-align:end;box-pack:center;">Bác sĩ
+                                <img t-if="da_lieu.doctor_id.img_sign" style="width:100%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % da_lieu.doctor_id.img_sign"/>
+                                <br/>
+                                <span t-if="da_lieu.doctor_id" t-esc="da_lieu.doctor_id.name"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="min-height:200px">
+                    <th
+                            style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        SẢN PHỤ KHOA
+                    </th>
+                    <td style="width:70%;vertical-align: middle;">
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="khoa_san.treatment_note"
+                                      t-esc="khoa_san.treatment_note"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="khoa_san.phan_loai"
+                                      t-esc="khoa_san.phan_loai.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px;position: relative;">
+                            <span style="display:-webkit-box;-webkit-box-align:end;-webkit-box-pack:center;display:-moz-box;-moz-box-align:end;-moz-box-pack:center;display:box;box-align:end;box-pack:center;">Bác sĩ
+                                <img t-if="khoa_san.doctor_id.img_sign" style="width:100%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % khoa_san.doctor_id.img_sign"/>
+                                <br/>
+                                <span t-if="khoa_san.doctor_id" t-esc="khoa_san.doctor_id.name"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="min-height:200px">
+                    <th
+                            style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        MẮT
+                    </th>
+                    <td style="width:70%;vertical-align: middle;">
+                        <ul style="margin-left:20px">
+                            <li>
+                                <div>Không kính:</div>
+                                <div style="text-align:left;margin-left:10px;">Mắt phải:
+                                    <span style="margin-left:5px" t-if="khoa_mat.phai_ko_kinh"
+                                          t-esc="khoa_mat.phai_ko_kinh"/>
+                                </div>
+                                <div style="text-align:left;margin-left:10px;">Mắt trái:
+                                    <span style="margin-left:5px" t-if="khoa_mat.trai_ko_kinh"
+                                          t-esc="khoa_mat.trai_ko_kinh"/>
+                                </div>
+                            </li>
+                            <li>
+                                <div>Có kính:</div>
+                                <div style="text-align:left;margin-left:10px;">Mắt phải:
+                                    <span style="margin-left:5px" t-if="khoa_mat.phai_co_kinh"
+                                          t-esc="khoa_mat.phai_co_kinh"/>
+                                </div>
+                                <div style="text-align:left;margin-left:10px;">Mắt trái:
+                                    <span style="margin-left:5px" t-if="khoa_mat.trai_co_kinh"
+                                          t-esc="khoa_mat.trai_co_kinh"/>
+                                </div>
+                            </li>
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="khoa_mat.treatment_note"
+                                      t-esc="khoa_mat.treatment_note"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="khoa_mat.phan_loai"
+                                      t-esc="khoa_mat.phan_loai.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px;position: relative;">
+                            <span style="display:-webkit-box;-webkit-box-align:end;-webkit-box-pack:center;display:-moz-box;-moz-box-align:end;-moz-box-pack:center;display:box;box-align:end;box-pack:center;">Bác sĩ
+                                <img t-if="khoa_mat.doctor_id.img_sign" style="width:100%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % khoa_mat.doctor_id.img_sign"/>
+                                <br/>
+                                <span t-if="khoa_mat.doctor_id" t-esc="khoa_mat.doctor_id.name"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="min-height:200px">
+                    <th
+                            style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        TAI MŨI HỌNG
+                    </th>
+                    <td style="width:70%;vertical-align: middle;">
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="khoa_tmh.treatment_note"
+                                      t-esc="khoa_tmh.treatment_note"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="khoa_tmh.phan_loai"
+                                      t-esc="khoa_tmh.phan_loai.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px;position: relative;">
+                            <span style="display:-webkit-box;-webkit-box-align:end;-webkit-box-pack:center;display:-moz-box;-moz-box-align:end;-moz-box-pack:center;display:box;box-align:end;box-pack:center;">Bác sĩ
+                                <img t-if="khoa_tmh.doctor_id.img_sign" style="width:100%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % khoa_tmh.doctor_id.img_sign"/>
+                                <br/>
+                                <span t-if="khoa_tmh.doctor_id" t-esc="khoa_tmh.doctor_id.name"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="min-height:200px">
+                    <th
+                            style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        RĂNG HÀM MẶT
+                    </th>
+                    <td style="width:70%;vertical-align: middle;">
+                        <ul style="margin-left:20px">
+                            <li>
+                                <div>Hàm trên:
+                                    <span style="margin-left:5px" t-if="khoa_rhm.ham_tren" t-esc="khoa_rhm.ham_tren"/>
+                                </div>
+                            </li>
+                            <li>
+                                <div>Hàm dưới:
+                                    <span style="margin-left:5px" t-if="khoa_rhm.ham_duoi" t-esc="khoa_rhm.ham_duoi"/>
+                                </div>
+                            </li>
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="khoa_rhm.treatment_note"
+                                      t-esc="khoa_rhm.treatment_note"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="khoa_rhm.phan_loai"
+                                      t-esc="khoa_rhm.phan_loai.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px;position: relative;">
+                            <span style="display:-webkit-box;-webkit-box-align:end;-webkit-box-pack:center;display:-moz-box;-moz-box-align:end;-moz-box-pack:center;display:box;box-align:end;box-pack:center;">Bác sĩ
+                                <img t-if="khoa_rhm.doctor_id.img_sign" style="width:100%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % khoa_rhm.doctor_id.img_sign"/>
+                                <br/>
+                                <span t-if="khoa_rhm.doctor_id" t-esc="khoa_rhm.doctor_id.name"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <template id="report_medic_medical_bill_document">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <t t-call="dha_medic_report.page_1"/>
+        <t t-call="dha_medic_report.page_tong_quat"/>
+        <t t-call="dha_medic_report.page_ket_qua_lam_sang"/>
+        <t t-call="dha_medic_report.page_lab_test"/>
+        <t t-call="dha_medic_report.page_image_test"/>
+        <t t-call="dha_medic_report.page_tong_quat1"/>
+    </template>
+
+    <template id="report_medic_medical_bill_report">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="dha_medic_report.report_medic_medical_bill_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>

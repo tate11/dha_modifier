@@ -1,0 +1,1 @@
+from . import medic_sale_order

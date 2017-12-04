@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="purchase.mt_rfq_confirmed" model="mail.message.subtype">
+            <field name="name">RFQ Confirmed</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="purchase.mt_rfq_approved" model="mail.message.subtype">
+            <field name="name">RFQ Approved</field>
+            <field name="default" eval="False"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mt_rfq_accepted" model="mail.message.subtype">
+            <field name="name">RFQ Accepted</field>
+            <field name="default" eval="False"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mt_request_assign" model="mail.message.subtype">
+            <field name="name">Purchase Request Assign to</field>
+            <field name="res_model">purchase.request</field>
+            <field name="default" eval="False"/>
+            <field name="description">Purchase Request Assign to</field>
+        </record>
+
+        <record id="mt_request_submit" model="mail.message.subtype">
+            <field name="name">Purchase Request Submit</field>
+            <field name="res_model">purchase.request</field>
+            <field name="default" eval="False"/>
+            <field name="description">Purchase Request Submit</field>
+        </record>
+
+        <record id="purchase_request.mt_request_to_approve" model="mail.message.subtype">
+            <field name="name">Purchase Request to be approved</field>
+            <field name="res_model">purchase.request</field>
+            <field name="default" eval="False"/>
+            <field name="hidden" eval="True"/>
+            <field name="description">Purchase Request to be approved</field>
+        </record>
+
+        <record id="purchase_request.mt_request_approved" model="mail.message.subtype">
+            <field name="name">Purchase Request approved</field>
+            <field name="res_model">purchase.request</field>
+            <field name="default" eval="True"/>
+            <field name="description">Purchase Request approved</field>
+        </record>
+
+        <record id="purchase_request.mt_request_rejected" model="mail.message.subtype">
+            <field name="name">Purchase Request rejected</field>
+            <field name="res_model">purchase.request</field>
+            <field name="default" eval="True"/>
+            <field name="description">Purchase Request Rejected</field>
+        </record>
+    </data>
+</odoo>

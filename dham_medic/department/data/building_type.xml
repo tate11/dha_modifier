@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record model="hr.department.building.type" id="khoa_nhi">
+            <field name="name">Internal Medicine</field>
+        </record>
+
+        <record model="hr.department.building.type" id="khoa_mat">
+            <field name="name">Ophthalmology</field>
+        </record>
+
+        <record model="hr.department.building.type" id="khoa_tai_mui_hong">
+            <field name="name">ENT (Ear - Nose - Throat)</field>
+        </record>
+
+        <record model="hr.department.building.type" id="khoa_rang_ham_mat">
+            <field name="name">Dentomaxillofacial System</field>
+        </record>
+
+        <record model="hr.department.building.type" id="khoa_da_lieu">
+            <field name="name">Dermatology</field>
+        </record>
+
+        <record model="hr.department.building.type" id="khoa_ngoai">
+            <field name="name">Surgery</field>
+        </record>
+
+        <record model="hr.department.building.type" id="khoa_san">
+            <field name="name">Obstetrics and Gynecology</field>
+        </record>
+    </data>
+</odoo>

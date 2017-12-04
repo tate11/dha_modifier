@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="0">
+        <record id="loai_1" model="treatement.classify">
+            <field name="name">Loại I</field>
+            <field name="description">Rất khoẻ</field>
+            <field name="code">I</field>
+        </record>
+
+        <record id="loai_2" model="treatement.classify">
+            <field name="name">Loại II</field>
+            <field name="description">Khoẻ</field>
+            <field name="code">II</field>
+        </record>
+
+        <record id="loai_3" model="treatement.classify">
+            <field name="name">Loại III</field>
+            <field name="description">Trung bình</field>
+            <field name="code">III</field>
+        </record>
+
+        <record id="loai_4" model="treatement.classify">
+            <field name="name">Loại IV</field>
+            <field name="description">Yếu</field>
+            <field name="code">IV</field>
+        </record>
+        
+        <record id="loai_5" model="treatement.classify">
+            <field name="name">Loại V</field>
+            <field name="description">Rất yếu</field>
+            <field name="code">V</field>
+        </record>
+    </data>
+</odoo>

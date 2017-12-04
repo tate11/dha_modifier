@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="invoice_receipt_voucher_report_document">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+
+        <div class="header">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="height: 70px;max-width:120px"/>
+                </div>
+                <div class="col-xs-9">
+                    <h5 style="display: block; font-size:15px">PHÒNG KHÁM ĐA KHOA DHA</h5>
+                    <span t-if="doc.center_id.address" style="font-size: 12px;display: block">Địa chỉ:
+                        <span style="margin-left:2px" t-esc='doc.center_id.address'/>
+                    </span>
+                    <span t-if="doc.center_id.mobile" style="font-size: 12px">Điện thoại:
+                        <span style="margin-left:2px;margin-right:5px"
+                              t-esc='doc.center_id.mobile'/>
+                        <span t-if="doc.center_id.email">- Email :
+                            <span style="margin-left:2px;" t-esc='doc.center_id.email'/>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page">
+            <h4 style="text-align:center;font-weight:bolder;margin-bottom:10px">PHIẾU THU TIỀN</h4>
+            <!--<div style="text-align:center;font-size: xx-small;margin-top:-4px" t-esc="datetime.datetime.now().strftime('Ngày %d Tháng %m Năm %Y')"/>-->
+            <div style="text-align:center;font-size: smaller;margin-top:-4px" t-esc="doc.number or ''"/>
+
+
+            <div class="" style="margin-top:5px;">
+                <table class="" style="display:inline-block;width:400px;display: inline-block;font-size: small;">
+                    <tbody>
+                        <tr style="font-size: small;">
+                            <td style="width:70%">
+                                Họ và tên:
+                                <b style="margin-left:5px" t-esc="doc.partner_id.name or ''"/>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr style="font-size: small;">
+                            <td>
+                                Giới tính:
+                                <b style="margin-left:5px" t-esc=" 'Nam' if doc.partner_id.sex == 'male' else 'Nữ'"/>
+                            </td>
+                            <td>
+                                Năm sinh:
+                                <b style="margin-left:5px" t-if="doc.partner_id.day_of_birth"
+                                   t-esc="time.strftime('%Y', time.strptime(doc.partner_id.day_of_birth, '%Y-%m-%d')) or ''"/>
+                            </td>
+                        </tr>
+                        <tr style="font-size: small;">
+                            <td>
+                                Điện thoại:
+                                <b style="margin-left:5px" t-esc="doc.partner_id.mobile or ''"/>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr style="font-size: small;" t-if="doc.partner_id.parent_id">
+                            <td colspan="2" >
+                                Công ty:
+                                <b style="margin-left:5px" t-esc="doc.partner_id.parent_id.name or ''"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="" style="float:right;display:inline-block;margin-top:-12px">
+                    <img t-if="doc.partner_id.customer_id" class="barcode"
+                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', doc.partner_id.customer_id, 75, 75)"/>
+                </div>
+
+                <table class="table table-bordered" style="margin-top:30px;font-size: small;">
+                    <tr style="">
+                        <td style="width:5%;text-align:center;font-weight: bold">STT</td>
+                        <td style="width:50%;text-align:center;font-weight: bold">Tên dịch vụ</td>
+                        <td style="width:5%;text-align:center;font-weight: bold">SL</td>
+                        <td style="width:20%;text-align:center;font-weight: bold">Đơn giá</td>
+                        <td style="width:20%;text-align:center;font-weight: bold">Thành tiền</td>
+                    </tr>
+                    <t t-set="index" t-value="1"/>
+                    <t t-foreach="doc.invoice_line_ids" t-as="line">
+                        <tr>
+                            <td style="text-align:right;font-size: small;" t-esc="index"></td>
+                            <td style="text-align:left;font-size: small;"><t t-esc="line.product_id.name or ''"/></td>
+                            <td style="text-align:right;font-size: small;"><t t-esc="'{0:,.0f}'.format(line.quantity)"/></td>
+                            <td style="text-align:right;font-size: small;"><t t-esc="'{0:,.0f}'.format(line.price_unit)"/></td>
+                            <td style="text-align:right;font-size: small;"><t t-esc="'{0:,.0f}'.format(line.price_subtotal)"/></td>
+                        </tr>
+                        <t t-set="index" t-value="index + 1"/>
+                    </t>
+                    <tr>
+                        <th colspan="4" style="text-align:right;font-size: small;">
+                            Tổng cộng:
+                        </th>
+                        <td style="text-align:right;font-size: small;"><b t-esc="'{0:,.0f}'.format(doc.amount_total)"/></td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<th colspan="5" style="text-align:left">-->
+                            <!--Số tiền bằng chữ:<span style="margin-left:5px" t-esc="doc.vi_amount_text or '/'"/>-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                </table>
+            </div>
+            <div class="row" style="font-size: small;">
+                <div class="col-xs-6" style="text-align:left">
+                    <br/>
+                    <span style=";margin-left:40px">Người Nộp</span>
+                </div>
+                <div class="col-xs-5" style="text-align:center">
+                    <t t-esc="datetime.datetime.now().strftime('Ngày %d Tháng %m Năm %Y')"/>
+                    <br/>
+                    Người Thu
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <b t-esc="user.partner_id.name or ''"/>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <!--<div class="text-center" style="border-top: 1px solid black;">-->
+                <!--<ul class="list-inline">-->
+                    <!--<li>Trang:</li>-->
+                    <!--<li>-->
+                        <!--<span class="page"/>-->
+                    <!--</li>-->
+                    <!--<li>/</li>-->
+                    <!--<li>-->
+                        <!--<span class="topage"/>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </div>
+    </template>
+
+    <template id="invoice_receipt_voucher_report">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="dha_medic_report.invoice_receipt_voucher_report_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>
+

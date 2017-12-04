@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--SMS contact-->
+        <record model="ir.actions.act_window" id="action_view_sms_contacts_from_list">
+            <field name="name">Contacts</field>
+            <field name="res_model">dha.medic.sms.contact</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'search_default_list_id': active_id, 'search_default_not_opt_out': 1}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a Contacts.
+              </p>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sms_contact_search">
+            <field name="name">dha.medic.sms.contact.search</field>
+            <field name="model">dha.medic.sms.contact</field>
+            <field name="arch" type="xml">
+               <search string="Contacts Lists Subscribers">
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="list_id"/>
+                    <separator/>
+                    <filter string="Exclude Opt Out" name="not_opt_out" domain="[('opt_out', '=', False)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Creation Date" name="group_create_date" context="{'group_by': 'create_date'}"/>
+                        <filter string="SMS Lists" name="group_list_id" context="{'group_by': 'list_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sms_contact_tree">
+            <field name="name">dha.medic.sms.contact.tree</field>
+            <field name="model">dha.medic.sms.contact</field>
+            <field name="arch" type="xml">
+                <tree string="Mailing Lists Subscribers" editable="bottom">
+                    <field name="name" invisible="1"/>
+                    <field name="list_id" readonly="1"/>
+                    <field name="partner_id" domain="['|',('mobile','!=',False),('mobile','!=','')]"/>
+                    <field name="mobile"/>
+                    <field name="message_bounce" readonly="1"/>
+                    <field name="opt_out"/>
+                    <field name="unsubscription_date" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!--SMS List-->
+        <record model="ir.ui.view" id="view_dha_medic_sms_list_tree">
+            <field name="name">dha.medic.sms.list.tree</field>
+            <field name="model">dha.medic.sms.list</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="SMS Lists">
+                    <field name="name"/>
+                    <field name="create_date"/>
+                    <field name="contact_nbr"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_dha_medic_sms_list_form">
+            <field name="name">dha.medic.sms.list.form</field>
+            <field name="model">dha.medic.sms.list</field>
+            <field name="arch" type="xml">
+                <form string="Contact List">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                            <button name="%(dha_medic_sms.action_view_sms_contacts_from_list)d"
+                                    type="action" icon="fa-user" class="oe_stat_button">
+                                <field name="contact_nbr" string="Recipients" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Consumer Newsletter"/>
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_sms_list" model="ir.actions.act_window">
+            <field name="name">Contacts List</field>
+            <field name="res_model">dha.medic.sms.list</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+		<menuitem id="dha_medic_list_sms" name="Contacts" action="action_view_sms_list" sequence="1" parent="dha_medic_sms_wrap"/>
+    </data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record model="product.category" id="product_ctg_medicines">
+            <field name="name">Medicaments</field>
+        </record>
+
+        <record model="product.category" id="product_ctg_consumable_supplies">
+            <field name="name">Consumable Supplies</field>
+        </record>
+
+        <record model="product.category" id="product_ctg_food_drink">
+            <field name="name">Foods and Drinks</field>
+        </record>
+
+    </data>
+</odoo>

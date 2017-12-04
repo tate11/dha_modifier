@@ -7,9 +7,11 @@
             <field name="arch" type="xml">
                 <tree string="Company Check">
                     <field name="name"/>
+                    <field name="type" invisible="1"/>
                     <field name="company_id"/>
                     <field name="start_time"/>
                     <field name="end_time"/>
+                    <field name="done_count"/>
                 </tree>
             </field>
         </record>
@@ -20,44 +22,222 @@
             <field name="arch" type="xml">
                 <form string="Company Check">
                     <header>
-                        <button string="Validate" name="action_validate" attrs="{'invisible':[('state','!=','new')]}"
+                        <!--<button string="Validate" name="action_validate" attrs="{'invisible':[('state','!=','new')]}"-->
+                        <!--type="object"/>-->
+                        <button string="Schedule Validate" name="schedule_validate"
+                                attrs="{'invisible':['|',('state','!=','new'),('need_validate','=',True)]}"
                                 type="object"/>
-                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done"
-                               clickable="True"/>
+                        <button string="Done" name="action_done" attrs="{'invisible':[('state','!=','processing')]}"
+                                confirm="Are you sure you want to do this?" type="object"/>
+                        <button string="Create Invoice" name="action_invoice"
+                                attrs="{'invisible':[('state','!=','done')]}"
+                                type="object"/>
+                        <button string="Export Master Data" attrs="{'invisible':[('state','=','new')]}"
+                                name="action_export_data" type="object"/>
+                        <button string="Import Employees" name="%(view_medic_wizard_import_employee_action)d"
+                                context="{'default_company_id': company_id, 'default_wizard_type':'import'}"
+                                attrs="{'invisible':[('state','!=','new')]}" type="action"/>
+                        <button type="object" name="action_reset_to_processing" string="Reset To Processiing"
+                                class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','done')]}"
+                                groups="dha_medic_modifier.group_medical_manager"/>
+                        <button string="Add Employees" name="%(view_medic_wizard_import_employee_action)d"
+                                context="{'default_company_id': company_id, 'default_wizard_type':'add'}"
+                                attrs="{'invisible':[('state','in',('new','invoiced','done'))]}" type="action"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done,invoiced"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_inline oe_stat_button"
+                                    icon="fa-calendar"
+                                    name="action_show_schedule"
+                                    type="object">
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        Schedule
+                                    </span>
+                                </div>
+                            </button>
+                            <button class="oe_inline oe_stat_button"
+                                    icon="fa-check-square-o"
+                                    name="action_show_medical_bill_done"
+                                    type="object">
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="done_count"/>
+                                        <br/>Bills Done
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
                         <group>
                             <field name="name"/>
-                            <field name="company_id" readonly="1"/>
-                            <field name="package_ids" widget="many2many_tags"/>
-                            <field name="start_time" readonly="1"/>
+                            <field name="pricelist_id"/>
+                            <field name="type"/>
+                            <field name="company_id" readonly="0"/>
+                            <field name="package_ids" widget="many2many_tags" context="{'default_type': 'company'}"/>
+                            <field name="start_time" readonly="0"/>
                             <field name="end_time"/>
+                            <field name="need_validate" invisible="1"/>
                         </group>
                         <notebook>
                             <page string="Employees">
-                                <field name="employees" context="{'default_parent_id': company_id}">
+                                <field name="employees"
+                                       context="{'default_parent_id': company_id, 'default_is_patient': True, 'from_external_center': True}">
                                     <tree editable="bottom">
                                         <field name="name"/>
                                         <field name="mobile"/>
-                                        <field name="sex_id"/>
+                                        <field name="sex"/>
                                         <field name="day_of_birth"/>
-                                        <field name="cmnd_passport"/>
+                                        <field name="email"/>
                                     </tree>
+                                </field>
+                            </page>
+                            <page string="Doctors">
+                                <field name="doctor_ids">
+                                    <tree>
+                                        <field name="department_id"/>
+                                        <field name="name"/>
+                                        <field name="mobile_phone"/>
+                                        <field name="work_email"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Contract Schedule">
+                                <field name="schedule_ids"/>
+                            </page>
+                            <page string="Package Lines">
+                                <field name="package_line_ids">
+                                    <tree>
+                                        <field name="product_id"/>
+                                        <field name="price"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="price"/>
+                                        </group>
+                                    </form>
                                 </field>
                             </page>
                         </notebook>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
 
+        <record id="view_res_partner_company_check_kanban_dashboard" model="ir.ui.view">
+            <field name="name">res.partner.company.check.kanban.dashboard</field>
+            <field name="model">res.partner.company.check</field>
+            <field name="arch" type="xml">
+                <kanban create="false" class="oe_background_grey o_kanban_dashboard o_medical_contract_kanban">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="state"/>
+                    <field name="pricelist_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{kanban_color(0)}">
+                                <t t-call="ContractTop"/>
+                                <div class="container o_kanban_card_content o_visible">
+                                    <div class="row">
+                                        <div class="col-xs-6 o_kanban_primary_left">
+                                            <t t-if="record.state.raw_value == 'processing' ">
+                                                <button type="object" name="action_add_services" class="btn btn-primary btn-sm">Adding Services</button>
+                                            </t>
+                                        </div>
+                                        <div class="col-xs-6 o_kanban_primary_right"></div>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_manage_pane o_invisible">
+                                    <t t-call="ContractManage"/>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-name="ContractTop">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <a type="object" name="open_action">
+                                            <field name="name"/>
+                                        </a>
+                                    </div>
+                                    <div class="o_secondary" t-att-title="record.company_id.name">
+                                        <field name="company_id"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_kanban_manage_toggle_button" href="#">More
+                                        <i class="fa fa-caret-down"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-name="ContractManage">
+                            <div class="row o_kanban_card_settings">
+                                <div class="col-xs-6">
+                                    <a t-if="widget.editable" type="edit">Settings</a>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_medic_company_contract_search" model="ir.ui.view">
+            <field name="name">res.partner.company.check.search</field>
+            <field name="model">res.partner.company.check</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('company_id', 'ilike', self)]"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+
+                    <filter name="except_done" string="Except Done" domain="[('state','!=','done')]"/>
+                    <filter name="new_tests" string="New" domain="[('state','=','new')]"/>
+                    <filter name="processing_tests" string="Processing" domain="[('state','=','processing')]"/>
+                    <filter name="done_tests" string="Done" domain="[('state','=','done')]"/>
+                    <group expand="1" string="Group By...">
+                        <filter name="group_customer" string="Company" domain="[]" context="{'group_by': 'company_id'}"/>
+                        <filter string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record id="action_res_partner_company_check" model="ir.actions.act_window">
-            <field name="name">Company Check History</field>
+            <field name="name">Contracts</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner.company.check</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{}</field>
         </record>
+
+        <record id="action_res_partner_company_check_dashboard" model="ir.actions.act_window">
+            <field name="name">Dashboard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.company.check</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="context">{'search_default_processing_tests': 1}</field>
+        </record>
+
+        <menuitem id="menu_medic_company_checkk" parent="menu_medic_company_root" sequence="10" name="Contracts"
+                  action="action_res_partner_company_check"/>
+
+        <menuitem id="menu_medic_company_checkk_dashboard" parent="menu_medic_company_root" sequence="1"
+                  name="Dashboard"
+                  action="action_res_partner_company_check_dashboard"/>
+
     </data>
 </odoo>

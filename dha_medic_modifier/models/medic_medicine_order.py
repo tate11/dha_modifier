@@ -7,23 +7,25 @@ import datetime
 class MedicineOrder(models.Model):
     _name = 'medicine.order'
     _inherit = 'mail.thread'
+    _order = 'id desc'
+
 
     name = fields.Char('Number', readonly=1)
     medical_id = fields.Many2one('medic.medical.bill', 'Medical Bill')
-    state = fields.Selection([('new', 'New'), ('validate', 'Validated')], 'Status', default='new')
-    customer = fields.Many2one('res.partner', 'Customer')
+    state = fields.Selection([('new', 'New'), ('validate', 'Validated')], 'Status', default='new', track_visibility='onchange')
+    customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange')
     customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
-    sex_id = fields.Many2one('res.partner.sex', string='Sex', related='customer.sex_id', readonly=1)
+    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='customer.sex', readonly=1)
     day_of_birth = fields.Date(string='Day of Birth', related='customer.day_of_birth', readonly=1)
 
     line_ids = fields.One2many('medicine.order.line', 'parent_id', 'Medicine Order Line')
 
-    doctor_assign = fields.Many2one('hr.employee', 'Doctor Assigned', readonly=1)
-    assign_date = fields.Datetime('Assigned Date', default=lambda *a: datetime.datetime.now())
+    doctor_assign = fields.Many2one('hr.employee', 'Assigned By', readonly=1, track_visibility='onchange')
+    assign_date = fields.Datetime('Assigned Date', default=lambda *a: datetime.datetime.now(), readonly=1, track_visibility='onchange')
 
-    center_id = fields.Many2one('hr.department', 'Center', related='medical_id.center_id', readonly=1, store=True)
-    building_id = fields.Many2one('hr.department', 'Building', related='medical_id.building_id', readonly=1, store=True)
-    room_id = fields.Many2one('hr.department', 'Room', related='medical_id.room_id', readonly=1, store=True)
+    center_id = fields.Many2one('hr.department', 'Center', related='medical_id.center_id', readonly=1, store=True, track_visibility='onchange')
+    building_id = fields.Many2one('hr.department', 'Building', related='medical_id.building_id', readonly=1, store=True, track_visibility='onchange')
+    room_id = fields.Many2one('hr.department', 'Room', related='medical_id.room_id', readonly=1, store=True, track_visibility='onchange')
     check_created = fields.Boolean('Check Created', default=False)
 
     medicine_package = fields.Many2many('medicine.order.package', 'medicine_order_medicine_order_package_rel',
@@ -36,7 +38,7 @@ class MedicineOrder(models.Model):
         for data in lists:
             self.line_ids += self.line_ids.new({
                 'product_id': data[0],
-                'product_qty' : data[1],
+                'product_qty': data[1],
             })
 
     @api.model
@@ -50,55 +52,102 @@ class MedicineOrder(models.Model):
     @api.multi
     def action_validate(self):
         self.write({'state': 'validate'})
-        AccountInvoice = self.env['account.invoice']
-        AccountInvoiceLine = self.env['account.invoice.line']
-        default_account_id = False
-        default_journal = AccountInvoice._default_journal() or False
-        if default_journal:
-            default_account_id = AccountInvoiceLine.with_context(
-                journal_id=default_journal.id)._default_account() or False
-        invoice_line_ids = []
-        for line in self.line_ids:
-            invoice_line_ids.append({
-                'product_id': line.product_id.id,
-                'uom_id': line.product_id.uom_id.id or False,
-                'price_unit': line.product_id.lst_price,
-                'invoice_line_tax_ids': line.product_id.taxes_id.ids or [],
-                'name': line.description.name or '',
-                'quantity': line.product_qty,
-                'account_id': default_account_id,
-            })
+        sale_data = self._prepare_sale_order_data(self.customer)
+        sale_line_data = self._prepare_sale_order_line_data(self.line_ids)
+        sale_data['order_line'] = sale_line_data
+        new_order = self.env['sale.order'].create(sale_data)
+        new_order.action_confirm()
+        invoices = new_order.action_invoice_create()
+        action = self.env.ref('account.action_invoice_tree1').read()[0]
+        action['domain'] = [('id', 'in', invoices)]
+        return action
+
+    @api.model
+    def _prepare_sale_order_data(self, partner):
+
+        partner_addr = partner.sudo().address_get(['invoice', 'delivery', 'contact'])
+        warehouse = self.env['hr.department'].find_ware_house(self._uid)
         return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'account.invoice',
-            'type': 'ir.actions.act_window',
-            'target': 'current',
-            'res_id': False,
-            'context': {'default_partner_id': self.customer.id, 'default_medicine_order_id': self.id,
-                        'default_invoice_line_ids': invoice_line_ids, 'form_view_ref': 'account.invoice_form'
-                , 'default_order_type': 'medicine', 'no_onchange_package': True}
+            'warehouse_id': warehouse.id if warehouse else False,
+            'partner_id': partner.id,
+            'pricelist_id': partner.property_product_pricelist.id,
+            'partner_invoice_id': partner_addr['invoice'],
+            'fiscal_position_id': partner.property_account_position_id.id,
+            'partner_shipping_id': partner_addr['delivery'],
+            'payment_term_id': self.env.ref('account.account_payment_term_immediate').id or False,
+            'picking_policy': 'one',
         }
+
+    @api.model
+    def _prepare_sale_order_line_data(self, lines):
+        res = []
+        for line in lines:
+            res.append((0, 0, {
+                'name': line.product_id and line.product_id.name or line.name,
+                'product_uom_qty': line.product_qty,
+                'product_id': line.product_id and line.product_id.id or False,
+                'product_uom': line.product_id and line.product_id.uom_id.id or line.product_uom.id,
+                'price_unit': line.product_id.uom_id.id or False,
+                'tax_id': line.product_id.taxes_id.ids or [],
+            }))
+        return res
 
 
 class MedicineOrderLine(models.Model):
     _name = 'medicine.order.line'
 
-    product_id = fields.Many2one('product.product', 'Product')
+    @api.model
+    def _get_medicine_product_domain(self):
+        try:
+            return [('categ_id', '=', self.env.ref('dha_medic_modifier.product_ctg_medicines').id)]
+        except:
+            return []
+
+    product_id = fields.Many2one('product.product', 'Product', domain=_get_medicine_product_domain, required=1)
     description = fields.Many2one('medicine.description', 'Description', required=1)
     qty_dose = fields.Float('Quantity per Dose', default=1)
     dose = fields.Integer('Dose Number', default=1)
-    product_qty = fields.Float('Quantity')
+    appoint_qty = fields.Float('Quantity', default=1)
+    product_qty = fields.Float('Real Quantity', default=1)
     product_uom = fields.Many2one('product.uom', 'Unit of Measure')
     parent_id = fields.Many2one('medicine.order', 'Medicine Order')
+    check_created = fields.Boolean('Check Created', default=False)
 
     @api.onchange('qty_dose', 'dose')
     def onchange_dose_qty(self):
-        self.product_qty = self.dose * self.qty_dose
+        self.appoint_qty = self.dose * self.qty_dose
 
-    @api.onchange('product_id')
-    def onchange_product_id(self):
-        self.product_uom = self.product_id.id if self.product_id else False
+    @api.onchange('appoint_qty','product_id')
+    def onchange_appoint_qty(self):
+        if self.product_id:
+            self.product_qty = self.appoint_qty
+            self.product_uom = self.product_id.uom_id
+
+            # kiem tra so luong thuoc con lai
+            Quant = self.env['stock.quant'].sudo()
+            WareHouse = self.env['stock.warehouse'].sudo()
+            location = WareHouse.find_stock_location_employee()
+            if location:
+                quant_ids = Quant.search(
+                    [('product_id', '=', self.product_id.id), ('location_id', '=', location.id),
+                     ('company_id', '=', self.env.user.company_id.id)])
+                stock_qty = 0
+                if quant_ids:
+                    stock_qty = sum(x.qty for x in quant_ids)
+                if stock_qty < self.appoint_qty:
+                    return {
+                        'warning': {
+                            'title': _('Warning!'),
+                            'message': _('You plan to sell %s %s but you only have %s %s available!') % (
+                            self.appoint_qty, self.product_uom.name, stock_qty, self.product_uom.name),
+                        }
+                    }
+
+    @api.model
+    def create(self, vals):
+        vals['check_created'] = True
+        res = super(MedicineOrderLine, self).create(vals)
+        return res
 
 
 class MedicineDescription(models.Model):
@@ -112,7 +161,6 @@ class MedicineOrderPackage(models.Model):
 
     name = fields.Char('Name', required=1)
     line_ids = fields.One2many('medicine.order.package.line', 'parent_id', 'Lines', required=1)
-
 
     @api.model
     def parse_multi_package(self):
@@ -137,5 +185,4 @@ class MedicineOrderPackageLine(models.Model):
     name = fields.Char('Name')
     product_id = fields.Many2one('product.product', 'Product', required=1)
     quantity = fields.Float('Quantity', default=1)
-    parent_id = fields.Many2one('medicine.order.package','Parent Id', ondelete='cascade', required=1)
-
+    parent_id = fields.Many2one('medicine.order.package', 'Parent Id', ondelete='cascade', required=1)

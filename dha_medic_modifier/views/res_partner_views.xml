@@ -1,5 +1,53 @@
 <odoo>
     <data>
+
+        <record id="base.view_partner_address_form" model="ir.ui.view">
+            <field name="name">res.partner.form.address</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <form string="Partner">
+                    <field name="image" widget='image' class="oe_avatar"
+                           options='{"preview_image": "image_medium", "size": [90, 90]}' readonly="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <field name="parent_id" invisible="1"/>
+                    <group>
+                        <group>
+                            <label for="type" attrs="{'invisible': [('parent_id','=', False)]}"
+                                   groups="base.group_no_one"/>
+                            <div attrs="{'invisible': [('parent_id','=', False)]}" name="div_type"
+                                 groups="base.group_no_one">
+                                <field name="type" class="oe_inline"/>
+                            </div>
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="ward" placeholder="Ward" class="o_address_city"
+                                       options='{"no_open": True}'/>
+                                <field name="district" class="o_address_state" placeholder="District"
+                                       options='{"no_open": True}'/>
+                                <field name="city_dropdown" placeholder="City" class="o_address_zip"
+                                       options='{"no_open": True}'/>
+                                <field name="city" placeholder="City" invisible="1"/>
+                                <field name="state_id" placeholder="State" invisible="1"/>
+                                <field name="zip" placeholder="Zip" invisible="1"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                            <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
         <record id="base.view_partner_tree" model="ir.ui.view">
             <field name="name">res.partner.tree</field>
             <field name="model">res.partner</field>
@@ -8,7 +56,7 @@
                 <tree string="Contacts">
                     <field name="customer_id"/>
                     <field name="display_name" string="Name"/>
-                    <field name="sex_id"/>
+                    <field name="sex"/>
                     <field name="age"/>
                     <field name="last_check_in_time"/>
 
@@ -32,7 +80,7 @@
                     <field name="customer_id"/>
                     <field name="name"/>
                     <field name="mobile"/>
-                    <field name="sex_id"/>
+                    <field name="sex"/>
                     <field name="day_of_birth"/>
                     <!--<field name="cmnd_passport"/>-->
                 </tree>
@@ -44,12 +92,40 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <!--<xpath expr="//sheet" position="before">-->
-                    <!--<header>-->
-                        <!--<button name="action_go_person_inv" string="To Invoice" type="object" class="oe_highlight"-->
-                                <!--attrs="{'invisible': [('company_type','!=','person')]}"/>-->
-                    <!--</header>-->
-                <!--</xpath>-->
+                <xpath expr="//div[@class='o_address_format']" position="replace">
+                    <div class="o_address_format">
+                        <div class="oe_edit_only">
+                            <button name="open_parent" type="object" string="(edit)" class="oe_link"
+                                    attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}"/>
+                        </div>
+                        <field name="street" placeholder="Street..." class="o_address_street"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="street2" placeholder="Street 2..." class="o_address_street"
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="ward" placeholder="Ward" class="o_address_city" options='{"no_open": True}'
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="district" class="o_address_state" placeholder="District"
+                               options='{"no_open": True}'
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                               context="{}"/>
+                        <field name="city_dropdown" placeholder="City" class="o_address_zip" options='{"no_open": True}'
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="city" placeholder="City" invisible="1"/>
+                        <field name="state_id" placeholder="State" invisible="1"/>
+                        <field name="zip" placeholder="Zip" invisible="1"/>
+                        <field name="country_id" placeholder="Country" class="o_address_country"
+                               options='{"no_open": True, "no_create": True}'
+                               attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//form" position="inside">
+                    <field name="company_medial_ids" invisible="1"/>
+                </xpath>
+                <xpath expr="//div[@class='oe_title']/h1" position="before">
+                    <field name="barcode_image_small" widget='image'
+                           attrs="{'invisible': [('barcode_image_small','=',False)]}"
+                           class="barcode_image_partner"/>
+                </xpath>
                 <div name="button_box" position="inside">
                     <button type="object"
                             class="oe_stat_button"
@@ -71,15 +147,13 @@
                           attrs="{'invisible': [('company_type','!=','person')]}">
                         <group col="4">
                             <group colspan="2">
-                                <field name="sex_id"/>
                                 <field name="last_check_in_time"/>
-                                <field name="day_of_birth"/>
                                 <field name="age"/>
                             </group>
                             <group colspan="2">
                                 <field name="ethnic_id"/>
                                 <field name="nationality_id"/>
-                                <field name="cmnd_passport"/>
+                                <field name="cmnd_passport" groups="dha_res_partner_modifier.group_partner_info_manager" />
                                 <field name="married_status"/>
                             </group>
                         </group>
@@ -89,7 +163,7 @@
                         <field name="family_persons">
                             <tree editable="bottom">
                                 <field name="person_id"/>
-                                <field name="sex_id"/>
+                                <field name="sex"/>
                                 <field name="relation"/>
                                 <field name="day_of_birth"/>
                                 <field name="mobile"/>
@@ -98,7 +172,7 @@
                                 <group col="4">
                                     <group colspan="2">
                                         <field name="person_id"/>
-                                        <field name="sex_id"/>
+                                        <field name="sex"/>
                                         <field name="relation"/>
                                     </group>
                                     <group colspan="2">
@@ -112,9 +186,11 @@
                     <page string="Lab Tests" attrs="{'invisible': [('company_type','!=','person')]}">
                         <field name="medic_lab_test_compute_ids">
                             <tree create="0" delete="0">
+                                <field name="related_medical_bill"/>
                                 <field name="name"/>
                                 <field name="type"/>
                                 <field name="product_test"/>
+                                <field name="doctor_assign"/>
                                 <field name="note"/>
                                 <field name="state"/>
                             </tree>
@@ -124,9 +200,11 @@
                           attrs="{'invisible': [('company_type','!=','person')]}">
                         <field name="medic_image_test_compute_ids">
                             <tree create="0" delete="0">
+                                <field name="related_medical_bill"/>
                                 <field name="name"/>
                                 <field name="type"/>
                                 <field name="product_test"/>
+                                <field name="doctor_assign"/>
                                 <field name="note"/>
                                 <field name="state"/>
                             </tree>
@@ -170,11 +248,29 @@
                           attrs="{'invisible': [('company_type','!=','person')]}">
                         <group>
                             <field name="is_patient"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="tien_su_gia_dinh"/>
+                            <group>
+                                <field name="tien_can"/>
+                                <field name="di_ung_thuoc"/>
+                                <field name="tiem_ngua"/>
+                            </group>
+                            <group>
+                                <field name="thuoc_la"/>
+                                <field name="ruou"/>
+                                <field name="the_thao"/>
+                            </group>
                         </group>
                     </page>
                 </xpath>
                 <field name="phone" position="before">
                     <field name="customer_id"/>
+                    <field name="sex"
+                           attrs="{'invisible': [('company_type','!=','person')],'required': [('company_type','=','person'),('is_patient','=',True)]}"/>
+                    <field name="day_of_birth" groups="dha_res_partner_modifier.group_partner_info_manager"
+                           attrs="{'invisible': [('company_type','!=','person')],'required': [('company_type','=','person'),('is_patient','=',True)]}"/>
                     <field name="medic_test_ids" invisible="1"/>
                 </field>
             </field>
@@ -186,8 +282,8 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="sex_id"/>
-                    <field name="day_of_birth"/>
+                    <field name="sex"/>
+                    <field name="day_of_birth" />
                     <field name="cmnd_passport"/>
                     <field name="mobile"/>
                 </tree>
@@ -200,18 +296,27 @@
             <field name="inherit_id" ref="base.res_partner_kanban_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//kanban" position="inside">
-                    <field name="sex_id"/>
+                    <field name="sex"/>
                     <field name="day_of_birth"/>
                     <field name="age"/>
                     <field name="medic_test_ids"/>
                 </xpath>
                 <xpath expr="//div[@class='oe_kanban_details']/ul" position="inside">
-                    <li t-if="record.sex_id.raw_value">
-                        <field name="sex_id"/>
-                    </li>
+
                     <li t-if="record.age.raw_value">Age:
                         <field name="age"/>
                     </li>
+                </xpath>
+                <xpath expr="//strong[@class='oe_partner_heading']/field[@name='display_name']" position="replace">
+                    <field name="name"/>
+                </xpath>
+                <xpath expr="//kanban" position="inside">
+                    <field name="name"/>
+                </xpath>
+                <xpath expr="//div[@class='o_kanban_image']" position="inside">
+                    <t t-if="record.sex.raw_value">
+                        <field name="sex"/>
+                    </t>
                 </xpath>
             </field>
         </record>
@@ -224,6 +329,10 @@
                     <header>
                         <button name="action_go_person_inv" string="To Invoice" type="object" class="oe_highlight"
                                 attrs="{'invisible': [('company_type','!=','person')]}"/>
+
+                        <!--<button name="action_generate_barcode" string="Generate Barcode" type="object"-->
+                        <!--class="oe_highlight"-->
+                        <!--/>-->
                     </header>
                     <sheet>
                         <field name="image" widget='image' class="oe_avatar"
@@ -234,6 +343,9 @@
                             <field name="company_type" widget="radio"
                                    class="oe_edit_only"
                                    options="{'horizontal': true}" invisible="1"/>
+                            <field name="barcode_image_small" widget='image'
+                                   attrs="{'invisible': [('barcode_image_small','=',False)]}"
+                                   class="barcode_image_partner"/>
                             <h1>
                                 <field name="name" default_focus="1" placeholder="Name"
                                        attrs="{'required' : [('type', '=', 'contact')]}"/>
@@ -266,14 +378,19 @@
                                            attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                                     <field name="street2" placeholder="Street 2..." class="o_address_street"
                                            attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                                    <field name="city" placeholder="City" class="o_address_city"
+                                    <field name="ward" placeholder="Ward" class="o_address_city"
+                                           options='{"no_open": True}'
                                            attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                    <field name="district" class="o_address_state" placeholder="District"
                                            options='{"no_open": True}'
                                            attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
-                                           context="{'country_id': country_id, 'zip': zip}"/>
-                                    <field name="zip" placeholder="ZIP" class="o_address_zip"
+                                           context="{}"/>
+                                    <field name="city_dropdown" placeholder="City" class="o_address_zip"
+                                           options='{"no_open": True}'
                                            attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="city" placeholder="City" invisible="1"/>
+                                    <field name="state_id" placeholder="State" invisible="1"/>
+                                    <field name="zip" placeholder="Zip" invisible="1"/>
                                     <field name="country_id" placeholder="Country" class="o_address_country"
                                            options='{"no_open": True, "no_create": True}'
                                            attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
@@ -286,6 +403,11 @@
                                 <field name="function" placeholder="e.g. Sales Director"
                                        attrs="{'invisible': [('is_company','=', True)]}"/>
                                 <field name="phone" widget="phone"/>
+                                <field name="customer_id"/>
+                                <field name="sex"
+                                       attrs="{'invisible': [('company_type','!=','person')],'required': [('company_type','=','person')]}"/>
+                                <field name="day_of_birth"
+                                       attrs="{'invisible': [('company_type','!=','person')],'required': [('company_type','=','person')]}"/>
                                 <field name="mobile" widget="phone" required="1"/>
                                 <field name="fax"/>
                                 <field name="user_ids" invisible="1"/>
@@ -301,9 +423,7 @@
                                   attrs="{'invisible': [('company_type','!=','person')]}">
                                 <group col="4">
                                     <group colspan="2">
-                                        <field name="sex_id" required="1"/>
                                         <field name="last_check_in_time"/>
-                                        <field name="day_of_birth" required="1"/>
                                         <field name="age"/>
                                     </group>
                                     <group colspan="2">
@@ -319,7 +439,7 @@
                                 <field name="family_persons">
                                     <tree editable="bottom">
                                         <field name="person_id"/>
-                                        <field name="sex_id"/>
+                                        <field name="sex"/>
                                         <field name="relation"/>
                                         <field name="day_of_birth"/>
                                         <field name="mobile"/>
@@ -328,7 +448,7 @@
                                         <group col="4">
                                             <group colspan="2">
                                                 <field name="person_id"/>
-                                                <field name="sex_id"/>
+                                                <field name="sex"/>
                                                 <field name="relation"/>
                                             </group>
                                             <group colspan="2">
@@ -339,29 +459,6 @@
                                     </form>
                                 </field>
                             </page>
-                            <!--<page string="Lab Tests" attrs="{'invisible': [('company_type','!=','person')]}">-->
-                            <!--<field name="medic_lab_test_compute_ids">-->
-                            <!--<tree create="0" delete="0">-->
-                            <!--<field name="name"/>-->
-                            <!--<field name="type"/>-->
-                            <!--<field name="product_test"/>-->
-                            <!--<field name="note"/>-->
-                            <!--<field name="state"/>-->
-                            <!--</tree>-->
-                            <!--</field>-->
-                            <!--</page>-->
-                            <!--<page string="Image Tests"-->
-                            <!--attrs="{'invisible': [('company_type','!=','person')]}">-->
-                            <!--<field name="medic_image_test_compute_ids">-->
-                            <!--<tree create="0" delete="0">-->
-                            <!--<field name="name"/>-->
-                            <!--<field name="type"/>-->
-                            <!--<field name="product_test"/>-->
-                            <!--<field name="note"/>-->
-                            <!--<field name="state"/>-->
-                            <!--</tree>-->
-                            <!--</field>-->
-                            <!--</page>-->
                             <page name="insurance" string="Insurance"
                                   attrs="{'invisible': [('company_type','!=','person')]}">
                                 <field name="insurrance_ids">
@@ -398,18 +495,27 @@
                                   attrs="{'invisible': [('company_type','!=','person')]}">
                                 <group>
                                     <field name="is_patient"/>
+                                    <field name="description"/>
+                                </group>
+                                <group>
+                                    <field name="tien_su_gia_dinh"/>
+                                    <group>
+                                        <field name="tien_can"/>
+                                        <field name="di_ung_thuoc"/>
+                                        <field name="tiem_ngua"/>
+                                    </group>
+                                    <group>
+                                        <field name="thuoc_la"/>
+                                        <field name="ruou"/>
+                                        <field name="the_thao"/>
+                                    </group>
                                 </group>
                             </page>
-                            <!--<page name="sale_order_page" string="Prescriptions"-->
-                            <!--attrs="{'invisible': [('company_type','!=','person')]}">-->
-                            <!--<field name="medicine_order_ids" readonly="1"/>-->
-                            <!--</page>-->
                         </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
-
 
         <record id="action_partner_patients_form" model="ir.actions.act_window">
             <field name="name">Patients</field>
@@ -417,7 +523,7 @@
             <field name="res_model">res.partner</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{"search_default_customer":1, "search_default_type_person" : 1,'form_view_ref':
+            <field name="context">{ "search_default_type_person" : 1,'form_view_ref':
                 'dha_medic_modifier.view_patients_form', 'default_is_patient': 1}
             </field>
             <field name="domain">[('is_company','=',
@@ -442,10 +548,33 @@
             <field name="res_model">res.partner</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{"search_default_customer":1,'default_company_type' :
-                'company','default_is_company':True}
+            <field name="context">{'default_company_type' :
+                'company','default_is_company':True,}
             </field>
-            <field name="domain">[('is_company','=', True)]</field>
+            <field name="domain">[('is_company','=', True),('company_medial_ids','!=',False)]</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a contact in your address book.
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to
+                    a customer: discussions, history of business opportunities,
+                    documents, etc.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_partner_company_employee_form" model="ir.actions.act_window">
+            <field name="name">Company Employees</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_type_person' :
+                1, 'default_is_patient': 1}
+            </field>
+            <field name="domain">[('is_company','=', False),('parent_id','!=',False)]</field>
             <field name="search_view_id" ref="base.view_res_partner_filter"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
@@ -462,8 +591,14 @@
         <menuitem id="menu_medic_customer" parent="menu_medic_root" sequence="1" name="Patients"
                   action="action_partner_patients_form"/>
 
-        <menuitem id="menu_medic_company" parent="menu_medic_root" sequence="3" name="Company"
+        <menuitem id="menu_medic_company_root" parent="menu_medic_root" sequence="3" name="External"/>
+
+        <menuitem id="menu_medic_company" parent="menu_medic_company_root" sequence="3" name="Company"
                   action="action_partner_company_form"/>
+
+        <!--<menuitem id="menu_medic_company_employees" parent="menu_medic_company_root" sequence="5"-->
+        <!--name="Company Employees"-->
+        <!--action="action_partner_company_employee_form"/>-->
 
     </data>
 </odoo>

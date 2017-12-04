@@ -11,7 +11,6 @@ odoo.define('dha_medic_modifier', function (require) {
     var _t = core._t;
     var QWeb = core.qweb;
 
-    console.log('enter');
     KanbanView.include({
         execute_check_customer_action: function() {
             var self = this;

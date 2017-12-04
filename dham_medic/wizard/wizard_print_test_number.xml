@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_wizard_print_test_number_form" model="ir.ui.view">
+            <field name="name">wizard.print.test.number.form</field>
+            <field name="model">wizard.print.test.number</field>
+            <field name="arch" type="xml">
+                <form string="Print Tests Number">
+                    <sheet>
+                        <group>
+                            <field name="digit_number"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_print" type="object" string="Go"/>
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window
+            id="action_print_test_number"
+            name="Print Tests Number"
+            res_model="wizard.print.test.number"
+            src_model="medic.test"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>
+
+    </data>
+</odoo>

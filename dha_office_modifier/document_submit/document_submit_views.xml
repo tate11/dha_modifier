@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="dha_document_submit_search" model="ir.ui.view">
+            <field name="name">Document Submit Search</field>
+            <field name="model">dha.document.submit</field>
+            <field name="arch" type="xml">
+                <search string="Document Submit Search">
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('request_by', 'ilike', self)]"/>
+                    <field name="request_by"/>
+                    <field name="date"/>
+                    <field name="deadline"/>
+
+                    <filter name="fillter_submitted" string="Submitted" domain="[('state','=','submitted')]"/>
+                    <filter name="fillter_signed" string="Signed" domain="[('state','=','signed')]"/>
+                    <filter name="fillter_except_rejected_return" string="Active" domain="[('return_date','=',False)]"/>
+                    <!--<group expand="1" string="Group By...">-->
+                        <!--<filter string="Service" context="{'group_by': 'product_test'}"/>-->
+                        <!--<filter string="Status" domain="[]" context="{'group_by': 'state'}"/>-->
+                    <!--</group>-->
+                </search>
+            </field>
+        </record>
+
+        <record id="dha_document_submit_form" model="ir.ui.view">
+            <field name="name">Document Submit Form</field>
+            <field name="model">dha.document.submit</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button type="object" name="action_submit" string="Submit" confirm="Are you sure you want to submit this?" states="draft" class="oe_highlight"/>
+                        <button type="object" groups="dha_office_modifier.group_doc_sub_leader" name="action_signed" string="Confirm Signed" confirm="Are you sure you want to do this?" states="received" class="oe_highlight"/>
+                        <button type="object" groups="dha_office_modifier.group_doc_sub_leader" name="action_rejected" string="Confirm Rejected" confirm="Are you sure you want to reject this?" states="received" class="oe_highlight"/>
+                        <button type="object" groups="dha_office_modifier.group_doc_sub_leader" name="action_receive" string="Received" states="submitted" class="oe_highlight"/>
+                        <button type="object" groups="dha_office_modifier.group_doc_sub_leader"  name="action_return" string="Return" attrs="{'invisible': ['|',('state','not in',('signed','rejected')),('return_date','!=', False)]}" class="oe_highlight"/>
+                        <button type="object" name="action_reset" string="Reset to Draft" states="submitted" class="" confirm="Are you sure you want to do this?"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submitted,received"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <label for="type" class=""/>
+                        <h2>
+                            <field name="type"/>
+                        </h2>
+                        <group>
+                            <group>
+                                <field name="request_by"/>
+                                <field name="department_id"/>
+                                <field name="request_to"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="deadline"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="return_date" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="note"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="dha_document_submit_tree" model="ir.ui.view">
+            <field name="name">Document Submit Tree</field>
+            <field name="model">dha.document.submit</field>
+            <field name="arch" type="xml">
+                <tree decoration-muted="return_date != False" colors="blue:state in ['submitted','received']">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="date"/>
+                    <field name="request_by"/>
+                    <field name="request_to"/>
+                    <field name="department_id"/>
+                    <field name="priority"/>
+                    <field name="state"/>
+                    <field name="return_date" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_dha_document_submit" model="ir.actions.act_window">
+            <field name="name">Document Submit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dha.document.submit</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_fillter_except_rejected_return':1}</field>
+        </record>
+
+        <menuitem id="menu_dha_document_submit_root"  sequence="35" name="Document Submit" web_icon="dha_office_modifier,static/icon/logo_signature.png"/>
+
+        <menuitem id="menu_dha_document_submit" action="action_dha_document_submit"
+                  parent="menu_dha_document_submit_root" sequence="5"/>
+    </data>
+</odoo>

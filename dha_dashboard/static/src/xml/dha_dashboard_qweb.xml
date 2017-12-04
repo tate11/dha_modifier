@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+
+    <t t-name="DHADashboardWidget">
+        <div class="container-fluid dashboard_main">
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 dha_dashboard_partion">
+                    <div class="text-center o_dha_dashboard_purchase_request"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 dha_dashboard_partion">
+                    <div class="text-center o_dha_dashboard_purchase_order"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 dha_dashboard_partion">
+                    <div class="text-center o_dha_dashboard_leave_request"></div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DashboardPR">
+        <div class="text-center o_dha_dashboard_pr o_dha_dashboard_partion_child">
+            <i class="fa fa-folder-open-o fa-4x text-muted"/>
+            <div class="o_dha_dashboard_pr_header">Purchase Request</div>
+            <div class="dha_dashboard_pr_button_show_pending">
+                <a class="btn btn-primary btn-block o_pending_pr" role="button">
+                    <t t-esc="widget.need_approve"/>
+                    <span>
+                        <strong>Pending Purchase Request</strong>
+                    </span>
+                </a>
+            </div>
+            <div class="dha_dashboard_pr_content"></div>
+        </div>
+    </t>
+
+    <t t-name="DashboardLR">
+        <div class="text-center o_dha_dashboard_lr o_dha_dashboard_partion_child">
+            <i class="fa fa-folder-open-o fa-4x text-muted"/>
+            <div class="o_dha_dashboard_lr_header">Leave Request</div>
+            <div class="dha_dashboard_lr_button_show_pending">
+                <a class="btn btn-primary btn-block o_pending_lr" role="button">
+                    <t t-esc="widget.need_approve"/>
+                    <span>
+                        <strong>Pending Leave Request</strong>
+                    </span>
+                </a>
+            </div>
+            <div class="dha_dashboard_lr_content"></div>
+        </div>
+    </t>
+
+    <t t-name="DashboardPO">
+        <div class="text-center o_dha_dashboard_po o_dha_dashboard_partion_child">
+            <i class="fa fa-folder-open-o fa-4x text-muted"/>
+            <div class="o_dha_dashboard_po_header">Purchase Order</div>
+            <div class="dha_dashboard_po_button_show_pending">
+                <a class="btn btn-primary btn-block o_pending_po" role="button">
+                    <t t-esc="widget.need_approve"/>
+                    <span>
+                        <strong>Pending Purchase Order</strong>
+                    </span>
+                </a>
+            </div>
+            <div class="dha_dashboard_po_content"></div>
+        </div>
+    </t>
+
+    <t t-name="DashboardContent">
+        <div class="text-center o_dha_dashboard_content">
+            <t t-foreach="widget.data.last_pending_list" t-as="lpl">
+                <table style="width:100%">
+                    <tr style="margin:10px;">
+                        <td style="width:40%;text-align:left">
+                            <a class="btn btn-primary btn-block o_on_click_name" role="button" t-att-data-record-id="lpl.id">
+                                <span>
+                                    <strong><t t-esc="lpl.name"/></strong>
+                                </span>
+                            </a>
+                        </td>
+                        <td style="width:60%;text-align:right">
+                            <div t-if="lpl.dash_info" t-esc="lpl.dash_info"/>
+                            <div t-if="lpl.origin" t-esc="lpl.origin"/>
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </div>
+    </t>
+
+</templates>

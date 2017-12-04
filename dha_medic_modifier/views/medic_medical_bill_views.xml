@@ -1,14 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record id="medic_medical_bill_form" model="ir.ui.view">
-            <field name="name">medic.medical.bill.form</field>
+
+        <record model="ir.ui.view" id="medic_medical_bill_kanban_view">
+            <field name="name">medic.medical.bill.kanban</field>
             <field name="model">medic.medical.bill</field>
             <field name="arch" type="xml">
-                <form delete="0" create="0">
+                <kanban class="o_medic_medical_bill_kanban">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="customer"/>
+                    <field name="sex"/>
+                    <field name="day_of_birth"/>
+                    <field name="description"/>
+                    <field name="done_percent"/>
+                    <field name="state"/>
+                    <field name="customer_image_small"/>
+                    <field name="customer_name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_medic_medical_bill_kanban">
+                                <div class="o_kanban_image">
+                                    <t t-if="record.customer_image_small.raw_value">
+                                        <img t-att-src="kanban_image('medic.medical.bill', 'customer_image_small', record.id.value)"/>
+                                        <t t-if="record.customer_id.raw_value" style="font-style: oblique;">
+                                            <field name="customer_id"/>
+                                        </t>
+                                    </t>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong class="oe_customer_heading">
+                                        <field name="customer_name"/>
+                                    </strong>
+                                    <span class="oe_inline">
+                                        <t t-if="record.sex.raw_value">(<field name="sex"/>)
+                                        </t>
+                                    </span>
+                                    <ul>
+                                        <li t-if="record.day_of_birth.raw_value">
+                                            <field name="day_of_birth"/>
+                                        </li>
+                                        <li t-if="record.description.raw_value" style="font-style: oblique;">
+                                            <field name="description"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="medic_medical_bill_vital_sigh_form" model="ir.ui.view">
+            <field name="name">medic.medical.bill.form</field>
+            <field name="model">medic.medical.bill</field>
+            <field name="priority" eval="10"/>
+            <field name="arch" type="xml">
+                <form create="0">
                     <header>
-                        <button type="object" name="action_processing" string="Processing" attrs="{'invisible':[('state','!=','new')]}"/>
-                        <button type="object" name="action_done" string="Done" attrs="{'invisible':[('state','!=','processing')]}"/>
+                        <button type="object" name="action_processing" string="Processing" class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','new')]}"
+                                groups="dha_medic_modifier.group_medical_doctor"/>
+                        <button type="object" name="action_done" string="Done" class="oe_highlight"
+                                confirm="Are you sure you want to do this?"
+                                attrs="{'invisible':[('state','!=','processing')]}"
+                                groups="dha_medic_modifier.group_medical_doctor"/>
+                        <button type="object" name="action_reset_to_processing" string="Reset To Processiing"
+                                class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','done')]}"
+                                groups="dha_medic_modifier.group_medical_manager"/>
                         <field name="state" widget="statusbar" statusbar_visible="new,processing,done"/>
                     </header>
                     <sheet>
@@ -21,27 +82,35 @@
                         <group col="4">
                             <group colspan="2">
                                 <field name="customer_id"/>
-                                <field name="customer"/>
+                                <field name="customer" readonly="1"/>
                             </group>
                             <group colspan="2">
-                                <field name="sex_id"/>
+                                <field name="sex"/>
                                 <field name="day_of_birth"/>
+                                <field name="description"/>
                             </group>
                         </group>
                         <group>
-                            <field name="service_ids" widget="many2many_tags"/>
-                            <field name="doctor_assign"/>
-                            <field name="center_id" invisible="1"/>
-                            <field name="building_id" invisible="1"/>
+                            <field name="service_ids" widget="many2many_tags" readonly="1"/>
+                            <field name="doctor_assign"
+                                   attrs="{'readonly': ['|',('state','in',('new', 'done')),('type','!=','company')]}"/>
+                            <field name="center_id" attrs="{'readonly': [('state','in',('new', 'processing','done'))]}"
+                                   groups="dha_medic_modifier.group_medical_doctor"/>
+                            <field name="building_id"
+                                   attrs="{'readonly': [('state','in',('new', 'processing','done'))]}"
+                                   groups="dha_medic_modifier.group_medical_doctor"/>
                             <field name="room_id" invisible="1"/>
-
+                            <field name="type" invisible="1"/>
+                            <field name="company_check_id" invisible="1"/>
                         </group>
                         <group col="4">
                             <group colspan="2">
-                                <field name="prognostic"/>
+                                <field name="prognostic" attrs="{'readonly': [('state','in',('new','done'))]}"
+                                       groups="dha_medic_modifier.group_medical_doctor"/>
                             </group>
                             <group colspan="2">
-                                <field name="reason"/>
+                                <field name="reason" attrs="{'readonly': [('state','in',('new','done'))]}"
+                                       groups="dha_medic_modifier.group_medical_doctor"/>
                             </group>
                         </group>
                         <notebook>
@@ -49,6 +118,105 @@
                                 <group col="4">
                                     <group colspan="2">
                                         <field name="blood_pressure"/>
+                                        <!--<field name="blood_pressure_max"/>-->
+                                        <field name="pulse"/>
+                                        <field name="temperatures"/>
+                                        <field name="pace_of_breathe"/>
+                                    </group>
+                                    <group colspan="2">
+                                        <field name="height"/>
+                                        <field name="weight"/>
+                                        <field name="bmi"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="allergy" widget="many2many_tags"/>
+                                    <field name="special"/>
+                                    <field name="note"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="medic_medical_bill_form" model="ir.ui.view">
+            <field name="name">medic.medical.bill.form</field>
+            <field name="model">medic.medical.bill</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <header>
+                        <button type="object" name="action_processing" string="Processing" class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','new')]}"
+                                groups="dha_medic_modifier.group_medical_doctor"/>
+                        <button type="object" name="action_done" string="Done" class="oe_highlight"
+                                confirm="Are you sure you want to do this?"
+                                attrs="{'invisible':[('state','!=','processing')]}"
+                                groups="dha_medic_modifier.group_medical_doctor"/>
+                        <button type="object" name="action_reset_to_processing" string="Reset To Processiing"
+                                class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','done')]}"
+                                groups="dha_medic_modifier.group_medical_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,processing,done"/>
+                    </header>
+                    <sheet>
+                        <button class="oe_inline oe_stat_button" style="float:right;background:white"
+                                icon="fa-user-md fa-5x "
+                                name="action_quick_fill_treatment" context="{'auto_fill_doctor': True}"
+                                type="object" attrs="{'invisible':[('state','!=','processing')]}">
+                        </button>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="customer_id"/>
+                                <field name="customer" readonly="1"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="sex"/>
+                                <field name="day_of_birth"/>
+                                <field name="description"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="service_ids" widget="many2many_tags" readonly="1"/>
+                            <field name="doctor_assign"
+                                   attrs="{'readonly': ['|',('state','in',('new', 'done')),('type','!=','company')]}"/>
+                            <field name="center_id" attrs="{'readonly': [('state','in',('new', 'processing','done'))]}"
+                                   groups="dha_medic_modifier.group_medical_doctor"/>
+                            <field name="building_id"
+                                   attrs="{'readonly': [('state','in',('new', 'processing','done'))]}"
+                                   groups="dha_medic_modifier.group_medical_doctor"/>
+                            <field name="room_id" invisible="1"/>
+                            <field name="type" invisible="1"/>
+                            <field name="company_check_id" invisible="1"/>
+                        </group>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="prognostic" attrs="{'readonly': [('state','in',('new','done'))]}"
+                                       groups="dha_medic_modifier.group_medical_doctor"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="reason" attrs="{'readonly': [('state','in',('new','done'))]}"
+                                       groups="dha_medic_modifier.group_medical_doctor"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Vital Sign">
+                                <group col="4">
+                                    <group colspan="2">
+                                        <field name="blood_pressure"/>
+                                        <!--<field name="blood_pressure_max"/>-->
                                         <field name="pulse"/>
                                         <field name="temperatures"/>
                                         <field name="pace_of_breathe"/>
@@ -66,21 +234,33 @@
                                 </group>
                             </page>
                             <page string="Appoint">
-                                <field name="appoint_ids"
+                                <field name="appoint_ids" attrs="{'readonly': [('state','in',('new','done'))]}"
                                        context="{'default_customer': customer, 'default_doctor_assign': doctor_assign}"/>
                             </page>
                             <page string="Treatment">
                                 <group col="4">
                                     <group colspan="2">
-                                        <field name="diagnose_icd" widget="many2many_tags"/>
+                                        <field name="diagnose_icd" widget="many2many_tags"
+                                               attrs="{'readonly': [('state','in',('new','done'))]}"/>
                                     </group>
-                                    <group colspan="2">
-                                        <field name="diagnose"/>
-                                    </group>
+                                    <!--<group colspan="2">-->
+                                    <!--&lt;!&ndash;<field name="diagnose" attrs="{'readonly': [('state','in',('new','done'))]}"/>&ndash;&gt;-->
+                                    <!--<field name="de_nghi" attrs="{'readonly': [('state','in',('new','done'))]}"/>-->
+                                    <!--</group>-->
                                 </group>
                                 <group>
-                                    <field name="treatment_note"/>
+                                    <field name="phan_loai"/>
+                                    <field name="treatment_template"
+                                           attrs="{'readonly': [('state','in',('new','done'))]}"
+                                           widget="many2many_tags"/>
+                                    <field name="treatment_note" widget="html" attrs="{'readonly': [('state','in',('new','done'))]}"/>
+                                    <field name="de_nghi" widget="html" attrs="{'readonly': [('state','in',('new','done'))]}"/>
                                 </group>
+                            </page>
+                            <page name="sub_treatment" string="Sub Treatment"
+                                  attrs="{'invisible':[('type','!=','company')]}">
+                                <field name="sub_treatment_ids" attrs="{'readonly': [('state','in',('new','done'))]}"
+                                       context="{'default_type': type }"/>
                             </page>
                             <page string="Lab Tests">
                                 <field name="medic_lab_test_compute_ids">
@@ -105,8 +285,24 @@
                                 </field>
                             </page>
                             <page string="Prescriptions">
-                                <field name="medicine_orders"
+                                <field name="medicine_orders" attrs="{'readonly': [('state','in',('new','done'))]}"
                                        context="{'default_customer': customer, 'default_doctor_assign': doctor_assign}"/>
+                            </page>
+                            <page name="consumable_supplies_page" string="Consumable Supplies">
+                                <field name="consumable_supplies" attrs="{'readonly': [('state','in',('new','done'))]}">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="qty"/>
+                                        <field name="product_uom_id"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="qty"/>
+                                            <field name="product_uom_id"/>
+                                        </group>
+                                    </form>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -122,14 +318,40 @@
             <field name="name">medic.medical.bill.tree</field>
             <field name="model">medic.medical.bill</field>
             <field name="arch" type="xml">
-                <tree delete="0" create="0">
+                <tree delete="0" create="0" colors="red:check_vip==True">
                     <field name="name"/>
                     <field name="customer_id"/>
                     <field name="customer"/>
-                    <field name="sex_id"/>
+                    <field name="sex"/>
                     <field name="day_of_birth"/>
+                    <field name="description"/>
                     <field name="done_percent"/>
+                    <field name="state"/>
+                    <field name="check_vip" invisible="1"/>
                 </tree>
+            </field>
+        </record>
+
+        <record id="view_medical_bill_filter" model="ir.ui.view">
+            <field name="name">medic.medical.bill.select</field>
+            <field name="model">medic.medical.bill</field>
+            <field name="arch" type="xml">
+                <search string="Search Medical Bill">
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('customer', 'ilike', self)]"/>
+                    <field name="customer"/>
+                    <field name="customer_id"/>
+                    <field name="customer_parent_id"/>
+                    <filter name="except_done" string="Except Done" domain="[('state','!=','done')]"/>
+                    <filter name="done_bill" string="Done" domain="[('state','=','done')]"/>
+                    <filter name="processing_bill" string="Processing" domain="[('state','=','processing')]"/>
+                    <filter name="new_bill" string="New" domain="[('state','=','new')]"/>
+                    <!--<field name="customer"/>-->
+                    <group expand="1" string="Group By...">
+                        <filter string="Customer" domain="[]" context="{'group_by': 'customer'}"/>
+                        <filter string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Company" domain="[]" context="{'group_by': 'customer_parent_id'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 
@@ -137,13 +359,237 @@
             <field name="name">Medical Bill</field>
             <field name="res_model">medic.medical.bill</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,kanban,form</field>
             <field eval="False" name="view_id"/>
-            <field name="domain">[('state','in',('new', 'processing'))]</field>
-            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_processing_bill':1, 'form_view_ref': 'dha_medic_modifier.medic_medical_bill_form'}</field>
+            <field name="search_view_id" ref="view_medical_bill_filter"/>
         </record>
 
-        <menuitem id="menu_medic_doctor" parent="menu_medic_root" sequence="15" name="Doctor"
+        <record id="medic_medical_bill_vital_sigh_action" model="ir.actions.act_window">
+            <field name="name">Medical Bill</field>
+            <field name="res_model">medic.medical.bill</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_new_bill':1, 'form_view_ref': 'dha_medic_modifier.medic_medical_bill_vital_sigh_form'}</field>
+            <field name="search_view_id" ref="view_medical_bill_filter"/>
+        </record>
+
+        <record id="medic_medical_bill_done_result_action" model="ir.actions.act_window">
+            <field name="name">Medical Bill</field>
+            <field name="res_model">medic.medical.bill</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_done_bill':1, 'form_view_ref': 'dha_medic_modifier.medic_medical_bill_form'}</field>
+            <field name="search_view_id" ref="view_medical_bill_filter"/>
+        </record>
+
+        <menuitem id="menu_medic_doctor_root" parent="menu_medic_root" sequence="15" name="Doctor" />
+
+        <menuitem id="menu_medic_doctor_vital_sign" parent="menu_medic_doctor_root" sequence="5" name="Vital Sign"
+                  action="medic_medical_bill_vital_sigh_action"/>
+
+        <menuitem id="menu_medic_doctor" parent="menu_medic_doctor_root" sequence="10" name="Examination"
                   action="medic_medical_bill_action"/>
+
+        <menuitem id="menu_medic_doctor_result" parent="menu_medic_doctor_root" sequence="15" name="Examination Results"
+                  action="medic_medical_bill_done_result_action"/>
+
+        <record id="medic_medic_medical_sub_treatment_tree" model="ir.ui.view">
+            <field name="name">medic.medical.sub.treatment.tree</field>
+            <field name="model">medic.medical.sub.treatment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="buildings_type" string="Building"/>
+                    <!--<field name="diagnose_icd" widget="many2many_tags"/>-->
+                    <!--<field name="diagnose"/>-->
+                    <field name="treatment_note"/>
+                    <field name="doctor_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medic_medic_medical_sub_treatment_form" model="ir.ui.view">
+            <field name="name">medic.medical.sub.treatment.form</field>
+            <field name="model">medic.medical.sub.treatment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="buildings_type" string="Building"/>
+                            <!--<field name="doctor_id" attrs="{'readonly': [('type', '=', 'person')]}"/>-->
+                            <field name="doctor_id"
+                                   context="{'sub_treatment_type': type, 'sub_treatment_company_check': company_check_id }"/>
+                            <field name="type" invisible="1"/>
+                            <field name="company_check_id" invisible="1"/>
+                        </group>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="diagnose_icd" widget="many2many_tags"/>
+                            </group>
+                            <!--<group colspan="2">-->
+                            <!--<field name="diagnose"/>-->
+                            <!--</group>-->
+                        </group>
+                        <div attrs="{'invisible': [('check_nhi','=',False)]}">
+                            <group string="Result"/>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="tuan_hoan"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="th_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'th'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_tuan_hoan"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="ho_hap"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="hh_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'hh'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_ho_hap"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="tieu_hoa"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="ti_h_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'ti_h'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_tieu_hoa"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="than_tiet_nieu"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="ttn_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'ttn'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_than_tiet_nieu"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="noi_tiet"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="nt_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'nt'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_noi_tiet"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="than_kinh"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="tk_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'tk'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_than_kinh"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="tam_than"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="tt_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'tt'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_tam_than"/>
+                                </group>
+                            </group>
+                            <group col="6">
+                                <group colspan="3">
+                                    <field name="co_xuong_khop"/>
+                                </group>
+                                <group colspan="1">
+                                    <field name="cxk_tmp" nolabel="1" options="{'no_open':True}"
+                                           context="{'default_type':'cxk'}"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="phan_loai_co_xuong_khop"/>
+                                </group>
+                            </group>
+                            <field name="check_nhi" invisible="1"/>
+                        </div>
+                        <group string="Ket qua kham thi luc: " attrs="{'invisible': [('check_mat','=',False)]}">
+                            <label for="phai_ko_kinh" string="Khong Kinh: "/>
+                            <div>
+                                <label string="Mat Phai: "/>
+                                <field name="phai_ko_kinh" class="oe_inline"/>
+                                <label string="Mat Trai: "/>
+                                <field name="trai_ko_kinh" class="oe_inline"/>
+                            </div>
+                            <label for="trai_co_kinh" string="Co Kinh: "/>
+                            <div>
+                                <label string="Mat Phai: "/>
+                                <field name="phai_co_kinh" class="oe_inline"/>
+                                <label string="Mat Trai: "/>
+                                <field name="trai_co_kinh" class="oe_inline"/>
+                            </div>
+                            <field name="check_mat" invisible="1"/>
+                        </group>
+                        <group string="Ket qua kham thinh luc: "
+                               attrs="{'invisible': [('check_tai_mui_hong','=',False)]}">
+                            <label for="phai_ko_kinh" string="Tai trai: "/>
+                            <div>
+                                <label string="Noi Thuong: "/>
+                                <field name="trai_noi_thuong" class="oe_inline"/>m;
+                                <label string="Noi Tham: "/>
+                                <field name="trai_noi_tham" class="oe_inline"/>m
+                            </div>
+                            <label for="phai_noi_thuong" string="Tai phai: "/>
+                            <div>
+                                <label string="Noi Thuong: "/>
+                                <field name="phai_noi_thuong" class="oe_inline"/>m;
+                                <label string="Noi Tham: "/>
+                                <field name="phai_noi_tham" class="oe_inline"/>m
+                            </div>
+                            <field name="check_tai_mui_hong" invisible="1"/>
+                        </group>
+                        <group string="Ket qua kham:" attrs="{'invisible': [('check_rang_ham_mat','=',False)]}">
+                            <field name="ham_tren"/>
+                            <field name="ham_duoi"/>
+                            <field name="check_rang_ham_mat" invisible="1"/>
+                        </group>
+                        <group attrs="{'invisible': [('check_da_lieu','=',False)]}">
+                            <field name="check_da_lieu" invisible="1"/>
+                        </group>
+
+                        <group>
+                            <field name="di_tat_bam_sinh"/>
+                            <field name="phan_loai"/>
+                            <field name="treatment_template" widget="many2many_tags"/>
+                            <field name="treatment_note"/>
+                            <!--<field name="de_nghi"/>-->
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
     </data>
 </odoo>

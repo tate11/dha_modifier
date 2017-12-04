@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_medic_wizard_lab_res_flex_form" model="ir.ui.view">
+            <field name="name">wizard.lab.res.flex.form</field>
+            <field name="model">wizard.lab.res.flex</field>
+            <field name="arch" type="xml">
+                <form string="Lab Results">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <!--<button name="action_get_data" type="object" string="Get data" class="oe_inline"/>-->
+                            <field name="line_ids">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="result"/>
+                                    <field name="normal_range"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="product_id"/>
+                                        <field name="name"/>
+                                        <field name="result"/>
+                                        <field name="normal_range"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="do_action" type="object" string="Process"/> or
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

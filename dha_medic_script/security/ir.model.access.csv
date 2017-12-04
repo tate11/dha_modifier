@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dha_medic_script_dha_medic_script,dha_medic_script.dha_medic_script,model_dha_medic_script_dha_medic_script,,1,0,0,0

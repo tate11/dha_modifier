@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_dha_medic_sms_dha_medic_sms_manager, SMS manager access,model_dha_medic_sms,dha_medic_sms.group_manager,1,1,1,1
+access_dha_medic_sms_dha_medic_sms_marketing, SMS maketing access,model_dha_medic_sms,dha_medic_sms.group_marketing,1,1,1,0
+access_dha_medic_sms_dha_medic_sms_user, SMS user access,model_dha_medic_sms,dha_medic_sms.group_user,1,0,0,0
+
+access_dha_medic_sms_dha_medic_sms_list_manager, List manager access,model_dha_medic_sms_list,dha_medic_sms.group_manager,1,1,1,1
+access_dha_medic_sms_dha_medic_sms_list_marketing, List maketing access,model_dha_medic_sms_list,dha_medic_sms.group_marketing,1,1,1,0
+access_dha_medic_sms_dha_medic_sms_list_user, List user access,model_dha_medic_sms_list,dha_medic_sms.group_user,1,0,0,0
+
+access_dha_medic_sms_dha_medic_sms_contact_manager, Contact manager access,model_dha_medic_sms_contact,dha_medic_sms.group_manager,1,1,1,1
+access_dha_medic_sms_dha_medic_sms_contact_marketing, Contact maketing access,model_dha_medic_sms_contact,dha_medic_sms.group_marketing,1,1,1,0
+access_dha_medic_sms_dha_medic_sms_contact_user, Contact user access,model_dha_medic_sms_contact,dha_medic_sms.group_user,1,0,0,0

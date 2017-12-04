@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+         <!--sequence for patient id-->
+        <record id="seq_medic_patient_id" model="ir.sequence">
+            <field name="name">Patient ID</field>
+            <field name="code">patient.id.seq</field>
+            <field name="prefix"></field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">6</field>
+        </record>
+
+         <!--sequence for patient receive-->
+        <record id="seq_medic_receive" model="ir.sequence">
+            <field name="name">Receive Patient SEQ</field>
+            <field name="code">patient.receive.seq</field>
+            <field name="prefix">TN</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+    </data>
+</odoo>

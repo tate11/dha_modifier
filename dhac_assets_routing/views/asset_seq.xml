@@ -1,0 +1,12 @@
+<odoo>
+    <data noupdate="1">
+        <record id="seq_asset_number" model="ir.sequence">
+            <field name="name">Asset Number Seq</field>
+            <field name="code">asset.asset.seq</field>
+            <field name="prefix"></field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">7</field>
+        </record>
+    </data>
+</odoo>

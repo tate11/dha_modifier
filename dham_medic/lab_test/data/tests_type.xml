@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="medic_test_type_lab_test" model="medic.test.type">
+            <field name="name">Lab Tests</field>
+            <field name="code">lab.test.seq</field>
+        </record>
+
+        <record id="medic_test_type_image_test" model="medic.test.type">
+            <field name="name">Imaging Test</field>
+            <field name="code">image.test.seq</field>
+        </record>
+
+        <record id="medic_test_type_echograph" model="medic.test.type">
+            <field name="name">Echograph</field>
+            <field name="code">echograph.test.seq</field>
+        </record>
+
+        <record id="medic_test_type_electrocardiogram" model="medic.test.type">
+            <field name="name">Electrocardiogram</field>
+            <field name="code">electrocardiogram.test.seq</field>
+        </record>
+    </data>
+</odoo>

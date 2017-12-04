@@ -1,0 +1,127 @@
+<odoo>
+    <data>
+        <record model="ir.module.category" id="module_management">
+            <field name="name">SMS Access Right</field>
+            <field name="description">User access level for SMS</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <record id="group_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="dha_medic_sms.module_management"/>
+        </record>
+
+        <record id="group_marketing" model="res.groups">
+            <field name="name">Marketing</field>
+            <field name="category_id" ref="dha_medic_sms.module_management"/>
+        </record>
+
+        <record id="group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="implied_ids" eval="[(4, ref('dha_medic_sms.group_marketing'))]"/>
+            <field name="category_id" ref="dha_medic_sms.module_management"/>
+        </record>
+
+        <!-- dha_medic_sms.model_dha_medic_sms -->
+        <record id="dha_medic_sms.dha_medic_sms_user_rule" model="ir.rule">
+            <field name="name">SMS User</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_user')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+        </record>
+
+        <record id="dha_medic_sms.dha_medic_sms_marketing_rule" model="ir.rule">
+            <field name="name">SMS Marketing</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_marketing')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+        </record>
+
+        <record id="dha_medic_sms.dha_medic_sms_manager_rule" model="ir.rule">
+            <field name="name">SMS Manager</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_manager')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+        </record>
+
+        <!-- dha_medic_sms.model_dha_medic_sms_list -->
+        <record id="dha_medic_sms.dha_medic_sms_list_user_rule" model="ir.rule">
+            <field name="name">SMS User</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms_list"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_user')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+        </record>
+
+        <record id="dha_medic_sms.dha_medic_sms_list_marketing_rule" model="ir.rule">
+            <field name="name">SMS Marketing</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms_list"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_marketing')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+        </record>
+
+        <record id="dha_medic_sms.dha_medic_sms_list_manager_rule" model="ir.rule">
+            <field name="name">SMS Manager</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms_list"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_manager')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+        </record>
+
+        <!-- dha_medic_sms.model_dha_medic_sms_contact -->
+        <record id="dha_medic_sms.dha_medic_sms_contact_user_rule" model="ir.rule">
+            <field name="name">SMS User</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms_contact"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_user')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+        </record>
+
+        <record id="dha_medic_sms.dha_medic_sms_contact_marketing_rule" model="ir.rule">
+            <field name="name">SMS Marketing</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms_contact"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_marketing')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+        </record>
+
+        <record id="dha_medic_sms.dha_medic_sms_contact_manager_rule" model="ir.rule">
+            <field name="name">SMS Manager</field>
+            <field name="model_id" ref="dha_medic_sms.model_dha_medic_sms_contact"/>
+            <field name="groups" eval="[(6,0, [ref('dha_medic_sms.group_manager')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+        </record>
+    </data>
+</odoo>

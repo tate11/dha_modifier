@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_medic_company_contract_schedule_filter" model="ir.ui.view">
+            <field name="name">company.contract.schedule.select</field>
+            <field name="model">company.contract.schedule</field>
+            <field name="arch" type="xml">
+                <search string="Search Contract Schedule">
+                    <field name="name" invisible="0"/>
+                    <field name="partner_id"/>
+                    <field name="time_start"/>
+                    <field name="time_end"/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Contract" domain="[]" context="{'group_by': 'contract_id'}"/>
+                        <filter name="group_company" string="Company" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="view_medic_company_contract_schedule_calendar" model="ir.ui.view">
+            <field name="name">company.contract.schedule.calendar</field>
+            <field name="model">company.contract.schedule</field>
+            <field name="arch" type="xml">
+                <calendar date_start="time_start" color="partner_id" date_stop="time_end" display="[display_name]" string="Contract Schedule" mode="month">
+                    <field name="name"/>
+                    <field name="contract_id"/>
+                    <field name="partner_id"/>
+                    <field name="time_start"/>
+                    <field name="time_end"/>
+                    <field name="display_name"/>
+                </calendar>
+            </field>
+        </record>
+        
+        <record id="view_medic_company_contract_schedule_tree" model="ir.ui.view">
+            <field name="name">company.contract.schedule.tree</field>
+            <field name="model">company.contract.schedule</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Schedule" editable="bottom">
+                    <field name="name"/>
+                    <field name="time_start"/>
+                    <field name="time_end"/>
+                    <field name="contract_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_medic_company_contract_schedule_form" model="ir.ui.view">
+            <field name="name">company.contract.schedule.form</field>
+            <field name="model">company.contract.schedule</field>
+            <field name="arch" type="xml">
+                <form string="Contract Schedule">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <field name="contract_id"/>
+                        <group>
+                            <group>
+                                <field name="time_start"/>
+                            </group>
+                            <group>
+                                <field name="time_end"/>
+                            </group>
+                            <field name="note" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_company_contract_schedule" model="ir.actions.act_window">
+            <field name="name">Contract Schedule</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">company.contract.schedule</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="context">{'search_default_group_company':1}</field>
+        </record>
+
+        <menuitem id="menu_company_contract_schedule" parent="menu_medic_company_root" sequence="2" name="Contract Schedule"
+                  action="action_company_contract_schedule"/>
+
+        <menuitem id="menu_company_contract_schedule_calendar" parent="calendar.mail_menu_calendar" sequence="10" name="External Schedule"
+                  action="action_company_contract_schedule"/>
+    </data>
+</odoo>

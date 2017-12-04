@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="medic_diseases_form" model="ir.ui.view">
+            <field name="name">medic.diseases.form</field>
+            <field name="model">medic.diseases</field>
+            <field name="arch" type="xml">
+                <form string="Diseases">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="0"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="code"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="category"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="medic_medic_diseases_tree" model="ir.ui.view">
+            <field name="name">medic.diseases.tree</field>
+            <field name="model">medic.diseases</field>
+            <field name="arch" type="xml">
+                <tree string="Diseases">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medic_diseases_action" model="ir.actions.act_window">
+            <field name="name">Diseases</field>
+            <field name="res_model">medic.diseases</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="medic_diseases_category_form" model="ir.ui.view">
+            <field name="name">medic.diseases.category.form</field>
+            <field name="model">medic.diseases.category</field>
+            <field name="arch" type="xml">
+                <form string="Diseases">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="0"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="parent_ctg"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="medic_medic_diseases_category_tree" model="ir.ui.view">
+            <field name="name">medic.diseases.category.tree</field>
+            <field name="model">medic.diseases.category</field>
+            <field name="arch" type="xml">
+                <tree string="Diseases">
+                    <field name="name"/>
+                    <field name="parent_ctg"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medic_diseases_category_action" model="ir.actions.act_window">
+            <field name="name">Diseases</field>
+            <field name="res_model">medic.diseases.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_medic_config_diseases_root" parent="menu_medic_lab_test_configurations" sequence="20" name="Diseases" />
+        <menuitem id="menu_medic_config_diseases" parent="menu_medic_config_diseases_root" sequence="5" name="Diseases" action="medic_diseases_action"/>
+        <menuitem id="menu_medic_config_diseases_category" parent="menu_medic_config_diseases_root" sequence="10" name="Diseases Category" action="medic_diseases_category_action"/>
+
+    </data>
+</odoo>

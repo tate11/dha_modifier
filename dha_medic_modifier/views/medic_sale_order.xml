@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_quotations_drink_and_food" model="ir.actions.act_window">
+            <field name="name">Drinks and Foods</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="context">{
+                'hide_sale': True,
+                'show_address': 1,
+                'default_order_type': 'food-drink',
+                }
+            </field>
+            <field name="domain">[('order_type','=', 'food-drink')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Quotation, the first step of a new sale.
+                </p>
+                <p>
+                    Your next actions should flow efficiently: confirm the Quotation
+                    to a Sale Order, then create the Invoice and collect the Payment.
+                </p>
+                <p>
+                    Note that once a Quotation becomes a Sale Order, it will be moved
+                    from the Quotations list to the Sales Order list.
+                </p>
+            </field>
+        </record>
+
+        <record id="view_order_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="before">
+                    <group>
+                        <field name="package_ids" widget="many2many_tags" attrs="{'readonly': [('state','not in',('draft','sent'))]}"/>
+                    </group>
+                </xpath>
+                <xpath expr="//header/button[@name='print_quotation']" position="before">
+                    <button name="action_create_package" type="object" string="Create Contract"
+                            attrs="{'invisible': ['|',('check_partner_company','=',False),'|',('state','not in',('sale','done')),('medic_contract_id','!=',False)]}"/>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <field name="medic_contract_id" invisible="1"/>
+                    <field name="check_partner_company" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem id="menu_medic_sales" parent="menu_medic_root" sequence="40" name="Sales"/>
+        <menuitem id="menu_medic_drink_food_sale_order" parent="menu_medic_sales" sequence="5"
+                  action="action_quotations_drink_and_food" name="Drinks and Foods"/>
+
+    </data>
+</odoo>

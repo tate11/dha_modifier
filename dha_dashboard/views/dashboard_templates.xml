@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="dha_dashboard assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/dha_dashboard/static/src/css/dha_dashboard_css.css"/>
+            <script type="text/javascript" src="/dha_dashboard/static/src/js/dha_dashboard.js"></script>
+        </xpath>
+    </template>
+</odoo>

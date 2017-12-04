@@ -1,0 +1,28 @@
+.dashboard_main {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.72);
+}
+.o_dha_dashboard_pr{
+
+}
+.dha_dashboard_partion {
+    margin-top: 20px;
+}
+
+.o_dha_dashboard_partion_child {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.o_dha_dashboard_content{
+    margin-top:20px;
+}
+.o_on_click_name{
+    border-radius : 10px;
+}
+.dha_dashboard_lr_button_show_pending,
+.dha_dashboard_pr_button_show_pending,
+.dha_dashboard_po_button_show_pending {
+    margin-top:10px;
+}

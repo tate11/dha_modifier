@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="assets_form_view" model="ir.ui.view">
+            <field name="name">asset.asset.form</field>
+            <field name="model">asset.asset</field>
+            <field name="inherit_id" ref="asset.assets_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='info']/group/group[2]" position="inside">
+                    <field name="barcode_image" widget="image"/>
+                </xpath>
+                <field name="name" position="replace">
+                    <field name="name" class="oe_edit_only"/>
+                    <field name="display_name" class="oe_read_only"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="assets_tree_view" model="ir.ui.view">
+            <field name="name">asset.asset.tree</field>
+            <field name="model">asset.asset</field>
+            <field name="inherit_id" ref="asset.assets_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" invisible="1"/>
+                    <field name="display_name"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="assets_kanban_view">
+            <field name="name">Asset Kanban</field>
+            <field name="model">asset.asset</field>
+            <field name="inherit_id" ref="asset.assets_kanban_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <!--<field name="name" invisible="1"/>-->
+                    <field name="display_name"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

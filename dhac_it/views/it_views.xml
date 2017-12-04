@@ -1,0 +1,9 @@
+<odoo>
+  <data>
+
+    <menuitem name="DHA IT" id="dhac_it_root_menu" sequence="35" web_icon="dhac_it,static/logo/it.jpg" groups="group_it_user"/>
+
+    <menuitem name="IT Assets" id="dhac_it_equipment_menu" parent="dhac_it_root_menu" action="dhac_it.it_asset_action" sequence="5" />
+
+  </data>
+</odoo>

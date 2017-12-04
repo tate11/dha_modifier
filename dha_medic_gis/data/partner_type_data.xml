@@ -1,0 +1,78 @@
+<odoo>
+    <data>
+        <record model="res.partner.type" id="customer">
+            <field name="name">Khách Hàng</field>
+            <field name="code">customer</field>
+        </record>
+
+        <record model="res.partner.type" id="hospital">
+            <field name="name">Bệnh viện</field>
+            <field name="code">hospital</field>
+        </record>
+
+        <record model="res.partner.type" id="general_clinic">
+            <field name="name">Phòng khám đa khoa/liên chuyên khoa</field>
+            <field name="code">general_clinic</field>
+        </record>
+
+        <record model="res.partner.type" id="specialized_clinic">
+            <field name="name">Phòng khám chuyên khoa</field>
+            <field name="code">specialized_clinic</field>
+        </record>
+
+        <record model="res.partner.type" id="private_clinic">
+            <field name="name">Phòng mạch tư</field>
+            <field name="code">private_clinic</field>
+        </record>
+
+        <record model="res.partner.type" id="clinics">
+            <field name="name">Trạm y tế</field>
+            <field name="code">clinics</field>
+        </record>
+
+        <record model="res.partner.type" id="dentistry">
+            <field name="name">Nha khoa</field>
+            <field name="code">dentistry</field>
+        </record>
+
+        <record model="res.partner.type" id="cosmetic_clinic">
+            <field name="name">Bệnh viện thẩm mỹ</field>
+            <field name="code">cosmetic_clinic</field>
+        </record>
+
+        <record model="res.partner.type" id="drugstore">
+            <field name="name">Nhà thuốc</field>
+            <field name="code">drugstore</field>
+        </record>
+
+        <record model="res.partner.type" id="culture_center">
+            <field name="name">Trung tâm văn hóa</field>
+            <field name="code">culture_center</field>
+        </record>
+
+        <record model="res.partner.type" id="sports_center">
+            <field name="name">Trung tâm thể dục thể thao</field>
+            <field name="code">sports_center</field>
+        </record>
+
+        <record model="res.partner.type" id="children_house">
+            <field name="name">Nhà thiếu nhi</field>
+            <field name="code">children_house</field>
+        </record>
+
+        <record model="res.partner.type" id="cultural_labor">
+            <field name="name">Nhà văn hóa lao động</field>
+            <field name="code">cultural_labor</field>
+        </record>
+
+        <record model="res.partner.type" id="sports_culture_center">
+            <field name="name">Trung tâm văn hóa và thể dục thể thao</field>
+            <field name="code">sport_culture_center</field>
+        </record>
+
+        <record model="res.partner.type" id="company">
+            <field name="name">Công ty</field>
+            <field name="code">company</field>
+        </record>
+    </data>
+</odoo>

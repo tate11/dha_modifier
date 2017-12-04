@@ -1,0 +1,118 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_purchase_request_form">
+            <field name="name">purchase.request.form</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="replace">
+                    <header>
+                        <button name="button_draft"
+                                states="to_approve,rejected"
+                                string="Reset"
+                                type="object"
+                                groups="purchase_request.group_purchase_request_manager"/>
+                        <button name="button_submit"
+                                string="Submit"
+                                class="oe_highlight"
+                                type="object" attrs="{'invisible': ['|',('submit','=',True),('state','!=','draft')]}"/>
+                        <button name="button_to_approve"
+                                string="Request approval" type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible': ['|',('check_approve1','=',False),('state','!=','draft')]}"/>
+                        <button name="button_approved"
+                                states="to_approve"
+                                string="Approve"
+                                type="object"
+                                class="oe_highlight"
+                                groups="purchase_request.group_purchase_request_manager"/>
+                        <button name="button_rejected"
+                                attrs="{'invisible': [('submit','=',False),('state','=','draft')]}"
+                                string="Reject"
+                                type="object"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,to_approve,approved,rejected"
+                               statusbar_colors='{"approved":"blue"}'/>
+                    </header>
+                </xpath>
+                <field name="assigned_to" position="after">
+                    <field name="master_approver" attrs="{'readonly' : [('state','!=','draft')]}"/>
+                    <field name="check_approve1" invisible="1"/>
+                    <field name="submit" invisible="1"/>
+                    <field name="department_id"/>
+                </field>
+                <field name="requested_by" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="picking_type_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="date_start" position="replace"/>
+                <field name="description" position="replace">
+                    <field name="date_start"/>
+                    <field name="dead_line"/>
+                    <field name="description"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="purchase_request_line_tree" model="ir.ui.view">
+            <field name="name">purchase.request.line.tree</field>
+            <field name="model">purchase.request.line</field>
+            <field name="inherit_id" ref="purchase_request.purchase_request_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="product_categ_id"/>
+                    <field name="purchase_respond_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_purchase_request_tree">
+            <field name="name">purchase.request.tree</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_tree"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="company_id" position="after">
+                    <field name="description"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_purchase_request_search" model="ir.ui.view">
+            <field name="name">purchase.request.list.select</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_search"/>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter name="my_request" string="My Request"
+                            domain="[('state','in',('to_approve','draft')), '|',('requested_by','=', uid), '|',('assigned_to','=',uid),('master_approver','=',uid)]"
+                            help="Your request"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="purchase_request.purchase_request_form_action">
+            <field name="name">Purchase Requests</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_my_request":1}</field>
+            <field name="search_view_id" ref="purchase_request.view_purchase_request_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to start a new purchase request process.
+              </p><p>
+                A purchase request is an instruction to Purchasing to procure
+                a certain quantity of materials services, so that they are
+                available at a certain point in time.
+              </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

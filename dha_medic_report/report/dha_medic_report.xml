@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_euro_a4_medic" model="report.paperformat">
+        <field name="name">Medic European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">50</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+            string="Print Tests"
+            id="report_lab_test_medic"
+            model="medic.test"
+            report_type="qweb-pdf"
+            name="dha_medic_report.report_lab_test"
+            file="dha_medic_report.report_lab_test"
+            paperformat="dha_medic_report.paperformat_euro_a4_medic"
+
+    />
+
+    <record id="paperformat_euro_a4_medic_medical_bill" model="report.paperformat">
+        <field name="name">Medic Medical European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+            string="Print Medical Report"
+            id="report_medic_medical_bill"
+            model="medic.medical.bill"
+            report_type="qweb-pdf"
+            name="dha_medic_report.report_medic_medical_bill_report"
+            file="dha_medic_report.report_medic_medical_bill_report"
+            paperformat="dha_medic_report.paperformat_euro_a4_medic_medical_bill"
+    />
+
+    <record id="report_medic_medical_bill" model="ir.actions.report.xml">
+        <field name="print_report_name">(((object[0].customer.customer_id + ' - ') if object[0].customer.customer_id else 'false - ') + (object[0].customer.name if object[0].customer.name else 'false - ') ) + '.pdf'</field>
+    </record>
+
+
+    <record id="paperformat_euro_a4_medic_check_list" model="report.paperformat">
+        <field name="name">Medic European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+            string="Print Check List"
+            id="report_medic_medical_check_list"
+            model="medic.medical.bill"
+            report_type="qweb-pdf"
+            name="dha_medic_report.report_medic_medical_check_list_report"
+            file="dha_medic_report.report_medic_medical_check_list_report"
+            paperformat="dha_medic_report.paperformat_euro_a4_medic_check_list"
+    />
+
+    <record id="paperformat_a5_medic_invoice_bill" model="report.paperformat">
+        <field name="name">Medic Invoice A5</field>
+        <field name="default" eval="True"/>
+        <field name="format">A5</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">2</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+            string="Print Receipt Voucher"
+            id="invoice_receipt_voucher"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="dha_medic_report.invoice_receipt_voucher_report"
+            file="dha_medic_report.invoice_receipt_voucher_report"
+            paperformat="dha_medic_report.paperformat_a5_medic_invoice_bill"
+    />
+
+</odoo>

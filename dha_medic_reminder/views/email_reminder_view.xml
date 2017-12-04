@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="view_email_reminder_form" model="ir.ui.view">
+            <field name="name">email.reminder.form</field>
+            <field name="model">email.reminder</field>
+            <field name="arch" type="xml">
+                <form string="Email Reminder">
+                    <group>
+                        <field name="project_task_type_ids" widget="many2many_tags"/>
+                        <field name="helpdesk_stage_ids" widget="many2many_tags"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_email_reminder_tree" model="ir.ui.view">
+            <field name="name">email.reminder.tree</field>
+            <field name="model">email.reminder</field>
+            <field name="arch" type="xml">
+                <tree string="Email Reminder">
+                    <field name="project_task_type_ids" widget="many2many_tags"/>
+                    <field name="helpdesk_stage_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_email_reminder" model="ir.actions.act_window">
+            <field name="name">Email Reminder</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">email.reminder</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem action="action_email_reminder" id="menu_action_email_reminder" parent="base.menu_users" groups="dha_medic_reminder.group_mail_reminder" sequence="20"/>
+    </data>
+</odoo>

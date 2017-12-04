@@ -16,15 +16,28 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'account', 'stock', 'hr', 'web_kanban', 'web'],
+    'depends': ['base', 'sale', 'account', 'stock', 'hr', 'web_kanban', 'web', 'calendar', 'dha_res_partner_modifier'],
 
     # always loaded
     'data': [
+
+        'security/group_access_right_medic.xml',
         'security/ir.model.access.csv',
         'data/partner_data.xml',
+        'data/product_data.xml',
         'data/sequence.xml',
         'data/tests_type.xml',
         'data/ir_cron.xml',
+        'data/lab_test_unit.xml',
+        'data/out_building_center_stock.xml',
+        'data/building_type.xml',
+        'data/treatement_classify.xml',
+
+        'wizard/wizard_check_customer_views.xml',
+        'wizard/wizard_print_test_number.xml',
+        'wizard/wizard_import_employee_company_check_view.xml',
+
+
         'views/menu_item.xml',
         'views/template.xml',
         'views/medic_package.xml',
@@ -38,11 +51,17 @@
         'views/medic_diseases_views.xml',
         'views/medic_appoint_views.xml',
         'views/medic_company_check_views.xml',
-        'wizard/wizard_check_customer_views.xml',
+        'views/medic_stock_views.xml',
+        'views/medic_sale_order.xml',
+        'views/medic_hr_employee_view.xml',
+        'views/medic_contract_schedule.xml',
+
+        'views/run_one_time_function.xml',
     ],
     # only loaded in demonstration mode
     'qweb': ['static/src/xml/*.xml'],
 
     'demo': [
     ],
+    'installable': True,
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_backend" name="dha_medic_sms assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/dha_medic_sms/static/src/js/char_domain.js" />
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,92 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="dhac_calendar_export_list">
+            <field name="name">dhac.calendar.export list</field>
+            <field name="model">dhac.calendar.export</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="time_start"/>
+                    <field name="time_end"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dhac_calendar_export_form">
+            <field name="name">dhac.calendar.export form</field>
+            <field name="model">dhac.calendar.export</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="time_start" required="1"/>
+                            </group>
+                            <group>
+                                <field name="time_end" required="1"/>
+                            </group>
+                            <field name="attendees" widget="many2many_tags"/>
+                            <field name="partner_ids" widget="many2many_tags" required="1"/>
+                        </group>
+                        <footer>
+                            <button name="do_action" type="object" string="Export"/>
+                            <button string="Cancel" special="cancel" class="btn-default"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dhac_calendar_export_attendee_form">
+            <field name="name">calendar.export.attendees form</field>
+            <field name="model">calendar.export.attendees</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dhac_calendar_export_attendee_tree">
+            <field name="name">calendar.export.attendees tree</field>
+            <field name="model">calendar.export.attendees</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="dhac_calendar_export_attendance_action_window">
+            <field name="name">calendar.export.attendees window</field>
+            <field name="res_model">calendar.export.attendees</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="dhac_calendar_export_action_window">
+            <field name="name">dhac_calendar_export window</field>
+            <field name="res_model">dhac.calendar.export</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Export Calendar" id="dhac_calendar_export_menu" parent="calendar.mail_menu_calendar"
+                  action="dhac_calendar_export_action_window"/>
+
+        <menuitem name="Configurations" id="dhac_calendar_config" parent="calendar.mail_menu_calendar" sequence="100"/>
+
+        <menuitem name="Attendees Template" id="dhac_calendar_export_config_attendee_menu" parent="dhac_calendar_config"
+                  action="dhac_calendar_export_attendance_action_window"/>
+    </data>
+</odoo>

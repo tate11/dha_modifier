@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dhac_equip_access_credential,dhac_it.equip.access.credential,model_equip_access_credential,,1,0,0,0
+access_dhac_equip_access_credential_user,dhac_it.equip.access.credential.user,model_equip_access_credential,dhac_it.group_it_user,1,1,1,0
+access_dhac_equip_access_credential_manager,dhac_it.equip.access.credential.manager,model_equip_access_credential,dhac_it.group_it_manager,1,1,1,1
+
+access_dhac_asset_net_info,dhac_it.equip.access.credential,model_asset_net_info,,1,0,0,0
+access_dhac_asset_net_info_user,dhac_it.equip.access.credential.user,model_asset_net_info,dhac_it.group_it_user,1,1,1,0
+access_dhac_asset_net_info_manager,dhac_it.equip.access.credential.manager,model_asset_net_info,dhac_it.group_it_manager,1,1,1,1

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets" name="dha_medic_gis assets">
+            <script type="text/javascript" src="/dha_medic_gis/static/src/js/main.js"/>
+            <link rel="stylesheet" href="/dha_medic_gis/static/src/css/main.css"/>
+        </template>
+
+        <template id="index" name="DHAM Maps Index">&lt;!DOCTYPE html&gt;
+            <html>
+                <head>
+                    <title>DHAM Maps</title>
+
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+                    <meta http-equiv="content-type" content="text/html, charset=utf-8" />
+
+                    <meta name="viewport" content=" width=1024, user-scalable=no"/>
+                    <meta name="apple-mobile-web-app-capable" content="yes"/>
+                    <meta name="mobile-web-app-capable" content="yes"/>
+
+                    <script type="text/javascript">
+                        var odoo = {
+                            csrf_token: "<t t-esc="request.csrf_token(None)"/>",
+                            session_info: <t t-raw="session_info"/>,
+                        };
+                    </script>
+
+                    <t t-call-assets="web.assets_common" t-css="true"/>
+                    <t t-call-assets="web.assets_backend" t-css="true"/>
+                    <t t-call-assets="web_editor.summernote" t-css="true"/>
+                    <t t-call-assets="web_editor.assets_editor" t-css="true"/>
+                    <t t-call-assets="dha_medic_gis.assets"/>
+
+                    <script type="text/javascript" id="loading-script" t-raw="init">
+                        var main;
+                        $(document).ready(function() {
+                            odoo.define('web.web_client', function (require) {
+                                var Main = require('dha_medic_gis.main');
+                                main = new Main();
+                                return main;
+                            });
+                        })
+                    </script>
+
+                </head>
+                <body>
+                    <div id="map"/>
+                    <div id="custom_layer"/>
+                    <script t-att-async="1" t-att-defer="1" t-attf-src="https://maps.googleapis.com/maps/api/js?libraries=visualization,drawing,geometry&amp;key=AIzaSyDEkYKgpSU8xQm-2PFXCeHZT8IIlcOdmYs&amp;callback=main.start"/>
+                </body>
+            </html>
+        </template>
+    </data>
+</odoo>

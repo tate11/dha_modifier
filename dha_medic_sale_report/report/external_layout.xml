@@ -1,0 +1,61 @@
+<odoo>
+    <template id="report.external_layout">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+
+        <t t-call="dha_medic_sale_report.external_layout_header"/>
+        <t t-raw="0"/>
+        <t t-call="dha_medic_sale_report.external_layout_footer"/>
+    </template>
+
+    <template id="dha_medic_sale_report.external_layout_header">
+        <div class="header">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="max-height: 80px;"/>
+                </div>
+                <div class="col-xs-9">
+                    <h4 style="">PHÒNG KHÁM ĐA KHOA DHA</h4>
+                    <t t-if="company.partner_id.contact_address" style="margin-left:25px">Địa chỉ:
+                        <span style="margin-left:5px" t-esc='company.partner_id.contact_address'/>
+                    </t>
+                    <br/>
+                    <t t-if="company.phone" style="margin-left:25px">Điện thoại:
+                        <span style="margin-left:5px;margin-right:5px"
+                              t-esc='company.phone'/>
+                        <span t-if="company.email">-  Email :
+                            <span style="margin-left:5px;" t-esc='company.email'/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="dha_medic_sale_report.external_layout_footer">
+        <div class="footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline">
+                    <li>Trang:</li>
+                    <li>
+                        <span class="page"/>
+                    </li>
+                    <li>/</li>
+                    <li>
+                        <span class="topage"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+
+</odoo>

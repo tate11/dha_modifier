@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_sms_list" model="ir.ui.view">
+            <field name="name">SMS List</field>
+            <field name="model">dha.medic.sms</field>
+            <field name="arch" type="xml">
+                <tree string="SMS List">
+                    <field name="name"/>
+                    <field name="recipients"/>
+                    <field name="content"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sms_form" model="ir.ui.view">
+            <field name="name">SMS List</field>
+            <field name="model">dha.medic.sms</field>
+            <field name="arch" type="xml">
+                <form string="SMS List">
+                    <header>
+                        <button name="send_sms" type="object" class="oe_highlight" string="Send SMS" groups="dha_medic_sms.group_marketing"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="res_partner" invisible="1"/>
+                            <field name="name"/>
+                            <field name="recipients" widget='radio' options="{'horizontal': true}"/>
+                            <field name="sms_domain" widget="char_domain" options="{'model_field':'res_partner'}"
+                                   attrs="{'invisible':[('recipients','!=','customer')]}"
+                                   context="{'search_default_existed_mobile':1}"/>
+                            <field name="sms_list_ids" widget="many2many_tags" attrs="{'invisible':[('recipients','!=','sms_list')]}"/>
+                            <field name="content"/>
+                        </group>
+                        <group>
+                            <field name="status_ids">
+                                <tree create="0" edit="0">
+                                    <field name="partner_id"/>
+                                    <field name="state"/>
+                                    <field name="description"/>
+                                    <field name="create_date" string="Sent date"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_sms" model="ir.actions.act_window">
+            <field name="name">SMS List</field>
+            <field name="res_model">dha.medic.sms</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+		<menuitem id="dha_medic_sms" name="SMS" sequence="6"/>
+        <menuitem id="dha_medic_sms_wrap" parent="dha_medic_sms" name="SMS"/>
+		<menuitem id="dha_medic_view_sms" name="SMS" action="action_view_sms" sequence="0" parent="dha_medic_sms_wrap"/>
+	</data>
+</odoo>

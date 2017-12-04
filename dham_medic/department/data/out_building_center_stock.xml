@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="out_center_department" model="hr.department">
+            <field name="name">External Center</field>
+            <field name="code">999</field>
+            <field name="type">center</field>
+        </record>
+
+        <record id="out_center_warehouse" model="stock.warehouse">
+            <field name="name">External WareHouse</field>
+            <field name="code">EW</field>
+            <field name="department_id" eval="ref('out_center_department')"/>
+        </record>
+    </data>
+</odoo>

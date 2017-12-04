@@ -1,0 +1,588 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * account
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-29 08:44+0000\n"
+"PO-Revision-Date: 2017-10-29 08:44+0000\n"
+"Last-Translator: Vu <vunt@dhacorp.vn>, 2017\n"
+"Language-Team: Vietnamese"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_customer_id
+msgid "Customer ID"
+msgstr "Mã Khách Hàng"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_family_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_family_sex
+msgid "Sex"
+msgstr "Giới Tính"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_family_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_day_of_birth
+msgid "Day of Birth"
+msgstr "Ngày Sinh"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_prognostic
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_prognostic
+msgid "Prognostic"
+msgstr "Triệu Chứng"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_reason
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_reason
+msgid "Reason"
+msgstr "Lý Do"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_package_ids
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_package_ids
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_company_check_package_ids
+msgid "Packages"
+msgstr "Gói Khám"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_medicine_package
+msgid "Packages"
+msgstr "Gói"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_customer
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_customer
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_customer
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_customer
+msgid "Customer"
+msgstr "Bệnh Nhân"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_doctor_assign
+msgid "Assigned By"
+msgstr "Bác sĩ chỉ định"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_doctor_id
+msgid "Physician"
+msgstr "Bác Sĩ"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_assign_date
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_assign_date
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_assign_date
+msgid "Assigned Date"
+msgstr "Ngày chỉ định"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_line_product_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_consumable_supplies_product_id
+msgid "Product"
+msgstr "Dịch Vụ"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_line_qty
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_consumable_supplies_qty
+msgid "Quantity"
+msgstr "Số Lượng"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_consumable_supplies_product_uom_id
+msgid "Product Unit of Measure"
+msgstr "Đơn vị tính"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_hr_department_address
+msgid "Address"
+msgstr "Địa Chỉ"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_hr_department_buildings_type
+msgid "Buildings Type"
+msgstr "Chuyên Khoa"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_center_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_center_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_center_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_center_id
+msgid "Center"
+msgstr "Phòng Khám"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_room_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_room_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_room_id
+msgid "Room"
+msgstr "Phòng"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_building_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_building_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_building_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_buildings_type
+msgid "Building"
+msgstr "Khoa"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_height
+msgid "Height (Cm)"
+msgstr "Chiều Cao (cm)"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_weight
+msgid "Weight (Kg)"
+msgstr "Cân Nặng (kg)"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_blood_pressure
+msgid "Blood Pressure (mmHg)"
+msgstr "Huyết Áp (mmHg)"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_temperatures
+msgid "Temperatures"
+msgstr "Nhiệt Độ"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_pace_of_breathe
+msgid "Pace of Breathe (per min)"
+msgstr "Nhịp Thở"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_allergy
+msgid "Allergy"
+msgstr "Dị Ứng Thuốc"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_note
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_lab_resultcriteria_sequence
+msgid "Sequence"
+msgstr "STT"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_lab_resultcriteria_name
+msgid "Tests"
+msgstr "Tên"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_lab_resultcriteria_normal_range
+msgid "Normal Range"
+msgstr "Chỉ Số Bình Thường"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_lab_resultcriteria_units
+msgid "Units"
+msgstr "ĐVT"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_lab_resultcriteria_result
+msgid "Result"
+msgstr "Kết Quả"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_lab_resultcriteria_medical_lab_test_id
+msgid "Lab Tests"
+msgstr "Số Xét Nghiệm"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_name
+msgid "Number"
+msgstr "Số"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_type
+msgid "Type"
+msgstr "Xét Nghiệm"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_note
+msgid "Note"
+msgstr "Kết Luận"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res1
+msgid "Image 1"
+msgstr "Hình 1"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res2
+msgid "Image 2"
+msgstr "Hình 2"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res3
+msgid "Image 3"
+msgstr "Hình 3"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res4
+msgid "Image 4"
+msgstr "Hình 4"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res5
+msgid "Image 5"
+msgstr "Hình 5"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res6
+msgid "Image 6"
+msgstr "Hình 6"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_wizard_check_partner_name
+msgid "Customer Name"
+msgstr "Họ Và Tên"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_wizard_check_partner_mobile
+msgid "Mobile"
+msgstr "Di Động"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_diagnose
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_diagnose
+msgid "Diagnose"
+msgstr "Chuẩn đoán"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_diagnose_icd
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_diagnose_icd
+msgid "Diagnose ICD"
+msgstr "Chuẩn đoán ICD"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_de_nghi
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_de_nghi
+msgid "Note"
+msgstr "Đề Nghị"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_tuan_hoan
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_ho_hap
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_tieu_hoa
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_than_tiet_nieu
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_co_xuong_khop
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_than_kinh
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phan_loai_tam_than
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_phan_loai
+msgid "Classify"
+msgstr "Phân Loại"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_di_tat_bam_sinh
+msgid "Birth Defects"
+msgstr "Dị tật bẩm sinh"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_treatment_note
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_treatment_note
+msgid "Note"
+msgstr "Kết luận"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_treatment_template
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_treatment_template
+msgid "Template"
+msgstr "Mẫu"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_nhi
+msgid "Internal Medicine"
+msgstr "Khoa Nội"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_mat
+msgid "Ophthalmology"
+msgstr "Khoa Mắt"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_tai_mui_hong
+msgid "ENT (Ear - Nose - Throat)"
+msgstr "Khoa Tai - Mũi - Họng"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_rang_ham_mat
+msgid "Dentomaxillofacial System"
+msgstr "Khoa Răng - Hàm - Mặt"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_da_lieu
+msgid "Dermatology"
+msgstr "Khoa Da Liễu"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_ngoai
+msgid "Surgery"
+msgstr "Khoa Ngoại"
+
+#. module: dha_medic_modifier
+#: model:hr.department.building.type,name:dha_medic_modifier.khoa_san
+msgid "Obstetrics and Gynecology"
+msgstr "Sản Phụ Khoa"
+
+#. module: dha_medic_modifier
+#: model:medic.test.type,name:dha_medic_modifier.medic_test_type_lab_test
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_lab_test
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_lab_test_root
+msgid "Lab Tests"
+msgstr "Xét Nghiệm"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_lab_test_result
+msgid "Lab Test Results"
+msgstr "Kết Quả Xét Nghiệm"
+
+#. module: dha_medic_modifier
+#: model:medic.test.type,name:dha_medic_modifier.medic_test_type_image_test
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_image_root
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_image_test
+msgid "Image Tests"
+msgstr "X-Quang"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_image_result
+msgid "Image Test Results"
+msgstr "Kết Quả X-Quang"
+
+#. module: dha_medic_modifier
+#: model:medic.test.type,name:dha_medic_modifier.medic_test_type_echograph
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_echograph_root
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_echograph
+msgid "Echograph"
+msgstr "Siêu Âm"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_echograph_result
+msgid "Echograph Results"
+msgstr "Kết Quả Siêu Âm"
+
+#. module: dha_medic_modifier
+#: model:medic.test.type,name:dha_medic_modifier.medic_test_type_electrocardiogram
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_electrocardiogram_root
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_electrocardiogram
+msgid "Electrocardiogram"
+msgstr "Điện Tâm Đồ"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_electrocardiogram_result
+msgid "Electrocardiogram Results"
+msgstr "Kết Quả Điện Tâm Đồ"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_tuan_hoan
+msgid "Cardiovascular System"
+msgstr "Tuần Hoàn"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_ho_hap
+msgid "Respiratory System"
+msgstr "Hô Hấp"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_tieu_hoa
+msgid "Gastroinestinal System"
+msgstr "Tiêu Hoá"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_noi_tiet
+msgid "Endocrinologist"
+msgstr "Nội Tiết"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_than_tiet_nieu
+msgid "Genito-urinary System"
+msgstr "Thận Tiết Niệu - Sinh Dục"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_co_xuong_khop
+msgid "Musculoskeletal System"
+msgstr "Cơ Xương Khớp"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_than_kinh
+msgid "Central Nervous System"
+msgstr "Thần Kinh"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_tam_than
+msgid "Psychiatric System"
+msgstr "Tâm Thần"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phai_ko_kinh
+msgid "Right w/o glass"
+msgstr "Phải không kính"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phai_co_kinh
+msgid "Right w glass"
+msgstr "Phải có kính"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_trai_co_kinh
+msgid "Left w glass"
+msgstr "Trái có kính"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_trai_ko_kinh
+msgid "Left w/o glass"
+msgstr "Trái không kính"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_trai_noi_thuong
+msgid "Left Air Transmission"
+msgstr "Trái nói thường"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_trai_noi_tham
+msgid "Trái nói thầm"
+msgstr "Kết luận"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phai_noi_thuong
+msgid "Right Air Transmission"
+msgstr "Phải nói thường"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_phai_noi_tham
+msgid "Right Bone Transmission"
+msgstr "Phải nói thầm"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_ham_tren
+msgid "Upper Jaw"
+msgstr "Hàm trên"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_sub_treatment_ham_duoi
+msgid "Below Jaw"
+msgstr "Hàm dưới"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_company_root
+msgid "External"
+msgstr "Ngoại Viện"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_company_checkk
+msgid "Contracts"
+msgstr "Hợp Đồng"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_company
+msgid "Company"
+msgstr "Công Ty"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_customer
+msgid "Patients"
+msgstr "Tiếp Nhận Bệnh"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_counter_root
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_counter
+msgid "Counter"
+msgstr "Thu Ngân"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_appoint
+msgid "Appoint"
+msgstr "Chỉ Định"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_doctor_root
+msgid "Doctor"
+msgstr "Khám Bệnh"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_doctor_vital_sign
+msgid "Vital Sign"
+msgstr "Sinh Hiệu"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_doctor
+msgid "Examination"
+msgstr "Khám Bệnh"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_doctor_result
+msgid "Examination Results"
+msgstr "Tra Cứu Kết Quả"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_pharmacies
+msgid "Pharmacies"
+msgstr "Nhà Thuốc"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_medicine_order
+msgid "Prescriptions"
+msgstr "Đơn Thuốc"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_medicine_sale_order
+msgid "Medicine Quotations"
+msgstr "Báo Giá Thuốc"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_sales
+msgid "Sales"
+msgstr "Bán Hàng"
+
+#. module: dha_medic_modifier
+#: model:ir.ui.menu,name:dha_medic_modifier.menu_medic_drink_food_sale_order
+msgid "Drinks and Foods"
+msgstr "Đồ Ăn Thức Uống"
+
+#. module: dha_medic_modifier
+#: selection:res.partner,sex:0
+msgid "Male"
+msgstr "Nam"
+
+#. module: dha_medic_modifier
+#: selection:res.partner,sex:1
+msgid "Female"
+msgstr "Nữ"
+
+#. module: dha_medic_modifier
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_product_test
+msgid "Service"
+msgstr "Dịch Vụ"
+
+
+

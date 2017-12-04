@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record id="reminder_email_template" model="mail.template">
+            <field name="name">Reminder e-mail template</field>
+            <field name="subject">[Odoo] Reminder to ${ctx['partner_id'].name|safe}</field>
+            <field name="email_to">${ctx['partner_id'].email|safe}</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="body_html">
+            <![CDATA[
+                <h2>Dear ${ctx['partner_id'].name},</h2><br/><br/>
+                    % if ctx.get('project_task_ids'):
+                        <h3>You have ${ctx['count']['project_task_ids']} pending task:</h3>
+                        % for pt in ctx['project_task_ids']:
+                            <a target="_blank" href="${ctx['current_host']}/web?#id=${pt.id}&view_type=form&model=project.task">${pt.name}</a><br/>
+                        % endfor
+                        <br/><br/>
+                    % endif
+
+                    % if ctx.get('helpdesk_ticket_ids'):
+                        <h3>You have ${ctx['count']['helpdesk_ticket_ids']} pending ticket:</h3>
+                        % for ht in ctx['helpdesk_ticket_ids']:
+                            <a target="_blank" href="${ctx['current_host']}/web?#id=${ht.id}&view_type=form&model=helpdesk.ticket">${ht.name}</a><br/>
+                        % endfor
+                        <br/><br/>
+                    % endif
+
+                    % if ctx.get('purchase_request_ids'):
+                        <h3>You have ${ctx['count']['purchase_request_ids']} pending purchase request:</h3>
+                        % for pr in ctx['purchase_request_ids']:
+                            <a target="_blank" href="${ctx['current_host']}/web?#id=${pr.id}&view_type=form&model=purchase.request">${pr.name}</a><br/>
+                        % endfor
+                        <br/><br/>
+                    % endif
+
+                    % if ctx.get('purchase_order_ids'):
+                        <h3>You have ${ctx['count']['purchase_order_ids']} pending purchase order:</h3>
+                        % for po in ctx['purchase_order_ids']:
+                            <a target="_blank" href="${ctx['current_host']}/web?#id=${po.id}&view_type=form&model=purchase.order">${po.name}</a><br/>
+                        % endfor
+                        <br/><br/>
+                    % endif
+
+                    % if ctx.get('hr_holiday_ids'):
+                        <h3>You have ${ctx['count']['hr_holiday_ids']} pending leaving request:</h3>
+                        % for hr in ctx['hr_holiday_ids']:
+                            <a target="_blank" href="${ctx['current_host']}/web?#id=${hr.id}&view_type=form&model=hr.holidays">${hr.employee_id.name} ${hr.name}</a><br/>
+                        % endfor
+                        <br/><br/>
+                    % endif
+                    Regards,<br/>
+                ]]>
+            </field>
+       </record>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="dha_dashboard_action_client" model="ir.actions.client">
+            <field name="name">Open Dashboard</field>
+            <field name="tag">dha.dashboard.ui</field>
+            <field name="params" eval="{}"/>
+        </record>
+
+        <menuitem name="DHA Dashboard" id="dha_dashboard" sequence="2"
+                  action="dha_dashboard_action_client"/>
+    </data>
+
+    <data noupdate="1">
+        <function model="hr.holidays" name="compute_old_data_manager" />
+    </data>
+</odoo>

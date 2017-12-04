@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_medic_test_search" model="ir.ui.view">
+            <field name="name">medic.test.search</field>
+            <field name="model">medic.test</field>
+            <field name="arch" type="xml">
+                <search string="Tests Search">
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('customer', 'ilike', self)]"/>
+                    <field name="customer_id"/>
+                    <field name="customer"/>
+                    <field name="doctor_assign"/>
+                    <field name="assign_date"/>
+                    <field name="product_test"/>
+                    <field name="state"/>
+
+                    <filter name="except_done" string="Except Done" domain="[('state','!=','done')]"/>
+                    <filter name="new_tests" string="New" domain="[('state','=','new')]"/>
+                    <filter name="processing_tests" string="Processing" domain="[('state','=','processing')]"/>
+                    <filter name="done_tests" string="Done" domain="[('state','=','done')]"/>
+                    <group expand="1" string="Group By...">
+                        <filter name="group_customer" string="Customer" domain="[]" context="{'group_by': 'customer'}"/>
+                        <filter string="Service" context="{'group_by': 'product_test'}"/>
+                        <filter string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_medic_test_tree" model="ir.ui.view">
+            <field name="name">medic.test.tree</field>
+            <field name="model">medic.test</field>
+            <field name="arch" type="xml">
+                <tree string="Test">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="customer"/>
+                    <field name="sex"/>
+                    <field name="day_of_birth"/>
+                    <field name="doctor_assign"/>
+                    <field name="assign_date"/>
+                    <field name="product_test"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_medic_test_form" model="ir.ui.view">
+            <field name="name">medic.test.form</field>
+            <field name="model">medic.test</field>
+            <field name="arch" type="xml">
+                <form string="Test">
+                    <header>
+                        <button type="object" name="action_processing" string="Processing"
+                                attrs="{'invisible':['|', ('state','in',('processing','done')),'&amp;',('show_image','!=', True),('state','=','new')]}"/>
+                        <button type="object" name="action_ready" string="Ready"
+                                attrs="{'invisible':['|',('state','!=','new'),('show_image','=', True)]}"/>
+                        <button type="object" name="action_done" string="Done"
+                                attrs="{'invisible':[('state','!=','processing')]}" confirm="Are you sure you want to do this?"/>
+                        <button type="object" name="action_reset_processing" string="Reset to processing"
+                                attrs="{'invisible':[('state','!=','done')]}" confirm="Are you sure you want to do this?"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,ready,processing,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <label for="type" class="oe_edit_only"/>
+                        <h2>
+                            <field name="type" invisible="1"/>
+                            <field name="product_test" readonly="1"/>
+                            <field name="show_image" invisible="1"/>
+                        </h2>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="customer_id"/>
+                                <field name="customer" readonly="1"/>
+                                <field name="sex"/>
+                                <field name="doctor_id"/>
+                                <field name="center_id"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="day_of_birth"/>
+                                <field name="doctor_assign" readonly="1"/>
+                                <field name="assign_date" readonly="1"/>
+                                <field name="related_medical_bill" widget="many2many_tags" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="result_template" attrs="{'invisible' : [('show_image','!=', True)]}" domain="[('type','=',type)]" context="{'default_type': type}"/>
+                            <field name="result" widget="html" attrs="{'invisible' : [('show_image','!=', True)]}"/>
+                            <field name="note" attrs="{'invisible' : [('show_image','!=', True)]}"/>
+                        </group>
+                        <notebook>
+                            <page string="Images"
+                                  attrs="{'invisible' : [('show_image','!=', True)]}">
+                                <group>
+                                    <group>
+                                        <field name="image_res1" widget="image" nolable="1" attrs="{'readonly':[('state','in',('new','done'))]}"/>
+                                        <field name="image_res2" widget="image" nolable="1" attrs="{'readonly':[('state','in',('new','done'))]}"/>
+                                        <field name="image_res3" widget="image" nolable="1" attrs="{'readonly':[('state','in',('new','done'))]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="image_res4" widget="image" nolable="1" attrs="{'readonly':[('state','in',('new','done'))]}"/>
+                                        <field name="image_res5" widget="image" nolable="1" attrs="{'readonly':[('state','in',('new','done'))]}"/>
+                                        <field name="image_res6" widget="image" nolable="1" attrs="{'readonly':[('state','in',('new','done'))]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Result"
+                                  attrs="{'invisible' : [('show_image','=', True)]}">
+                                <field name="lab_test_criteria" attrs="{'readonly':[('state','in',('new','done'))]}">
+                                    <tree editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="name"/>
+                                        <field name="result"/>
+                                        <field name="normal_range"/>
+                                        <field name="units"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Consumable Supplies">
+                                <field name="consumable_supplies">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="qty"/>
+                                        <field name="product_uom_id"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="qty"/>
+                                            <field name="product_uom_id"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <!--<page string="Attachments">-->
+                            <!--<field name="attachment_ids"-->
+                            <!--</page>-->
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_medic_test_total" model="ir.actions.act_window">
+            <field name="name">Total Test</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="action_medic_test_lab" model="ir.actions.act_window">
+            <field name="name">Lab Test</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"
+                   eval="[('type','=', ref('dham_medic.medic_test_type_lab_test', False))]"/>
+            <field name="context" eval="{'default_type' : ref('dham_medic.medic_test_type_lab_test', False), 'search_default_except_done':1 }"/>
+        </record>
+
+        <record id="action_medic_test_lab_result" model="ir.actions.act_window">
+            <field name="name">Lab Test</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"
+                   eval="[('type','=', ref('dham_medic.medic_test_type_lab_test', False))]"/>
+            <field name="context" eval="{'default_type' : ref('dham_medic.medic_test_type_lab_test', False), 'search_default_done_tests':1 }"/>
+        </record>
+
+        <record id="action_medic_test_image" model="ir.actions.act_window">
+            <field name="name">Image Test</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('type','=', ref('dham_medic.medic_test_type_image_test', False)) ]"/>
+            <field name="context"
+                   eval="{'default_type' : ref('dham_medic.medic_test_type_image_test', False), 'search_default_except_done':1}"/>
+        </record>
+
+        <record id="action_medic_test_image_result" model="ir.actions.act_window">
+            <field name="name">Image Test</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('type','=', ref('dham_medic.medic_test_type_image_test', False)) ]"/>
+            <field name="context"
+                   eval="{'default_type' : ref('dham_medic.medic_test_type_image_test', False), 'search_default_done_tests':1}"/>
+        </record>
+
+        <record id="action_medic_test_echograph" model="ir.actions.act_window">
+            <field name="name">Echograph</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('type','=', ref('dham_medic.medic_test_type_echograph', False))]"/>
+            <field name="context" eval="{'default_type' : ref('dham_medic.medic_test_type_echograph', False), 'search_default_except_done':1}"/>
+        </record>
+
+        <record id="action_medic_test_echograph_result" model="ir.actions.act_window">
+            <field name="name">Echograph</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('type','=', ref('dham_medic.medic_test_type_echograph', False))]"/>
+            <field name="context" eval="{'default_type' : ref('dham_medic.medic_test_type_echograph', False), 'search_default_done_tests':1}"/>
+        </record>
+
+        <record id="action_medic_test_electrocardiogram" model="ir.actions.act_window">
+            <field name="name">Electrocardiogram</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"
+                   eval="[('type','=', ref('dham_medic.medic_test_type_electrocardiogram', False))]"/>
+            <field name="context"
+                   eval="{'default_type' : ref('dham_medic.medic_test_type_electrocardiogram', False), 'search_default_except_done':1}"/>
+        </record>
+
+        <record id="action_medic_test_electrocardiogram_result" model="ir.actions.act_window">
+            <field name="name">Electrocardiogram</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"
+                   eval="[('type','=', ref('dham_medic.medic_test_type_electrocardiogram', False))]"/>
+            <field name="context"
+                   eval="{'default_type' : ref('dham_medic.medic_test_type_electrocardiogram', False), 'search_default_done_tests':1}"/>
+        </record>
+
+        <record id="view_medic_test_type_tree" model="ir.ui.view">
+            <field name="name">medic.test.type.tree</field>
+            <field name="model">medic.test.type</field>
+            <field name="arch" type="xml">
+                <tree string="Medic Test Type">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_medic_test_type_form" model="ir.ui.view">
+            <field name="name">medic.test.type.form</field>
+            <field name="model">medic.test.type</field>
+            <field name="arch" type="xml">
+                <form string="Test">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_medic_test_type" model="ir.actions.act_window">
+            <field name="name">Medic Test Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="view_medic_medical_lab_units_tree" model="ir.ui.view">
+            <field name="name">medic.medical.lab.units.tree</field>
+            <field name="model">medic.medical.lab.units</field>
+            <field name="arch" type="xml">
+                <tree string="Medic Lab Test Units">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_medic_medical_lab_units_form" model="ir.ui.view">
+            <field name="name">medic.medical.lab.units.form</field>
+            <field name="model">medic.medical.lab.units</field>
+            <field name="arch" type="xml">
+                <form string="Lab Test Units">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_medic_medical_lab_units" model="ir.actions.act_window">
+            <field name="name">Medic Lab Test Units</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.medical.lab.units</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="view_medic_treatement_teplate_tree" model="ir.ui.view">
+            <field name="name">treatment.template.tree</field>
+            <field name="model">treatment.template</field>
+            <field name="arch" type="xml">
+                <tree string="Treatement Template">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="template"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_medic_treatement_teplate_form" model="ir.ui.view">
+            <field name="name">treatment.template.form</field>
+            <field name="model">treatment.template</field>
+            <field name="arch" type="xml">
+                <form string="Treatement Template">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="template"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_treatement_template" model="ir.actions.act_window">
+            <field name="name">Treatement Template</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">treatment.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="view_medic_test_teplate_tree" model="ir.ui.view">
+            <field name="name">medic.test.res.template.tree</field>
+            <field name="model">medic.test.res.template</field>
+            <field name="arch" type="xml">
+                <tree string="Result Template">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <!--<field name="template"/>-->
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_medic_test_teplate_form" model="ir.ui.view">
+            <field name="name">medic.test.res.template.form</field>
+            <field name="model">medic.test.res.template</field>
+            <field name="arch" type="xml">
+                <form string="Result Template">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="template" widget="html"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_test_template" model="ir.actions.act_window">
+            <field name="name">Test Template</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medic.test.res.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_medic_lab_test_root" parent="menu_medic_root" sequence="25" name="Lab Tests"/>
+        <menuitem id="menu_medic_lab_test" parent="menu_medic_lab_test_root" sequence="5" name="Lab Tests" action="action_medic_test_lab"/>
+        <menuitem id="menu_medic_lab_test_result" parent="menu_medic_lab_test_root" sequence="15" name="Lab Test Results" action="action_medic_test_lab_result"/>
+
+        <menuitem id="menu_medic_image_test" parent="menu_medic_root" sequence="30" name="Image Tests"/>
+
+
+        <!--<menuitem id="menu_medic_lab_test_root" parent="menu_medic_lab_test" sequence="5" name="Lab Test"-->
+                  <!--action="action_medic_test_lab"/>-->
+        <menuitem id="menu_medic_image_test" parent="menu_medic_root" sequence="30" name="Image Tests"/>
+        <menuitem id="menu_medic_image_root" parent="menu_medic_image_test" sequence="5" name="Image Tests"
+                  action="action_medic_test_image"/>
+        <menuitem id="menu_medic_image_result" parent="menu_medic_image_test" sequence="10" name="Image Test Results"
+                  action="action_medic_test_image_result"/>
+
+        <menuitem id="menu_medic_echograph_root" parent="menu_medic_root" sequence="31" name="Echograph"/>
+        <menuitem id="menu_medic_echograph" parent="menu_medic_echograph_root" sequence="5" name="Echograph"
+                  action="action_medic_test_echograph"/>
+        <menuitem id="menu_medic_echograph_result" parent="menu_medic_echograph_root" sequence="10" name="Echograph Results"
+                  action="action_medic_test_echograph_result"/>
+
+        <menuitem id="menu_medic_electrocardiogram_root" parent="menu_medic_root" sequence="32"
+                  name="Electrocardiogram" />
+        <menuitem id="menu_medic_electrocardiogram" parent="menu_medic_electrocardiogram_root" sequence="5"
+                  name="Electrocardiogram" action="action_medic_test_electrocardiogram"/>
+        <menuitem id="menu_medic_electrocardiogram_result" parent="menu_medic_electrocardiogram_root" sequence="10"
+                  name="Electrocardiogram Results" action="action_medic_test_electrocardiogram_result"/>
+
+        <!--Lab Test Configurations-->
+        <menuitem id="menu_medic_lab_test_configurations_root" name="Lab Tests"
+                  parent="menu_medic_lab_test_configurations" sequence="5"/>
+
+        <menuitem id="menu_medic_lab_test_configurations_type" action="action_medic_test_type" groups="base.group_no_one"
+                  parent="menu_medic_lab_test_configurations_root" sequence="5"/>
+
+        <menuitem id="menu_medic_lab_test_configurations_unit" action="action_medic_medical_lab_units"
+                  parent="menu_medic_lab_test_configurations_root" sequence="10"/>
+
+        <menuitem id="menu_medic_lab_test_configurations_treatement_template" action="action_treatement_template"
+                  parent="menu_medic_lab_test_configurations_root" sequence="15"/>
+
+        <menuitem id="menu_medic_lab_test_configurations_result_template" action="action_test_template"
+                  parent="menu_medic_lab_test_configurations_root" sequence="20"/>
+    </data>
+</odoo>

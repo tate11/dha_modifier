@@ -1,0 +1,7 @@
+<odoo>
+    <data noupdate="0">
+
+        <function model="dha_medic_script.dha_medic_script" name="run_script"/>
+
+    </data>
+</odoo>
