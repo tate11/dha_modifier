@@ -109,21 +109,21 @@ class DHAMPatient(models.Model):
     @api.model
     def create(self, vals):
         res = super(DHAMPatient, self).create(vals)
-        if self.env.context.get('from_external_center', False):
-            try:
-                code = self.env.ref('dha_medic_modifier.out_center_department').code
-            except:
-                code = '999'
-        else:
-            code = '000'
-            EmployeeObj = self.env['hr.employee']
-            emp_id = EmployeeObj.search([('user_id', '=', self._uid)], limit=1)
-            if emp_id.department_id:
-                center = emp_id.department_id.find_center()
-                if center:
-                    code = center.code or '000'
-        code = code + self.env['ir.sequence'].next_by_code('patient.id.seq')
-        res.write({'patient_id': code})
+        # if self.env.context.get('from_external_center', False):
+        #     try:
+        #         code = self.env.ref('dha_medic_modifier.out_center_department').code
+        #     except:
+        #         code = '999'
+        # else:
+        #     code = '000'
+        #     EmployeeObj = self.env['hr.employee']
+        #     emp_id = EmployeeObj.search([('user_id', '=', self._uid)], limit=1)
+        #     if emp_id.department_id:
+        #         center = emp_id.department_id.find_center()
+        #         if center:
+        #             code = center.code or '000'
+        # code = code + self.env['ir.sequence'].next_by_code('patient.id.seq')
+        # res.write({'patient_id': code})
         return res
 
     @api.onchange('country_id')
@@ -172,9 +172,9 @@ class DHAMPatient(models.Model):
     @api.depends('patient_id')
     def _compute_barcode(self):
         Report = self.env['report']
-        for record in self:
-            if record.patient_id:
-                data_image = base64.b64encode(Report.barcode('QR', record.patient_id, width=100, height=100))
-                data_image_small = base64.b64encode(Report.barcode('QR', record.patient_id, width=75, height=75))
-                if data_image:
-                    record.write({'barcode_image': data_image, 'barcode_image_small': data_image_small})
+        # for record in self:
+        #     if record.patient_id:
+        #         data_image = base64.b64encode(Report.barcode('QR', record.patient_id, width=100, height=100))
+        #         data_image_small = base64.b64encode(Report.barcode('QR', record.patient_id, width=75, height=75))
+        #         if data_image:
+        #             record.write({'barcode_image': data_image, 'barcode_image_small': data_image_small})
