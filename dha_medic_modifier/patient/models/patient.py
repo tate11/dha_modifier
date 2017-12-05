@@ -40,9 +40,9 @@ class DHAMPatientFamily(models.Model):
 
 class DHAMPatient(models.Model):
     _name = 'dham.patient'
-    # _inherits = {
-    #     'res.partner' : 'partner_id'
-    # }
+    _inherits = {
+        'res.partner' : 'partner_id'
+    }
 
     BLOOD_TYPE = [
         ('A', 'A'),
@@ -52,11 +52,10 @@ class DHAMPatient(models.Model):
     ]
 
     MARITAL_STATUS = [
-        ('Single', 'Single'),
-        ('Married', 'Married'),
-        ('Widowed', 'Widowed'),
-        ('Divorced', 'Divorced'),
-        ('Separated', 'Separated'),
+        ('single', 'Single'),
+        ('married', 'Married'),
+        ('divorced', 'Divorced'),
+        ('separated', 'Separated'),
     ]
 
     last_check_in_time = fields.Datetime('Last Check In Time', track_visibility='onchange')
@@ -87,8 +86,8 @@ class DHAMPatient(models.Model):
     # medic_lab_test_compute_ids = fields.Many2many('medic.test', 'Lab Tests', compute='_get_medic_test_ids')
     # medic_image_test_compute_ids = fields.Many2many('medic.test', 'Image Tests', compute='_get_medic_test_ids')
     # medic_test_ids = fields.One2many('medic.test', 'customer', 'Tests', domain=[('state', 'in', ['new', 'processing'])])
-    barcode_image = fields.Binary('Barcode Image', attachment=True, compute="_compute_barcode", store=True)
-    barcode_image_small = fields.Binary('Barcode Image Small', attachment=True, compute="_compute_barcode", store=True)
+    barcode_image = fields.Binary('Barcode Image', attachment=True, compute="_compute_barcode")
+    barcode_image_small = fields.Binary('Barcode Image Small', attachment=True, compute="_compute_barcode")
 
 
     _sql_constraints = [
@@ -110,21 +109,21 @@ class DHAMPatient(models.Model):
     @api.model
     def create(self, vals):
         res = super(DHAMPatient, self).create(vals)
-        # if self.env.context.get('from_external_center', False):
-        #     try:
-        #         code = self.env.ref('dham_medic.out_center_department').code
-        #     except:
-        #         code = '999'
-        # else:
-        #     code = '000'
-        #     EmployeeObj = self.env['hr.employee']
-        #     emp_id = EmployeeObj.search([('user_id', '=', self._uid)], limit=1)
-        #     if emp_id.department_id:
-        #         center = emp_id.department_id.find_center()
-        #         if center:
-        #             code = center.code or '000'
-        # code = code + self.env['ir.sequence'].next_by_code('patient.id.seq')
-        # res.write({'patient_id': code})
+        if self.env.context.get('from_external_center', False):
+            try:
+                code = self.env.ref('dha_medic_modifier.out_center_department').code
+            except:
+                code = '999'
+        else:
+            code = '000'
+            EmployeeObj = self.env['hr.employee']
+            emp_id = EmployeeObj.search([('user_id', '=', self._uid)], limit=1)
+            if emp_id.department_id:
+                center = emp_id.department_id.find_center()
+                if center:
+                    code = center.code or '000'
+        code = code + self.env['ir.sequence'].next_by_code('patient.id.seq')
+        res.write({'patient_id': code})
         return res
 
     @api.onchange('country_id')
@@ -170,12 +169,11 @@ class DHAMPatient(models.Model):
             record.medic_image_test_compute_ids = MedictTest.search(
                 [('customer', '=', record.id), ('type', 'in', image_type)])
 
-    @api.multi
     @api.depends('patient_id')
     def _compute_barcode(self):
         Report = self.env['report']
         for record in self:
-            if record.customer_id:
+            if record.patient_id:
                 data_image = base64.b64encode(Report.barcode('QR', record.patient_id, width=100, height=100))
                 data_image_small = base64.b64encode(Report.barcode('QR', record.patient_id, width=75, height=75))
                 if data_image:
