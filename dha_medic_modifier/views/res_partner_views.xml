@@ -72,6 +72,9 @@
             </field>
         </record>
 
+        <!--<menuitem id="menu_medic_customer" parent="menu_medic_root" sequence="1" name="Patients"-->
+                  <!--action="action_partner_patients_form"/>-->
+
         <menuitem id="menu_medic_company_root" parent="menu_medic_root" sequence="3" name="External"/>
 
         <menuitem id="menu_medic_company" parent="menu_medic_company_root" sequence="3" name="Company"

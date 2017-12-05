@@ -1,12 +1,12 @@
 <templates>
     <t t-extend="KanbanView.buttons">
         <t t-jquery="button.o-kanban-button-new" t-operation="replace" >
-            <button type="button" t-if='(widget.model == "res.partner" and widget.ViewManager.title != "Patients") or (widget.model != "res.partner")' class="btn btn-primary btn-sm o-kanban-button-new" accesskey="c">
+            <button type="button" t-if='(widget.model == "dham.patient" and widget.ViewManager.title != "Patients") or (widget.model != "dham.patient")' class="btn btn-primary btn-sm o-kanban-button-new" accesskey="c">
                 <t t-esc="widget.options.create_text || _t('Create')"/>
             </button>
         </t>
         <t t-jquery="button.o-kanban-button-new" t-operation="after" >
-            <button type="button" t-if='widget.model == "res.partner" and widget.ViewManager.title == "Patients" '
+            <button type="button" t-if='widget.model == "dham.patient" and widget.ViewManager.title == "Patients" '
                     class="btn btn-primary btn-sm o_list_button_check_partner">Check Partner
             </button>
         </t>

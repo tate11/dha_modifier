@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="dham_patients_form" model="ir.ui.view">
+            <field name="name">dham.patient.tree</field>
+            <field name="model">dham.patient</field>
+            <field name="arch" type="xml">
+                <tree string="Patients">
+                    <field name="patient_id"/>
+                    <field name="display_name" string="Name"/>
+                    <field name="sex"/>
+                    <field name="age"/>
+                    <field name="last_check_in_time"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_patients_form" model="ir.ui.view">
+            <field name="name">dham.patient.form</field>
+            <field name="model">dham.patient</field>
+            <field name="arch" type="xml">
+                <form string="Patients">
+                    <!--<header>-->
+                        <!--<button name="action_go_person_inv" string="To Invoice" type="object" class="oe_highlight"-->
+                                <!--attrs="{'invisible': [('company_type','!=','person')]}"/>-->
+                    <!--</header>-->
+                    <sheet>
+                        <field name="image" widget='image' class="oe_avatar"
+                               options='{"preview_image": "image_medium", "size": [90, 90]}'/>
+                        <div class="oe_title">
+                            <field name="is_company" invisible="1"/>
+                            <field name="commercial_partner_id" invisible="1"/>
+                            <field name="company_type" widget="radio"
+                                   class="oe_edit_only"
+                                   options="{'horizontal': true}" invisible="1"/>
+                            <field name="barcode_image_small" widget='image'
+                                   attrs="{'invisible': [('barcode_image_small','=',False)]}"
+                                   class="barcode_image_partner"/>
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name"
+                                       attrs="{'required' : [('type', '=', 'contact')]}"/>
+                            </h1>
+                            <div class="o_row">
+                                <field name="parent_id"
+                                       placeholder="Company"
+                                       domain="[('is_company', '=', True)]"
+                                       options='{"no_create": True}'
+                                       attrs="{'invisible': ['|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')]}"/>
+                                <field name="company_name"
+                                       attrs="{'invisible': ['|', '|', ('company_name', '=', False), ('company_name', '=', ''), ('is_company', '=', True)]}"/>
+                                <button name="create_company" type="object" string="Create company"
+                                        class="btn btn-sm oe_edit_only fa fa-external-link btn btn-link "
+                                        attrs="{'invisible': ['|', '|', ('is_company','=', True), ('company_name', '=', ''), ('company_name', '=', False)]}"/>
+                            </div>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="type" attrs="{'invisible': [('parent_id','=', False)]}"
+                                       groups="base.group_no_one"/>
+                                <label for="street" string="Address"/>
+                                <div class="o_address_format">
+                                    <div class="oe_edit_only">
+                                        <button name="open_parent" type="object" string="(edit)" class="oe_link"
+                                                attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}"/>
+                                    </div>
+                                    <field name="street" placeholder="Street..." class="o_address_street"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="ward" placeholder="Ward" class="o_address_city"
+                                           options='{"no_open": True}'
+                                           attrs="{'readonly': ['|','|','|',('district', '=', False),('city_dropdown', '=', False),('country_id', '=', False),'&amp;',('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="district" class="o_address_state" placeholder="District"
+                                           options='{"no_open": True}'
+                                           attrs="{'readonly': ['|','|',('city_dropdown', '=', False),('country_id', '=', False),'&amp;',('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                                           context="{}"/>
+                                    <field name="city_dropdown" placeholder="City" class="o_address_zip"
+                                           options='{"no_open": True}'
+                                           attrs="{'readonly': ['|',('country_id', '=', False),'&amp;',('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="city" placeholder="City" invisible="1"/>
+                                    <field name="state_id" placeholder="State" invisible="1"/>
+                                    <field name="zip" placeholder="Zip" invisible="1"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options='{"no_open": True, "no_create": True}'
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                </div>
+                                <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
+                                <field name="category_id" widget="many2many_tags" placeholder="Tags..."
+                                       options="{'no_create_edit': True}"/>
+                            </group>
+                            <group>
+                                <field name="function" placeholder="e.g. Sales Director"
+                                       attrs="{'invisible': [('is_company','=', True)]}"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="patient_id"/>
+                                <field name="sex"/>
+                                <field name="day_of_birth"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="user_ids" invisible="1"/>
+                                <field name="email" widget="email" attrs="{'required': [('user_ids','!=', [])]}"/>
+                                <field name="title" options='{"no_open": True}'
+                                       attrs="{'invisible': [('is_company', '=', True)]}"/>
+                                <field name="lang" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="personal_infomation" string="Information">
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                                <group col="4">
+                                    <group colspan="2">
+                                        <field name="last_check_in_time"/>
+                                        <field name="age"/>
+                                    </group>
+                                    <group colspan="2">
+                                        <field name="ethnic_id"/>
+                                        <field name="nationality_id"/>
+                                        <field name="cmnd_passport"/>
+                                        <field name="married_status"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="family" string="Family">
+                                <field name="family_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="relation"/>
+                                        <field name="mobile"/>
+                                        <field name="his_medical_illness"/>
+                                    </tree>
+                                    <form>
+                                        <group col="4">
+                                            <group colspan="2">
+                                                <field name="name"/>
+                                                <field name="relation"/>
+                                            </group>
+                                            <group colspan="2">
+                                                <field name="mobile"/>
+                                                <field name="his_medical_illness"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="insurance" string="Insurance">
+                                <field name="insurrance_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="type"/>
+                                        <field name="join_date"/>
+                                        <field name="expiry_date"/>
+                                        <field name="first_code"/>
+                                        <field name="address"/>
+                                    </tree>
+                                    <form>
+                                        <group col="4">
+                                            <group colspan="2">
+                                                <field name="name"/>
+                                                <field name="type"/>
+                                                <field name="join_date"/>
+                                            </group>
+                                            <group colspan="2">
+                                                <field name="expiry_date"/>
+                                                <field name="first_code"/>
+                                                <field name="address"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="sale_order_page" string="Prescriptions"
+                                  attrs="{'invisible': [('company_type','!=','person')]}">
+                                <field name="medicine_order_ids" readonly="1"/>
+                            </page>
+                            <!--<page name="history" string="History"-->
+                                  <!--attrs="{'invisible': [('company_type','!=','person')]}">-->
+                                <!--<field name="medical_bill_ids" readonly="1"/>-->
+                                <!--<field name="medical_bill_domain_ids" invisible="1"/>-->
+                            <!--</page>-->
+                            <page name="dha_medic_info" string="Medic Infomation">
+                                <group>
+                                    <field name="tien_su_gia_dinh"/>
+                                    <field name="blood_type"/>
+                                    <group>
+                                        <field name="tien_can"/>
+                                        <field name="di_ung_thuoc"/>
+                                        <field name="tiem_ngua"/>
+                                    </group>
+                                    <group>
+                                        <field name="thuoc_la"/>
+                                        <field name="ruou"/>
+                                        <field name="the_thao"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="dham_patients_kanban" model="ir.ui.view">
+            <field name="name">dham.patient.kanban</field>
+            <field name="model">dham.patient</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban">
+                    <field name="name"/>
+                    <field name="sex"/>
+                    <field name="day_of_birth"/>
+                    <field name="age"/>
+                    <!--<field name="medic_test_ids"/>-->
+                    <field name="color"/>
+                    <field name="display_name"/>
+                    <field name="title"/>
+                    <field name="email"/>
+                    <field name="parent_id"/>
+                    <field name="is_company"/>
+                    <field name="function"/>
+                    <field name="phone"/>
+                    <field name="street"/>
+                    <field name="street2"/>
+                    <field name="zip"/>
+                    <field name="city"/>
+                    <field name="country_id"/>
+                    <field name="mobile"/>
+                    <field name="state_id"/>
+                    <field name="category_id"/>
+                    <field name="image_small"/>
+                    <field name="type"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                <div class="o_kanban_image">
+                                    <t t-if="record.image_small.raw_value">
+                                        <img t-att-src="kanban_image('res.partner', 'image_small', record.id.value)"/>
+                                    </t>
+                                    <t t-if="!record.image_small.raw_value">
+                                        <t t-if="record.type.raw_value === 'delivery'">
+                                            <img t-att-src="_s + &quot;/base/static/src/img/truck.png&quot;" class="o_kanban_image oe_kanban_avatar_smallbox"/>
+                                        </t>
+                                        <t t-if="record.type.raw_value === 'invoice'">
+                                            <img t-att-src="_s + &quot;/base/static/src/img/money.png&quot;" class="o_kanban_image oe_kanban_avatar_smallbox"/>
+                                         </t>
+                                        <t t-if="record.type.raw_value != 'invoice' &amp;&amp; record.type.raw_value != 'delivery'">
+                                            <t t-if="record.is_company.raw_value === true">
+                                                <img t-att-src="_s + &quot;/base/static/src/img/company_image.png&quot;"/>
+                                            </t>
+                                            <t t-if="record.is_company.raw_value === false">
+                                                <img t-att-src="_s + &quot;/base/static/src/img/avatar.png&quot;"/>
+                                            </t>
+                                        </t>
+                                    </t>
+                                    <t t-if="record.sex.raw_value">
+                                        <field name="sex"/>
+                                    </t>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong class="oe_partner_heading"><field name="name"/></strong>
+                                    <ul>
+                                        <li t-if="record.parent_id.raw_value and !record.function.raw_value"><field name="parent_id"/></li>
+                                        <li t-if="!record.parent_id.raw_value and record.function.raw_value"><field name="function"/></li>
+                                        <li t-if="record.parent_id.raw_value and record.function.raw_value"><field name="function"/> at <field name="parent_id"/></li>
+                                        <li t-if="record.city.raw_value and !record.country_id.raw_value"><field name="city"/></li>
+                                        <li t-if="!record.city.raw_value and record.country_id.raw_value"><field name="country_id"/></li>
+                                        <li t-if="record.city.raw_value and record.country_id.raw_value"><field name="city"/>, <field name="country_id"/></li>
+                                        <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
+                                        <li t-if="record.age.raw_value">Age:
+                                            <field name="age"/>
+                                        </li>
+                                    </ul>
+                                    <div class="oe_kanban_partner_links"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="check_patient_wizard" model="ir.ui.view">
+            <field name="name">dham.patient.tree</field>
+            <field name="model">dham.patient</field>
+            <field name="arch" type="xml">
+                <tree string="Contacts">
+                    <field name="patient_id"/>
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="sex"/>
+                    <field name="day_of_birth"/>
+                    <!--<field name="cmnd_passport"/>-->
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_dham_patients" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dham.patient</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem id="menu_medic_customer" parent="menu_medic_root" sequence="1" name="Patients"
+                  action="action_dham_patients"/>
+    </data>
+</odoo>

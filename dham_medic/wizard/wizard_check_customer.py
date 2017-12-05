@@ -15,12 +15,12 @@ class WizardCheckCustomer(models.TransientModel):
     cmnd = fields.Char('CMND/PassPort')
 
     def on_barcode_scanned(self, barcode):
-        Partner = self.env['res.partner'].sudo()
+        Patient = self.env['dham.patient'].sudo()
         if barcode:
-            partner_id = Partner.search([('customer_id', '=', barcode)])
+            partner_id = Patient.search([('customer_id', '=', barcode)])
             if partner_id:
-                menu_id = self.env.ref('dham_medic.action_partner_patients_form').id
-                action = self.env.ref('dham_medic.menu_medic_root').id
+                menu_id = self.env.ref('dha_medic_modifier.action_dham_patients').id
+                action = self.env.ref('dha_medic_modifier.menu_medic_root').id
                 request.redirect('web#id=%s&view_type=form&model=dham.patient&menu_id=%s&action=%s' % (
                     partner_id.id, menu_id.id, action.id))
             else:
