@@ -83,7 +83,9 @@ class MedicMedicalBill(models.Model):
     # tab xet nghiem
     medic_test_ids = fields.One2many('medic.test', 'medical_bill_id', 'Tests')
     medic_lab_test_compute_ids = fields.Many2many('medic.test', 'Lab Tests', compute='_get_medic_test_ids')
-    medic_image_test_compute_ids = fields.Many2many('medic.test', 'Image Tests', compute='_get_medic_test_ids')
+    medic_xq_image_compute_ids = fields.Many2many('xq.image.test', 'Image Tests', compute='_get_medic_test_ids')
+    medic_sa_image_compute_ids = fields.Many2many('sa.image.test', 'Echograph Tests', compute='_get_medic_test_ids')
+    medic_dtd_image_compute_ids = fields.Many2many('dtd.image.test', 'Electrocardiogram Tests', compute='_get_medic_test_ids')
 
     # tab Appoint
     appoint_ids = fields.One2many('medic.appoint', 'medical_bill_id', 'Appoint')
@@ -148,15 +150,16 @@ class MedicMedicalBill(models.Model):
             record.done_percent = '%s / %s' %(len(done_test), len(test_ids))
 
     def _get_medic_test_ids(self):
-        MedictTest = self.env['medic.test']
-        lab_type = [self.env.ref('dha_medic_modifier.medic_test_type_lab_test').id]
-        image_type = [self.env.ref('dha_medic_modifier.medic_test_type_image_test').id,
-                      self.env.ref('dha_medic_modifier.medic_test_type_echograph').id,
-                      self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram').id]
+        MedicTest  = self.env['medic.test']
+        XQTest = self.env['xq.image.test']
+        SATest = self.env['sa.image.test']
+        DTDTest = self.env['dtd.image.test']
         for record in self:
-            test_ids = MedictTest.search([('related_medical_bill', 'in', [record.id])])
-            record.medic_lab_test_compute_ids = MedictTest.search([('id', 'in', test_ids.ids),('type','in',lab_type)])
-            record.medic_image_test_compute_ids = MedictTest.search([('id', 'in', test_ids.ids),('type','in',image_type)])
+            domain = [('related_medical_bill', 'in', [record.id])]
+            record.medic_lab_test_compute_ids = MedicTest.search(domain)
+            record.medic_xq_image_compute_ids = XQTest.search(domain)
+            record.medic_sa_image_compute_ids = SATest.search(domain)
+            record.medic_dtd_image_compute_ids = DTDTest.search(domain)
 
     @api.multi
     def action_processing(self):

@@ -31,6 +31,8 @@ class MedicLabTest(models.Model):
     state = fields.Selection([('new', 'New'), ('ready', 'Ready'), ('processing', 'Processing'), ('done', 'Done')], 'Status', default='new', track_visibility='onchange')
     type = fields.Many2one('medic.test.type', string='Type', required=1, track_visibility='onchange')
     show_image = fields.Boolean('Show Image', compute='_compute_show_image')
+
+    patient_id = fields.Many2one('dham.patient', 'Patient', track_visibility='onchange', index=1)
     customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange')
     customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='customer.sex', readonly=1)

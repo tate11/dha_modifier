@@ -83,9 +83,13 @@ class DHAMPatient(models.Model):
     tiem_ngua = fields.Char('Vaccination', track_visibility='onchange')
 
     # TESTs
-    # medic_lab_test_compute_ids = fields.Many2many('medic.test', 'Lab Tests', compute='_get_medic_test_ids')
-    # medic_image_test_compute_ids = fields.Many2many('medic.test', 'Image Tests', compute='_get_medic_test_ids')
-    # medic_test_ids = fields.One2many('medic.test', 'customer', 'Tests', domain=[('state', 'in', ['new', 'processing'])])
+    medic_lab_test_ids = fields.One2many('medic.test', 'patient_id','Lab Tests')
+    medic_xq_image_ids = fields.One2many('xq.image.test', 'patient_id', 'Image Tests')
+    medic_sa_image_ids = fields.One2many('sa.image.test', 'patient_id', 'Echograph Tests')
+    medic_dtd_image_ids = fields.One2many('dtd.image.test', 'patient_id', 'Electrocardiogram Tests')
+
+
+
     barcode_image = fields.Binary('Barcode Image', attachment=True, compute="_compute_barcode")
     barcode_image_small = fields.Binary('Barcode Image Small', attachment=True, compute="_compute_barcode")
 
@@ -156,18 +160,6 @@ class DHAMPatient(models.Model):
         if self.district:
             res['domain']['ward'] = [('parent_code', '=', self.district.code)]
         return res
-
-    def _get_medic_test_ids(self):
-        MedictTest = self.env['medic.test']
-        lab_type = [self.env.ref('dha_medic_modifier.medic_test_type_lab_test').id]
-        image_type = [self.env.ref('dha_medic_modifier.medic_test_type_image_test').id,
-                      self.env.ref('dha_medic_modifier.medic_test_type_echograph').id,
-                      self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram').id]
-        for record in self:
-            record.medic_lab_test_compute_ids = MedictTest.search(
-                [('customer', '=', record.id), ('type', 'in', lab_type)])
-            record.medic_image_test_compute_ids = MedictTest.search(
-                [('customer', '=', record.id), ('type', 'in', image_type)])
 
     @api.depends('patient_id')
     def _compute_barcode(self):

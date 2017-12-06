@@ -274,7 +274,29 @@
                                 </field>
                             </page>
                             <page string="Image Tests">
-                                <field name="medic_image_test_compute_ids">
+                                <field name="medic_xq_image_compute_ids">
+                                    <tree create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="type"/>
+                                        <field name="product_test"/>
+                                        <field name="note"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Echograph">
+                                <field name="medic_sa_image_compute_ids">
+                                    <tree create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="type"/>
+                                        <field name="product_test"/>
+                                        <field name="note"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Electrocardiogram">
+                                <field name="medic_dtd_image_compute_ids">
                                     <tree create="0" delete="0">
                                         <field name="name"/>
                                         <field name="type"/>

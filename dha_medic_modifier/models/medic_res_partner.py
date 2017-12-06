@@ -81,7 +81,7 @@ class ResPartner(models.Model):
     medic_image_test_compute_ids = fields.Many2many('medic.test', 'Image Tests', compute='_get_medic_test_ids')
     medic_test_ids = fields.One2many('medic.test', 'customer', 'Tests', domain=[('state', 'in', ['new', 'processing'])])
 
-    # Tien su benh
+    # Tien su benh.
     # tien_su_gia_dinh = fields.Char('Family history of medical illness')
     # tien_can = fields.Char('Past medical and surgical history')
     # di_ung_thuoc = fields.Char('Drug allergy')

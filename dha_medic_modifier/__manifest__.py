@@ -55,7 +55,7 @@
         'views/medic_sale_order.xml',
         'views/medic_hr_employee_view.xml',
         'views/medic_contract_schedule.xml',
-        'patient/views/dham_patient.xml',
+        'dham_patient/views/dham_patient.xml',
         'views/run_one_time_function.xml',
     ],
     # only loaded in demonstration mode
