@@ -37,7 +37,7 @@
         'wizard/wizard_print_test_number.xml',
         'wizard/wizard_import_employee_company_check_view.xml',
 
-
+        'dham_lab_image_test/dham_image_test_view.xml',
         'views/menu_item.xml',
         'views/template.xml',
         'views/medic_package.xml',

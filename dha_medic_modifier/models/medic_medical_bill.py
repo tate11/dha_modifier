@@ -252,6 +252,22 @@ class MedicSubTreatment(models.Model):
         employee = self.env['hr.employee'].search([('user_id', '=', self._uid)], limit=1)
         return employee.id
 
+    @api.model
+    def default_get(self, fields):
+        vals = super(MedicSubTreatment, self).default_get(fields)
+        try:
+            loai = self.env.ref('dha_medic_modifier.loai_1').id
+        except:
+            loai = False
+        default_field = ['phan_loai', 'phan_loai_tuan_hoan', 'phan_loai_ho_hap', 'phan_loai_tieu_hoa',
+                         'phan_loai_co_xuong_khop',
+                         'phan_loai_than_tiet_nieu', 'phan_loai_than_kinh', 'phan_loai_tam_than', 'phan_loai_noi_tiet']
+        res_field = ['tuan_hoan','ho_hap','tieu_hoa','than_tiet_nieu','co_xuong_khop','than_kinh','tam_than','noi_tiet']
+        for field in default_field:
+            vals[field] = loai
+        for field in res_field:
+            vals[field] = 'Bình thường'
+        return vals
 
     name = fields.Char('Name')
     diagnose_icd = fields.Many2many('medic.diseases', 'medical_sub_treatment_diseases_rel', 'sub_treatment_id', 'diseases_id',
