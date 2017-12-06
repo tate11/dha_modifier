@@ -101,12 +101,12 @@ class BaseTest(models.Model):
     @api.model
     def create(self, vals):
         code = False
-        if vals.get('type', False):
-            code = self.env['medic.test.type'].search([('id', '=', vals['type'])], limit=1).code or False
-        if code:
-            vals['name'] = self.env['ir.sequence'].next_by_code(code)
-        else:
-            vals['name'] = self.env['ir.sequence'].next_by_code('no.type.test.seq')
+        # if vals.get('type', False):
+        #     code = self.env['medic.test.type'].search([('id', '=', vals['type'])], limit=1).code or False
+        # if code:
+        #     vals['name'] = self.env['ir.sequence'].next_by_code(code)
+        # else:
+        #     vals['name'] = self.env['ir.sequence'].next_by_code('no.type.test.seq')
 
         if not 'consumable_supplies' in vals and 'product_test' in vals:
             products = self.env['product.product'].search([('id', '=', vals['product_test'])]) or False

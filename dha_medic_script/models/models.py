@@ -27,7 +27,7 @@ class dha_medic_script(models.Model):
 
         # step by step
         # self.move_data_partner()
-        self.move_image_test()
+        # self.move_image_test()
         return
 
     @api.model

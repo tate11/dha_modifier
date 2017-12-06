@@ -120,7 +120,7 @@ class WizardGetLabRes(models.TransientModel):
                                 for test in Test.search(
                                         [('id', 'in', medical_id.medic_lab_test_compute_ids.ids),
                                          ('state', '!=', 'done')]):
-                                    test.write({'lab_test_criteria': [(6, 0, [])], 'state': 'done'})
+
                                     count = cur.execute("""
                                                             select service_detail_id, result, index_normal
                                                             from hpm_inspect_detail
@@ -128,6 +128,7 @@ class WizardGetLabRes(models.TransientModel):
                                                             ORDER BY service_detail_id asc;
                                                         """ % (data[0], test.product_test.barcode))
                                     if count > 0:
+                                        test.write({'lab_test_criteria': [(6, 0, [])], 'state': 'done'})
                                         res_datas = datas = cur._rows
                                         index = 1
                                         for res in res_datas:
@@ -175,8 +176,9 @@ class WizardGetLabRes(models.TransientModel):
                                             WHERE i.patient_id = '%s' and i.result_flag = 1 and d.service_id='%s'
                                             ORDER BY i.create_date DESC, d.service_detail_id asc;
                                         """ % (test.customer.flex_id, test.product_test.barcode))
-                    test.write({'lab_test_criteria': [(6, 0, [])], 'state': 'done'})
+
                     if count > 0:
+                        test.write({'lab_test_criteria': [(6, 0, [])], 'state': 'done'})
                         res_datas = datas = cur._rows
                         index = 1
                         for res in res_datas:
@@ -207,9 +209,9 @@ class WizardGetLabRes(models.TransientModel):
                                     'sequence': index
                                 })
                                 index += 1
+                    self._cr.commit()
                 except Exception as e:
                     _logger.error(e)
-                self._cr.commit()
             cur.close()
             conn.close()
         return True

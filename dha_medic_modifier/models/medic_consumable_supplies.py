@@ -16,9 +16,9 @@ class ConsumableSupplies(models.Model):
 
     medic_test_id = fields.Many2one('medic.test', string='Medic Test', ondelete='cascade')
     medic_img_id = fields.Many2one('base.image.test', string='Medic Img', ondelete='cascade')
-    # medic_xq_img_id = fields.Many2one('xq.image.test', string='Medic XQ Img', ondelete='cascade')
-    # medic_sa_img_id = fields.Many2one('sa.image.test', string='Medic SA Img', ondelete='cascade')
-    # medic_dtd_img_id = fields.Many2one('dtd.image.test', string='Medic DTD Img', ondelete='cascade')
+    medic_xq_img_id = fields.Many2one('xq.image.test', string='Medic XQ Img', ondelete='cascade')
+    medic_sa_img_id = fields.Many2one('sa.image.test', string='Medic SA Img', ondelete='cascade')
+    medic_dtd_img_id = fields.Many2one('dtd.image.test', string='Medic DTD Img', ondelete='cascade')
 
     product_template_id = fields.Many2one('product.template', 'Product Template Id', ondelete='cascade')
     medical_id = fields.Many2one('medic.medical.bill', 'Medic Medical Id', ondelete='cascade')

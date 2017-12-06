@@ -817,6 +817,8 @@
     <template id="page_ket_qua_lam_sang">
         <t t-set="noi_khoa"
            t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"/>
+        <t t-set="ngoai_khoa"
+           t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_ngoai').id)"/>
         <t t-set="da_lieu"
            t-value="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_da_lieu').id)"/>
         <t t-set="khoa_san"
@@ -991,6 +993,33 @@
             <t t-set="o_title" t-value="'KẾT QUẢ KHÁM LÂM SÀNG'"/>
             <t t-call="dha_medic_report.medic_medilcal_template_title"/>
             <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
+                <tr style="min-height:200px">
+                    <th
+                            style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
+                        NGOẠI KHOA
+                    </th>
+                    <td style="width:70%;vertical-align: middle;">
+                        <ul style="margin-left:20px">
+                            <li>Kết luận:
+                                <span style="margin-left:5px" t-if="ngoai_khoa.treatment_note"
+                                      t-esc="ngoai_khoa.treatment_note"/>
+                            </li>
+                            <li>Xếp loại:
+                                <span style="margin-left:5px" t-if="ngoai_khoa.phan_loai" t-esc="ngoai_khoa.phan_loai.code"/>
+                            </li>
+                        </ul>
+                    </td>
+                    <td style="width:20%;text-align:center;vertical-align: middle;">
+                        <div style="min-height:100px;position: relative;">
+                            <span style="display:-webkit-box;-webkit-box-align:end;-webkit-box-pack:center;display:-moz-box;-moz-box-align:end;-moz-box-pack:center;display:box;box-align:end;box-pack:center;">Bác sĩ
+                                <img t-if="ngoai_khoa.doctor_id.img_sign" style="width:100%;height:75px"
+                                     t-att-src="'data:image/png;base64,%s' % ngoai_khoa.doctor_id.img_sign"/>
+                                <br/>
+                                <span t-if="ngoai_khoa.doctor_id" t-esc="ngoai_khoa.doctor_id.name"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
                 <tr style="min-height:200px">
                     <th
                             style="background:rgb(101, 156, 248);color:white;width:10%;font-weight:900;text-align:center;vertical-align: middle;font-size:15px">
