@@ -44,14 +44,14 @@ class ImportEmployee(models.TransientModel):
     @api.multi
     def action_add(self):
         ActiveObj = self.env[self.env.context['active_model']].browse(self.env.context['active_id'])
-        Partners = self.action_import()
-        if Partners:
-            ActiveObj.with_context(action_add_employee= Partners).action_validate()
+        Patients = self.action_import()
+        if Patients:
+            ActiveObj.with_context(action_add_employee= Patients).action_validate()
         return
 
     @api.multi
     def action_import(self):
-        Partners = self.env['res.partner']
+        Patients = self.env['dham.patient']
         ActiveObj = self.env[self.env.context['active_model']].browse(self.env.context['active_id'])
         Service = ServiceReadXlsx()
         data_obj = Service.read_xls(base64.b64decode(self.file))
@@ -64,7 +64,7 @@ class ImportEmployee(models.TransientModel):
         day_of_birth_index = parsed_header.index('day_of_birth')
         try:
             for data in data_obj:
-                tmp_data = {'parent_id': comany_id.id, 'is_patient' : True, 'company_id': comany_id.company_id.id}
+                tmp_data = {'parent_id': comany_id.id, 'company_id': comany_id.company_id.id}
                 for i in range(len(data)):
                     if data[i] == '':
                         data[i] = False
@@ -73,15 +73,15 @@ class ImportEmployee(models.TransientModel):
                 tmp_data['name'] = tmp_data['name'].title()
                 check = self.check_partner_duplicate(tmp_data['name'], tmp_data['mobile'], tmp_data['day_of_birth'],comany_id)
                 if check:
-                    Partners += check
+                    Patients += check
                 else:
-                    Partners += Partners.with_context(from_external_center=True).create(tmp_data)
+                    Patients += Patients.with_context(from_external_center=True).create(tmp_data)
                 index += 1
         except:
             raise UserError(_("Error at line %s!"%(index)))
-        Partners = Partners.search([('id','in', Partners.ids),('id','not in', ActiveObj.employees.ids)])
-        if Partners:
-            ActiveObj.write({'employees': [(4, x.id) for x in Partners], 'import_seq': (ActiveObj.import_seq + 1)})
+        Patients = Patients.search([('id','in', Patients.ids),('id','not in', ActiveObj.employees.ids)])
+        if Patients:
+            ActiveObj.write({'employees': [(4, x.id) for x in Patients], 'import_seq': (ActiveObj.import_seq + 1)})
 
         attachment = {
             'name': ActiveObj.name + ' - ' + str(ActiveObj.import_seq),
@@ -92,7 +92,7 @@ class ImportEmployee(models.TransientModel):
             'company_id' : comany_id.company_id.id,
         }
         self.env['ir.attachment'].create(attachment)
-        return Partners
+        return Patients
 
     @api.model
     def parse_day_of_birth(self, dob):

@@ -29,10 +29,10 @@ class PartnerCompanyCheckDashBoard(models.Model):
             return {
                 'view_type': 'form',
                 'view_mode': 'form',
-                'res_model': 'account.invoice',
+                'res_model': 'dham.patient.recieve',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 'res_id': False,
-                'context': {'form_view_ref': 'account.invoice_form', 'default_center_id': center.id,
-                            'default_order_type': 'medical', 'default_contract_adding_services': record.id, 'default_pricelist_id': record.pricelist_id.id or False}
+                'context': {'default_center_id': center.id,
+                            'default_contract_adding_services': record.id, 'default_pricelist_id': record.pricelist_id.id or False}
             }

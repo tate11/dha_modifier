@@ -22,7 +22,7 @@ class PartnerCompanyCheck(models.Model):
     package_ids = fields.Many2many('medic.package', 'medic_company_check_package_package_ref', 'wizard_id',
                                    'package_id', 'Packages', domain=[('type', '=', 'company')], required=1)
     company_id = fields.Many2one('res.partner', 'Company', track_visibility='onchange', domain=[('is_company','=',True)])
-    employees = fields.Many2many('res.partner', 'company_check_res_partner_rel', 'company_check', 'partner_id',
+    employees = fields.Many2many('dham.patient', 'company_check_dham_patient_rel', 'company_check', 'patient_id',
                                  'Employees')
     doctor_ids = fields.Many2many('hr.employee', 'company_check_hr_employee_rel', 'company_check', 'emp_id', 'Doctors')
     start_time = fields.Date('Start Date', track_visibility='onchange')
@@ -252,7 +252,7 @@ class PartnerCompanyCheck(models.Model):
                 if len(product_medical) > 0:
                     building = False
                     new_bill = MedicalBill.create({
-                        'customer': emp.id,
+                        'patient_id': emp.id,
                         'service_ids': [(6, 0, product_medical.ids)],
                         'center_id': center.id,
                         'building_id': False,
@@ -273,7 +273,7 @@ class PartnerCompanyCheck(models.Model):
                         'type': pro.service_type.id,
                         'company_check_id': record.id,
                         'product_test': pro.id,
-                        'customer': emp.id,
+                        'patient_id': emp.id,
                         'related_medical_bill': [(6, 0, MedicalBill.ids)],
                     })
 
@@ -328,9 +328,9 @@ class PartnerCompanyCheck(models.Model):
             if emp.sex:
                 sex = 'Nam' if emp.sex == 'male' else 'Nữ'
             medical_id = Medical.search(
-                [('customer', '=', emp.id), ('company_check_id', '=', self.id), ('state', '=', 'done')], limit=1)
+                [('patient_id', '=', emp.id), ('company_check_id', '=', self.id), ('state', '=', 'done')], limit=1)
             if medical_id:
-                data.extend([emp.customer_id or '', emp.name or '', emp.mobile or '', emp.description or '',
+                data.extend([emp.patient_id or '', emp.name or '', emp.mobile or '', emp.description or '',
                              emp.day_of_birth or '', sex, medical_id.height or '', medical_id.weight or '',
                              medical_id.bmi or '', medical_id.note or ''])
                 # Cac Khoa
