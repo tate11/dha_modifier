@@ -18,6 +18,8 @@ class MedicAppoint(models.Model):
 
     name = fields.Char('Number', readonly=1, default='/')
     state = fields.Selection([('new', 'New'), ('validate', 'Validated')], 'Status', default='new', track_visibility='onchange')
+
+    patient = fields.Many2one('dham.patient', 'Patient', track_visibility='onchange', index=1)
     customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange')
     customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='customer.sex', readonly=1)

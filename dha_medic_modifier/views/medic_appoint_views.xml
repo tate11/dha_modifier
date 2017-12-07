@@ -19,8 +19,9 @@
                         </div>
                         <group col="4">
                             <group colspan="2">
-                                <field name="customer_id"/>
-                                <field name="customer"/>
+                                <field name="patient"/>
+                                <field name="customer" invisible="1"/>
+                                <field name="patient"/>
                             </group>
                             <group colspan="2">
                                 <field name="sex"/>

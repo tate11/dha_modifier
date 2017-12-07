@@ -23,7 +23,7 @@ class DHAMReceive(models.Model):
                 if order.company_id.tax_calculation_rounding_method == 'round_globally':
                     price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
                     taxes = line.tax_id.compute_all(price, line.parent_id.currency_id, line.product_uom_qty,
-                                                    product=line.product_id, partner=order.patient_id.partner_id)
+                                                    product=line.product_id, partner=order.patient.partner_id)
                     amount_tax += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
                 else:
                     amount_tax += line.price_tax
@@ -48,11 +48,11 @@ class DHAMReceive(models.Model):
     def button_dummy(self):
         return True
 
-    @api.depends('patient_id')
+    @api.depends('patient')
     def _compute_insurrance(self):
         for record in self:
-            if record.patient_id:
-                record.insurrance_ids = record.patient_id.insurrance_ids
+            if record.patient:
+                record.insurrance_ids = record.patient.insurrance_ids
 
     name = fields.Char('Receive Number')
     state = fields.Selection([
@@ -65,10 +65,10 @@ class DHAMReceive(models.Model):
     user_id = fields.Many2one('res.users', 'Responsible', default= lambda self: self.env.user.id or False)
     date = fields.Datetime('Create Time', default=lambda self: fields.Datetime.now(), readonly=1)
 
-    patient_id = fields.Many2one('dham.patient', 'Patient', required=1)
-    partner_id = fields.Many2one('res.partner', 'Partner ID', related='patient_id.partner_id', store=1)
-    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient_id.sex', readonly=1)
-    day_of_birth = fields.Date(string='Day of Birth', related='patient_id.day_of_birth', readonly=1)
+    patient = fields.Many2one('dham.patient', 'Patient', required=1)
+    partner_id = fields.Many2one('res.partner', 'Partner ID', related='patient.partner_id', store=1)
+    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient.sex', readonly=1)
+    day_of_birth = fields.Date(string='Day of Birth', related='patient.day_of_birth', readonly=1)
     insurrance_ids = fields.Many2many('dham.patient.insurrance', compute='_compute_insurrance', string='Insurrance',
                                       readonly=1)
 
@@ -111,7 +111,7 @@ class DHAMReceive(models.Model):
         return res
 
     @api.multi
-    @api.onchange('patient_id')
+    @api.onchange('patient')
     def onchange_partner_id(self):
         """
         Update the following fields when the partner is changed:
@@ -121,25 +121,25 @@ class DHAMReceive(models.Model):
         - Delivery address
         """
         values = {
-            'pricelist_id': self.patient_id.partner_id.property_product_pricelist and self.patient_id.partner_id.property_product_pricelist.id or False,
+            'pricelist_id': self.patient.partner_id.property_product_pricelist and self.patient.partner_id.property_product_pricelist.id or False,
         }
         if self.env.user.company_id.sale_note:
-            values['note'] = self.with_context(lang=self.patient_id.lang).env.user.company_id.sale_note
+            values['note'] = self.with_context(lang=self.patient.lang).env.user.company_id.sale_note
         self.update(values)
 
-    @api.onchange('patient_id')
-    def _onchange_patient_id(self):
-        self.partner_id = self.patient_id and self.patient_id.partner_id.id or False
+    @api.onchange('patient')
+    def _onchange_patient(self):
+        self.partner_id = self.patient and self.patient.partner_id.id or False
         if self.env.context.get('default_contract_adding_services', False):
             Contract = self.env['res.partner.company.check'].sudo().search(
                 [('id', '=', self.env.context.get('default_contract_adding_services'))])
-            if self.patient_id and Contract:
+            if self.patient and Contract:
                 self.medical_bill_id = self.env['medic.medical.bill'].search(
-                    [('company_check_id', '=', Contract.id), ('customer', '=', self.patient_id.id)]).id or False
+                    [('company_check_id', '=', Contract.id), ('customer', '=', self.patient.id)]).id or False
             if Contract:
                 return {
                     'domain': {
-                        'patient_id': [('id', 'in', Contract.employees.ids)]
+                        'patient': [('id', 'in', Contract.employees.ids)]
                     }
                 }
 
@@ -196,7 +196,7 @@ class DHAMReceiveLine(models.Model):
         for line in self:
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
             taxes = line.tax_id.compute_all(price, line.parent_id.currency_id, line.product_uom_qty,
-                                            product=line.product_id, partner=line.parent_id.patient_id.partner_id)
+                                            product=line.product_id, partner=line.parent_id.patient.partner_id)
             line.update({
                 'price_tax': taxes['total_included'] - taxes['total_excluded'],
                 'price_total': taxes['total_included'],
@@ -246,10 +246,10 @@ class DHAMReceiveLine(models.Model):
     @api.multi
     def _compute_tax_id(self):
         for line in self:
-            fpos = line.parent_id.patient_id.partner_id.property_account_position_id or False
+            fpos = line.parent_id.patient.partner_id.property_account_position_id or False
             # If company_id is set, always filter taxes by the company
             taxes = line.product_id.taxes_id.filtered(lambda r: not line.company_id or r.company_id == line.company_id)
-            line.tax_id = fpos.map_tax(taxes, line.product_id, line.parent_id.patient_id.partner_id) if fpos else taxes
+            line.tax_id = fpos.map_tax(taxes, line.product_id, line.parent_id.patient.partner_id) if fpos else taxes
 
     def _get_real_price_currency(self, product, rule_id, qty, uom, pricelist_id):
         """Retrieve the price before applying the pricelist
@@ -359,7 +359,7 @@ class DHAMReceiveLine(models.Model):
             return
         if self.parent_id.pricelist_id and self.parent_id.partner_id:
             product = self.product_id.with_context(
-                lang=self.parent_id.patient_id.lang,
+                lang=self.parent_id.patient.lang,
                 partner=self.parent_id.partner_id.id,
                 quantity=self.product_uom_qty,
                 date=self.parent_id.date,

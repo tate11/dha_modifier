@@ -18,6 +18,7 @@ class MedicMedicalBill(models.Model):
     process_date = fields.Datetime('Processing Date')
     done_date = fields.Datetime('Done Date')
 
+    patient = fields.Many2one('dham.patient', 'Patient', track_visibility='onchange', index=1)
     customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange')
     customer_name = fields.Char( 'Name', related='customer.name', readonly=1)
     customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)

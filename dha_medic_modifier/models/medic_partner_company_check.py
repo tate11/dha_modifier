@@ -252,7 +252,7 @@ class PartnerCompanyCheck(models.Model):
                 if len(product_medical) > 0:
                     building = False
                     new_bill = MedicalBill.create({
-                        'patient_id': emp.id,
+                        'patient': emp.id,
                         'service_ids': [(6, 0, product_medical.ids)],
                         'center_id': center.id,
                         'building_id': False,
@@ -273,7 +273,7 @@ class PartnerCompanyCheck(models.Model):
                         'type': pro.service_type.id,
                         'company_check_id': record.id,
                         'product_test': pro.id,
-                        'patient_id': emp.id,
+                        'patient': emp.id,
                         'related_medical_bill': [(6, 0, MedicalBill.ids)],
                     })
 
@@ -328,7 +328,7 @@ class PartnerCompanyCheck(models.Model):
             if emp.sex:
                 sex = 'Nam' if emp.sex == 'male' else 'Nữ'
             medical_id = Medical.search(
-                [('patient_id', '=', emp.id), ('company_check_id', '=', self.id), ('state', '=', 'done')], limit=1)
+                [('patient', '=', emp.id), ('company_check_id', '=', self.id), ('state', '=', 'done')], limit=1)
             if medical_id:
                 data.extend([emp.patient_id or '', emp.name or '', emp.mobile or '', emp.description or '',
                              emp.day_of_birth or '', sex, medical_id.height or '', medical_id.weight or '',

@@ -83,10 +83,10 @@ class DHAMPatient(models.Model):
     tiem_ngua = fields.Char('Vaccination', track_visibility='onchange')
 
     # TESTs
-    medic_lab_test_ids = fields.One2many('medic.test', 'patient_id','Lab Tests')
-    medic_xq_image_ids = fields.One2many('xq.image.test', 'patient_id', 'Image Tests')
-    medic_sa_image_ids = fields.One2many('sa.image.test', 'patient_id', 'Echograph Tests')
-    medic_dtd_image_ids = fields.One2many('dtd.image.test', 'patient_id', 'Electrocardiogram Tests')
+    medic_lab_test_ids = fields.One2many('medic.test', 'patient','Lab Tests')
+    medic_xq_image_ids = fields.One2many('xq.image.test', 'patient', 'Image Tests')
+    medic_sa_image_ids = fields.One2many('sa.image.test', 'patient', 'Echograph Tests')
+    medic_dtd_image_ids = fields.One2many('dtd.image.test', 'patient', 'Electrocardiogram Tests')
 
 
 

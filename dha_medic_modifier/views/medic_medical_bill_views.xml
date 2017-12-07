@@ -180,7 +180,8 @@
                         <group col="4">
                             <group colspan="2">
                                 <field name="customer_id"/>
-                                <field name="customer" readonly="1"/>
+                                <field name="customer" readonly="1" invisible="1"/>
+                                <field name="patient" readonly="1"/>
                             </group>
                             <group colspan="2">
                                 <field name="sex"/>

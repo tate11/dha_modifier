@@ -10,7 +10,7 @@
                     <field name="name" filter_domain="['|', ('name', 'ilike', self), ('customer', 'ilike', self)]"/>
                     <field name="customer_id"/>
                     <field name="customer"/>
-                    <field name="patient_id"/>
+                    <field name="patient"/>
                     <field name="doctor_assign"/>
                     <field name="assign_date"/>
                     <field name="product_test"/>
@@ -36,7 +36,7 @@
                 <tree string="Test">
                     <field name="name"/>
                     <field name="customer_id"/>
-                    <field name="patient_id"/>
+                    <field name="patient"/>
                     <field name="customer"/>
                     <field name="sex"/>
                     <field name="day_of_birth"/>
@@ -77,7 +77,7 @@
                         <group col="4">
                             <group colspan="2">
                                 <field name="customer_id"/>
-                                <field name="patient_id" readonly="1"/>
+                                <field name="patient" readonly="1"/>
                                 <field name="customer" readonly="1"/>
                                 <field name="sex"/>
                                 <field name="doctor_id"/>
