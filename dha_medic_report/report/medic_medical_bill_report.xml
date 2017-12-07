@@ -80,7 +80,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Tuần Hoàn
+                            <span class="dotted_fill">Tuần Hoàn</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -91,7 +91,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Hô Hấp
+                            <span class="dotted_fill">Hô Hấp</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -102,7 +102,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Tiêu Hoá
+                            <span class="dotted_fill">Tiêu Hoá</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -113,7 +113,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Thận Tiết Niệu
+                            <span class="dotted_fill">Thận Tiết Niệu</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -124,7 +124,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Cơ Xương Khớp
+                            <span class="dotted_fill">Cơ Xương Khớp</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -135,7 +135,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Thần Kinh
+                            <span class="dotted_fill">Thần Kinh</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -146,7 +146,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;">
-                            Tâm Thần
+                            <span class="dotted_fill">Tâm Thần</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -173,7 +173,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);text-align:center;color:white;">
-                            Nội Khoa
+                            <span class="dotted_fill">Nội Khoa</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_nhi').id)"
@@ -184,7 +184,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
-                            Ngoại Khoa
+                            <span class="dotted_fill">Ngoại Khoa</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_ngoai').id)"
@@ -195,7 +195,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
-                            Sản Phụ Khoa
+                            <span class="dotted_fill">Sản Phụ Khoa</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_san').id)"
@@ -206,7 +206,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
-                            Mắt
+                            <span class="dotted_fill">Mắt</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_mat').id)"
@@ -217,7 +217,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
-                            Tai Mũi Họng
+                            <span class="dotted_fill">Tai Mũi Họng</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_tai_mui_hong').id)"
@@ -228,7 +228,7 @@
                     </tr>
                     <tr style="">
                         <td style="padding: 3px;width:28%;border: 1px solid #555354;background:rgb(101, 156, 248);color:white;text-align:center">
-                            Răng Hàm Mặt
+                            <span class="dotted_fill">Tai Mũi Họng</span>
                         </td>
                         <td style="padding: 3px;width:5%;border: 1px solid #555354;text-align:center;vertical-align: middle;">
                             <t t-if="doc.sub_treatment_ids.filtered(lambda r: r.buildings_type.id == env.ref('dha_medic_modifier.khoa_rang_ham_mat').id)"

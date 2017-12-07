@@ -6,18 +6,18 @@
             <tr>
                 <td style="width:33%">Chiều cao: ..........cm</td>
                 <td style="width:33%">Mạch: ...............lần/phút</td>
-                <td style=""></td>
+                <td/>
             </tr>
             <tr>
                 <td style="width:33%">Cân nặng: ...........kg</td>
                 <td style="width:33%">Huyết áp: ........./mmHg</td>
-                <td style="">Nhịp thở: ........lần/phút</td>
+                <td>Nhịp thở: ........lần/phút</td>
             </tr>
             <tr>
                 <td style="width:33%">Chỉ số BMI: ... ...</td>
                 <td style="width:33%">Nhiệt độ: ..........<sup>o</sup>C
                 </td>
-                <td style="">Phân loại:</td>
+                <td>Phân loại:</td>
             </tr>
         </table>
     </template>
@@ -28,10 +28,16 @@
             <span style="text-decoration: underline;margin-left:20px">KHÁM CẬN LÂM SÀNG:</span>
         </div>
         <div name="dot_space" style="height:60px">
-            Kết luận các xét nghiệm đính kèm: ..................................................................................................................................................................................................................................................................................................................................................................
+            <div class="td_dotted_wrap">
+                <span class="dotted_fill">Kết luận các xét nghiệm đính kèm: </span>
+                <br/><br/><br/>
+            </div>
         </div>
         <div style="height:60px">
-            Kết luận các chuẩn đoán hình ảnh đính kèm: ..................................................................................................................................................................................................................................................................................................................................................................
+            <div class="td_dotted_wrap">
+                <span class="dotted_fill">Kết luận các chuẩn đoán hình ảnh đính kèm: </span>
+                <br/><br/><br/>
+            </div>
         </div>
     </template>
 
@@ -46,10 +52,16 @@
             <span style="margin-left:100px">&#x25a2;  Không đủ sức khoẻ làm việc</span>
         </div>
         <div style="height:60px">
-            Tên bệnh: ..................................................................................................................................................................................................................................................................................................................................................................
+            <div class="td_dotted_wrap">
+                <span class="dotted_fill">Tên bệnh: </span>
+                <br/><br/><br/>
+            </div>
         </div>
         <div style="height:60px">
-            Lời khuyên: ..................................................................................................................................................................................................................................................................................................................................................................
+            <div class="td_dotted_wrap">
+                <span class="dotted_fill">Lời khuyên: </span>
+                <br/><br/><br/>
+            </div>
         </div>
         <div style="float:right;margin-top:20px">
             THỦ TRƯỞNG CƠ QUAN KHÁM SỨC KHOẺ<br/>
@@ -67,151 +79,179 @@
                 <td style="border: 1px solid black;width:70%;text-align:center">Nội dung khám</td>
                 <td style="border: 1px solid black;width:30%;text-align:center">Họ và tên, chữ ký của bác sĩ</td>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>1.</b>Tuần hoàn:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">1.</b><span class="dotted_fill">Tuần hoàn: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>2.</b>Hô hấp:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">2.</b><span class="dotted_fill">Hô hấp: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>3.</b>Tiêu hoá:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">3.</b><span class="dotted_fill">Tiêu hoá: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>4.</b>Thận-tiết niệu-sinh dục:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">4.</b><span class="dotted_fill">Thận-tiết niệu-sinh dục: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>5.</b>Thần kinh:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">5.</b><span class="dotted_fill">Thần kinh: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>6.</b>Tâm Thần:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">6.</b><span class="dotted_fill">Tâm Thần: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>7.</b>Cơ xương khớp:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">7.</b><span class="dotted_fill">Cơ xương khớp: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>8.</b>Nội tiết:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">8.</b><span class="dotted_fill">Nội tiết: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>9.</b>Ngoại khoa:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap" style="max-height:80px;">
+                        <b style="background-color: white;">9.</b><span class="dotted_fill">Ngoại khoa: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>10.</b>Da liễu:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap" style="margin-top:0;">
+                        <b style="background-color: white;">10.</b><span class="dotted_fill">Da liễu: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>11.</b>Sản phụ khoa:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">11.</b><span class="dotted_fill">Sản phụ khoa: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>12.</b>Mắt:
-                    <table style="width:100%">
-                        <tr>
-                            <td style="width:20%">Không kính:</td>
-                            <td style="width:40%">Mắt phải:</td>
-                            <td style="width:40%">Mắt trái:</td>
-                        </tr>
-                        <tr>
-                            <td style="width:20%">Có kính:</td>
-                            <td style="width:40%">Mắt phải:</td>
-                            <td style="width:40%">Mắt trái:</td>
-                        </tr>
-                    </table>
-                    Các bệnh về mắt:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">12.</b>Mắt:
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:20%">Không kính:</td>
+                                <td style="width:40%">Mắt phải:</td>
+                                <td style="width:40%">Mắt trái:</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Có kính:</td>
+                                <td style="width:40%">Mắt phải:</td>
+                                <td style="width:40%">Mắt trái:</td>
+                            </tr>
+                        </table>
+                        <span class="dotted_fill">Các bệnh về mắt: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>13.</b>Tai - Mũi - Họng:
-                    <table style="width:100%">
-                        <tr>
-                            <td style="width:20%">Tai trái:</td>
-                            <td style="width:40%">Nói thường:
-                                <span style="margin-left:90px">m,</span>
-                            </td>
-                            <td style="width:40%">Nói thầm:
-                                <span style="margin-left:90px">m</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:20%">Tai phải:</td>
-                            <td style="width:40%">Nói thường:
-                                <span style="margin-left:90px">m,</span>
-                            </td>
-                            <td style="width:40%">Nói thầm:
-                                <span style="margin-left:90px">m</span>
-                            </td>
-                        </tr>
-                    </table>
-                    Các bệnh về tai mũi họng:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">13.</b>Tai - Mũi - Họng:
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:20%">Tai trái:</td>
+                                <td style="width:40%">Nói thường:
+                                    <span style="margin-left:90px">m,</span>
+                                </td>
+                                <td style="width:40%">Nói thầm:
+                                    <span style="margin-left:90px">m</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Tai phải:</td>
+                                <td style="width:40%">Nói thường:
+                                    <span style="margin-left:90px">m,</span>
+                                </td>
+                                <td style="width:40%">Nói thầm:
+                                    <span style="margin-left:90px">m</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <span class="dotted_fill">Các bệnh về tai mũi họng: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
-            <tr>
-                <td style="border: 1px solid black;padding-bottom:0px;padding-top:0px;"><b>14.</b>Răng - Hàm - Mặt:
-                    <br/>
-                    <br/>
-                    Phân loại: .......
+            <tr class="black_border">
+                <td>
+                    <div class="td_dotted_wrap">
+                        <b style="background-color: white;">14.</b><span class="dotted_fill">Răng - Hàm - Mặt: </span>
+                        <br/><br/><br/>
+                        <span class="dotted_fill">Phân loại: </span>
+                    </div>
                 </td>
-                <td style="border: 1px solid black;"></td>
+                <td/>
             </tr>
         </table>
     </template>
@@ -229,6 +269,33 @@
         </t>
         <div class="page">
             <div class="row">
+                <style>
+                    .black_border > td {
+                        border: 1px solid black !important;
+                    }
+                    .td_dotted_wrap {
+                        padding-bottom: 0px !important;
+                        padding-top: 0px !important;
+                        padding-left: 0px !important;
+                        position: relative;
+                        z-index: 10;
+                        overflow: hidden;
+                    }
+                    .dotted_fill {
+                        background-color: white;
+                        padding-right: 4px;
+                    }
+                    .dotted_fill:after{
+                        content: " ................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................ ";
+                        position: absolute;
+                        z-index: -1;
+                        word-break: break-word;
+                        left: 0;
+                        right: 0;
+                        overflow: hidden;
+                        height: 60px;
+                    }
+                </style>
                 <div class="col-xs-3">
                     <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
                          style="max-height: 80px;"/>
@@ -259,7 +326,7 @@
                                     <t style="margin-left:10px" t-esc='doc.customer.name'/>
                                 </b>
                             </td>
-                            <td></td>
+                            <td/>
                         </tr>
                         <tr>
                             <td style="margin-top:5px">
@@ -312,6 +379,7 @@
         <t t-call="report.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-call="dha_medic_report.report_medic_medical_check_list_report_document"/>
+                <t t-call="dha_medic_report.report_check_list_document"/>
             </t>
         </t>
     </template>

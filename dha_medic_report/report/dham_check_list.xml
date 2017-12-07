@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="dha_medic_report.report_check_list_document">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="page">
+            <style>
+                .black_border > td {
+                    border: 1px solid black !important;
+                }
+                .td_dotted_wrap {
+                    padding-bottom: 0px !important;
+                    padding-top: 0px !important;
+                    padding-left: 0px !important;
+                    position: relative;
+                    z-index: 10;
+                    overflow: hidden;
+                }
+                .dotted_fill {
+                    background-color: white;
+                    padding-right: 4px;
+                }
+                .dotted_fill:after{
+                    content: " ................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................ ";
+                    position: absolute;
+                    z-index: -1;
+                    word-break: break-word;
+                    left: 0;
+                    right: 0;
+                    overflow: hidden;
+                    height: 60px;
+                }
+            </style>
+            <div class="row">
+                <div class="col-xs-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                         style="max-height: 80px;"/>
+                </div>
+                <div class="col-xs-9">
+                    <h4 style="">PHÒNG KHÁM ĐA KHOA DHA</h4>
+                    <t t-if="doc.center_id.address" style="margin-left:25px">Địa chỉ:
+                        <span style="margin-left:5px" t-esc='doc.center_id.address'/>
+                    </t>
+                    <br/>
+                    <t t-if="doc.center_id.mobile" style="margin-left:25px">Điện thoại:
+                        <span style="margin-left:5px;margin-right:5px"
+                              t-esc='doc.center_id.mobile'/>
+                        <span t-if="doc.center_id.email">- Email :
+                            <span style="margin-left:10px;" t-esc='doc.center_id.email'/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+
+            <h3 style="text-align:center;font-weight:bolder;margin-top:0px;margin-bottom:10px">CHECK LIST</h3>
+            <div class="" style="margin-top:5px;">
+                <table class="" style="display:inline-block;width:550px">
+                    <tbody>
+                        <tr>
+                            <td style="width:50%">
+                                <b style="float:left">Họ tên:
+                                    <t style="margin-left:10px" t-esc='doc.customer.name'/>
+                                </b>
+                            </td>
+                            <td/>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b t-if="doc.customer.day_of_birth" style="">Ngày sinh:
+                                    <t style="margin-left:10px"
+                                       t-esc="time.strftime('%d/%m/%Y', time.strptime(doc.customer.day_of_birth, '%Y-%m-%d'))"/>
+                                </b>
+                            </td>
+                            <td style="margin-top:5px">
+                                <b t-if="doc.customer.sex" style="">Giới tính:
+                                    <t style="margin-left:10px"
+                                       t-esc=" 'Nam' if doc.customer.sex == 'male' else 'Nữ'"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <b t-if="doc.customer_parent_id" style="">Công ty:
+                                    <span style="margin-left:5px"
+                                          t-esc="doc.customer_parent_id.name"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <b t-if="doc.description" style="">Ghi chú:
+                                    <span style="margin-left:5px"
+                                          t-esc="doc.description"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="" style="float:right;margin-top:-5px;">
+                    <img t-if="doc.customer.customer_id" class="barcode"
+                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', doc.customer.customer_id, 75, 75)"/>
+                </div>
+            </div>
+
+            <table class="table table-bordered" style="width:100%;margin-top:30px;page-break-inside: avoid;font-size:14px;">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid black !important;">MỤC KHÁM</th>
+                        <th style="width: 175px;text-align: center;border: 1px solid black !important;">NGƯỜI THỰC HIỆN</th>
+                        <th style="width: 175px;text-align: center;border: 1px solid black !important;">NOTE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="black_border">
+                        <td>
+                        <span>1. Sinh hiệu</span>
+                        </td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>2. Khám Răng Hàm Mặt</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>3. Khám Tai Mũi Họng</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>4. Khám Mắt</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>5. Khám Da Liễu</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>6. Khám Phụ Khoa</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>7. Khám Ngoại</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border"><td>
+                        <span>8. Khám Nội</span></td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border">
+                        <td>
+                            <span>9. X Quang</span>
+                            <t t-foreach="doc.medic_xq_image_compute_ids" t-as="xq">
+                                <div style="font-size:12px;">- <span t-esc="xq.product_test.name"/></div>
+                            </t>
+                        </td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border">
+                        <td>
+                            <span>10. ECG</span>
+                            <t t-foreach="doc.medic_dtd_image_compute_ids" t-as="dtd">
+                                <div style="font-size:12px;">- <span t-esc="dtd.product_test.name"/></div>
+                            </t>
+                        </td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border">
+                        <td>
+                            <span>11. Siêu Âm</span>
+                            <t t-foreach="doc.medic_sa_image_compute_ids" t-as="sa">
+                                <div style="font-size:12px;">- <span t-esc="sa.product_test.name"/></div>
+                            </t>
+                        </td>
+                        <td/><td/>
+                    </tr>
+                    <tr class="black_border">
+                        <td>
+                            <span>11. Xét Nghiệm</span>
+                            <t t-foreach="doc.medic_lab_test_compute_ids" t-as="xn">
+                                <div style="font-size:12px;">- <span t-esc="xn.product_test.name"/></div>
+                            </t>
+                        </td>
+                        <td/><td/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer"/>
+    </template>
+
+</odoo>

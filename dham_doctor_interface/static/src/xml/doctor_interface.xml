@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="DHAMDoctorWidget">
+        <script type="text/javascript" src="/dham_doctor_interface/static/libs/quagga.min.js"/>
+        <style>
+            .modal-backdrop {
+                display: none;
+            }
+            .modal.in {
+                left: auto;
+                top: 45px;
+                pointer-events: none !important;
+            }
+            .modal.in > .modal-dialog {
+                width: 70% !important;
+                float: right;
+                padding: 0 !important;
+                pointer-events: all;
+            }
+            .treatmented h3,
+            .patient_content h3 {
+                margin: 5px 0;
+            }
+        </style>
+
+        <div class="container-fluid" style="background-color:white;height:100%;">
+            <div class="row">
+                <h1 class="ui_title">Contracts</h1>
+                <div class="contract_content"/>
+                <div class="patient_content" style="display:none;">
+                    <div class="col-xs-12">
+                        <h3><strong>Contract: </strong><span class="contract_name"/></h3>
+                    </div>
+                    <div class="col-xs-8">
+                        <h3><strong>ID: </strong><input type="text" class="patient_id" style="width:150px;display:inline-block;"/></h3>
+                    </div>
+                    <div class="col-xs-8">
+                        <h3><strong>Patient: </strong><span class="patient_name"/></h3>
+                    </div>
+                    <div class="col-xs-8">
+                        <h3><strong>Day of birth: </strong><span class="patient_dob"/></h3>
+                    </div>
+                    <div class="col-xs-8">
+                        <h3><strong>Sex: </strong><span class="patient_sex"/></h3>
+                    </div>
+                </div>
+                <hr/>
+                <div class="treatmented col-xs-12" style="display:none;padding: 0;">
+                    <h1>Treatmented</h1>
+                    <div class="treatmented_content"/>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DoctorContract">
+        <t t-foreach="contracts" t-as="c">
+            <div class="col-xs-3 " style="cursor: pointer;">
+                <div style="border: 1px solid green;border-radius: 7px;padding: 10px;font-size: 16px;"
+                     t-attf-class="contract_#{c['id']}">
+                    <span><t t-esc="c['name']"/></span>
+                </div>
+            </div>
+
+        </t>
+    </t>
+
+    <t t-name="Treatmented">
+        <ul class="treatmented" style="list-style: none;padding: 0 16px;">
+            <t t-foreach="treatmented" t-as="tr">
+                <li><h3>
+                    <strong><t t-esc="tr['buildings_type'][1]"/> - <t t-esc="tr['doctor_id'][1]"/></strong>
+                </h3></li>
+            </t>
+        </ul>
+    </t>
+</templates>

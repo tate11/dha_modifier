@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <data>
+            <record id="dha_doctor_interface_action_client" model="ir.actions.client">
+                <field name="name">Open Doctor Interface</field>
+                <field name="tag">dham.doctor.ui</field>
+                <field name="params" eval="{}"/>
+            </record>
+
+            <menuitem name="Doctor Interface" id="dham_doctor_interface" sequence="2"
+                      action="dha_doctor_interface_action_client"/>
+        </data>
+    </data>
+</odoo>

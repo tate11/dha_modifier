@@ -22,11 +22,13 @@
     'data': [
         
         'views/medic_test_views.xml',
+        'views/medic_partner_company_check.xml',
         'report/invoice_receipt_voucher.xml',
         'report/lab_test_report.xml',
         'report/medic_medical_bill_report.xml',
         'report/dha_medic_report.xml',
         'report/medic_medical_check_list.xml',
+        'report/dham_check_list.xml',
     ],
     # only loaded in demonstration mode
     'qweb': [],

@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="view_res_partner_company_check_form" model="ir.ui.view">
+            <field name="name">res.partner.company.check.form</field>
+            <field name="model">res.partner.company.check</field>
+            <field name="inherit_id" ref="dha_medic_modifier.view_res_partner_company_check_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_inline oe_stat_button"
+                            icon="fa-file-text-o"
+                            name="action_show_check_list"
+                            type="object">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value" style="white-space: normal !important;">
+                                Check List
+                            </span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

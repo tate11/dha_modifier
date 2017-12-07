@@ -1,0 +1,7 @@
+<odoo>
+    <template id="assets_backend" name="dham_doctor_interface assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/dham_doctor_interface/static/src/js/dham_doctor_interface.js"/>
+        </xpath>
+    </template>
+</odoo>
