@@ -140,14 +140,20 @@ class MedicMedicalBill(models.Model):
                     record.check_vip = True
     @api.multi
     def _compute_test_done_status(self):
-        MedictTest = self.env['medic.test']
+        MedicTest = self.env['medic.test']
+        XQTest = self.env['xq.image.test']
+        SATest = self.env['sa.image.test']
+        DTDTest = self.env['dtd.image.test']
+        Ms = [MedicTest, XQTest, SATest, DTDTest]
         for record in self:
-            test_ids = MedictTest.search([('related_medical_bill', 'in', [record.id])])
-            if not test_ids:
-                record.done_percent = '0 / 0'
-                continue
-            done_test = test_ids.filtered(lambda r: r.state == 'done')
-            record.done_percent = '%s / %s' %(len(done_test), len(test_ids))
+            domain = [('related_medical_bill', 'in', [record.id])]
+            domain_done = [('related_medical_bill', 'in', [record.id]), ('state', '=', 'done')]
+            total = 0
+            done = 0
+            for m in Ms:
+                total += m.search_count(domain)
+                done += m.search_count(domain_done)
+            record.done_percent = '%s / %s'%(str(done), str(total))
 
     def _get_medic_test_ids(self):
         MedicTest  = self.env['medic.test']

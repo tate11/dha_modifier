@@ -155,6 +155,7 @@ class MedicLabTestType(models.Model):
 
     name = fields.Char('Name', required=1, translate=1)
     code = fields.Char('Code')
+    model_name = fields.Char('Model Name', required=1)
     
 class MedicLabTestResultTemplate(models.Model):
     _name = 'medic.test.res.template'

@@ -4,21 +4,25 @@
         <record id="medic_test_type_lab_test" model="medic.test.type">
             <field name="name">Lab Tests</field>
             <field name="code">lab.test.seq</field>
+            <field name="model_name">medic.test</field>
         </record>
 
         <record id="medic_test_type_image_test" model="medic.test.type">
             <field name="name">Imaging Test</field>
             <field name="code">image.test.seq</field>
+            <field name="model_name">xq.image.test</field>
         </record>
 
         <record id="medic_test_type_echograph" model="medic.test.type">
             <field name="name">Echograph</field>
             <field name="code">echograph.test.seq</field>
+            <field name="model_name">sa.image.test</field>
         </record>
 
         <record id="medic_test_type_electrocardiogram" model="medic.test.type">
             <field name="name">Electrocardiogram</field>
             <field name="code">electrocardiogram.test.seq</field>
+            <field name="model_name">dtd.image.test</field>
         </record>
     </data>
 </odoo>

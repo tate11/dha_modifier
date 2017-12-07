@@ -8,7 +8,7 @@ import odoo.addons.decimal_precision as dp
 class DHAMReceive(models.Model):
     _name = 'dham.patient.recieve'
     _order = 'id desc'
-    _inherits = ['mail.thread']
+    _inherit = 'mail.thread'
 
     @api.depends('line_ids.price_total')
     def _amount_all(self):
@@ -55,7 +55,7 @@ class DHAMReceive(models.Model):
                 record.insurrance_ids = record.patient_id.insurrance_ids
 
     name = fields.Char('Receive Number')
-    receive_state = fields.Selection([
+    state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
         ('paid', 'Paid'),

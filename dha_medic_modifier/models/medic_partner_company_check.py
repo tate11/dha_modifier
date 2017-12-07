@@ -251,11 +251,6 @@ class PartnerCompanyCheck(models.Model):
                     [('id', 'in', products.ids), ('type', '=', 'service'), ('create_medical_bill', '=', True)])
                 if len(product_medical) > 0:
                     building = False
-                    # if center:
-                    #     building = Department.search([('type', '=', 'buildings'), ('parent_id', '=', center.id),
-                    #                                   ('buildings_type', '=', product_medical[0].buildings_type.id)],
-                    #                                  limit=1)
-
                     new_bill = MedicalBill.create({
                         'customer': emp.id,
                         'service_ids': [(6, 0, product_medical.ids)],
@@ -273,7 +268,8 @@ class PartnerCompanyCheck(models.Model):
                 product_test = Product.search(
                     [('id', 'in', products.ids), ('type', '=', 'service'), ('service_type', '!=', False)])
                 for pro in product_test:
-                    MedicTest.create({
+                    Obj = self.env[pro.service_type.model_name]
+                    Obj.create({
                         'type': pro.service_type.id,
                         'company_check_id': record.id,
                         'product_test': pro.id,
@@ -373,21 +369,22 @@ class PartnerCompanyCheck(models.Model):
         TestObj = self.env['medic.test']
         res = ['', '', '', '']
         XN = self.env.ref('dha_medic_modifier.medic_test_type_lab_test')
-        XQ = self.env.ref('dha_medic_modifier.medic_test_type_image_test')
-        SA = self.env.ref('dha_medic_modifier.medic_test_type_echograph')
-        DT = self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram')
-        for xn_id in TestObj.search([('id', 'in', medical.medic_lab_test_compute_ids.ids), ('type', '=', XN.id),('state','=','done')]):
+        XQ = [self.env.ref('dha_medic_modifier.medic_test_type_image_test'), 'xq.image.test']
+        SA = [self.env.ref('dha_medic_modifier.medic_test_type_echograph'), 'sa.image.test']
+        DT = [self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram'), 'dtd.image.test']
+        for xn_id in TestObj.search([('id', 'in', medical.medic_lab_test_compute_ids.ids), ('state','=','done')]):
             if res[0] == '':
                 res[0] += xn_id.product_test.name + ': ' + (xn_id.note or '')
             else:
                 res[0] += '\n' + xn_id.product_test.name + ': ' + (xn_id.note or '')
         index = 1
-        for type in [XQ, SA, DT]:
-            for img in TestObj.search([('id', 'in', medical.medic_image_test_compute_ids.ids), ('type', '=', type.id),('state','=','done')]):
+        for type,model_name in [XQ, SA, DT]:
+            for img in self.env[model_name].search([('id', 'in', medical.medic_image_test_compute_ids.ids),('state','=','done')]):
                 if res[index] == '':
                     res[index] += img.product_test.name + ': ' + (img.note or '')
                 else:
                     res[index] += '\n' + img.product_test.name + ': ' + (img.note or '')
+            index += 1
         return res
 
     @api.model

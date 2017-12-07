@@ -44,7 +44,7 @@
         'views/medic_medicine_order_views.xml',
         'views/res_partner_views.xml',
         'views/medic_test_views.xml',
-        'views/medic_account_invoice_views.xml',
+        # 'views/medic_account_invoice_views.xml',
         'views/medic_heath_center_views.xml',
         'views/medic_medical_bill_views.xml',
         'views/medic_product_template_views.xml',
@@ -56,6 +56,7 @@
         'views/medic_hr_employee_view.xml',
         'views/medic_contract_schedule.xml',
         'dham_patient/views/dham_patient.xml',
+        'dham_medic_receive/dham_medic_patient_receive_view.xml',
         'views/run_one_time_function.xml',
     ],
     # only loaded in demonstration mode
