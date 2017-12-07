@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="medic_test_type_lab_test" model="medic.test.type">
             <field name="name">Lab Tests</field>
             <field name="code">lab.test.seq</field>

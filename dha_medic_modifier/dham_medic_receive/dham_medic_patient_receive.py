@@ -65,8 +65,7 @@ class DHAMReceive(models.Model):
     user_id = fields.Many2one('res.users', 'Responsible', default= lambda self: self.env.user.id or False)
     date = fields.Datetime('Create Time', default=lambda self: fields.Datetime.now(), readonly=1)
 
-    sale_parent_id = fields.Many2one('sale.order', 'Sale Order', required=1, index=1)
-    patient_id = fields.Many2one('dham.patient', 'Patient')
+    patient_id = fields.Many2one('dham.patient', 'Patient', required=1)
     partner_id = fields.Many2one('res.partner', 'Partner ID', related='patient_id.partner_id', store=1)
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient_id.sex', readonly=1)
     day_of_birth = fields.Date(string='Day of Birth', related='patient_id.day_of_birth', readonly=1)
@@ -128,21 +127,21 @@ class DHAMReceive(models.Model):
             values['note'] = self.with_context(lang=self.patient_id.lang).env.user.company_id.sale_note
         self.update(values)
 
-    # @api.onchange('patient_id')
-    # def _onchange_patient_id(self):
-    #     self.partner_id = self.patient_id and self.patient_id.partner_id.id or False
-    #     if self.env.context.get('default_contract_adding_services', False):
-    #         Contract = self.env['res.partner.company.check'].sudo().search(
-    #             [('id', '=', self.env.context.get('default_contract_adding_services'))])
-    #         if self.patient_id and Contract:
-    #             self.medical_bill_id = self.env['medic.medical.bill'].search(
-    #                 [('company_check_id', '=', Contract.id), ('customer', '=', self.patient_id.id)]).id or False
-    #         if Contract:
-    #             return {
-    #                 'domain': {
-    #                     'patient_id': [('id', 'in', Contract.employees.ids)]
-    #                 }
-    #             }
+    @api.onchange('patient_id')
+    def _onchange_patient_id(self):
+        self.partner_id = self.patient_id and self.patient_id.partner_id.id or False
+        if self.env.context.get('default_contract_adding_services', False):
+            Contract = self.env['res.partner.company.check'].sudo().search(
+                [('id', '=', self.env.context.get('default_contract_adding_services'))])
+            if self.patient_id and Contract:
+                self.medical_bill_id = self.env['medic.medical.bill'].search(
+                    [('company_check_id', '=', Contract.id), ('customer', '=', self.patient_id.id)]).id or False
+            if Contract:
+                return {
+                    'domain': {
+                        'patient_id': [('id', 'in', Contract.employees.ids)]
+                    }
+                }
 
     @api.onchange('room_id')
     def onchange_room_id(self):
@@ -164,26 +163,26 @@ class DHAMReceive(models.Model):
             res['domain']['room_id'] = [('parent_id', '=', self.building_id.id)]
         return res
 
-    # @api.onchange('package_ids')
-    # def onchange_package_ids(self):
-    #     if 'no_onchange_package' in self.env.context:
-    #         return
-    #     ProductObj = self.env['product.product']
-    #
-    #     for record in self:
-    #         record.order_line = False
-    #         if record.package_ids:
-    #             product_list = record.package_ids.parse_multi_package()
-    #             for product in product_list:
-    #                 product_id = ProductObj.browse(int(product[0]))
-    #                 record.order_line += record.order_line.new({
-    #                     'name': product_id.description or product_id.name,
-    #                     'product_id': product_id.id,
-    #                     'product_uom_qty': 1,
-    #                     'price_unit': product[1],
-    #                     'product_uom': product_id.uom_id.id or False,
-    #                     'tax_id': product_id.taxes_id.ids or [],
-    #                 })
+    @api.onchange('package_ids')
+    def onchange_package_ids(self):
+        if 'no_onchange_package' in self.env.context:
+            return
+        ProductObj = self.env['product.product']
+
+        for record in self:
+            record.line_ids = False
+            if record.package_ids:
+                product_list = record.package_ids.parse_multi_package()
+                for product in product_list:
+                    product_id = ProductObj.browse(int(product[0]))
+                    record.line_ids += record.line_ids.new({
+                        'name': product_id.description or product_id.name,
+                        'product_id': product_id.id,
+                        'product_uom_qty': 1,
+                        'price_unit': product[1],
+                        'product_uom': product_id.uom_id.id or False,
+                        'tax_id': product_id.taxes_id.ids or [],
+                    })
 
 class DHAMReceiveLine(models.Model):
     _name = 'dham.patient.recieve.line'
