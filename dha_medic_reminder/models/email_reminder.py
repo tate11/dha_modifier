@@ -108,7 +108,7 @@ class email_reminder(models.Model):
         template = self.env.ref('dha_medic_reminder.reminder_medical_bill_email_template')
         current_host = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         medic_bills = self.env['medic.medical.bill'].search([('state', '=', 'done')])
-        for bill in medic_bills[:10]:
+        for bill in medic_bills:
             send_email = False
             xn_ids = bill.medic_lab_test_compute_ids.filtered(lambda xn: xn.state != 'done')
             if len(xn_ids):
