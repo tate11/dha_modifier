@@ -5,9 +5,12 @@
             <field name="model">email.reminder</field>
             <field name="arch" type="xml">
                 <form string="Email Reminder">
-                    <group>
+                    <group string="Email Reminder">
                         <field name="project_task_type_ids" widget="many2many_tags"/>
                         <field name="helpdesk_stage_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="Medical Bill Reminder">
+                        <field name="medical_bill_user_ids" widget="many2many_tags"/>
                     </group>
                 </form>
             </field>

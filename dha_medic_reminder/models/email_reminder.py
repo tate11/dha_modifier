@@ -17,6 +17,7 @@ class email_reminder(models.Model):
     name = fields.Char('Name', default='Email Reminder')
     project_task_type_ids = fields.Many2many('project.task.type', string='Project Task Type', default=_default_task_type)
     helpdesk_stage_ids = fields.Many2many('helpdesk.stage', string='Helpdesk Stage', default=_default_helpdesk_type)
+    medical_bill_user_ids = fields.Many2many('res.users', string='Users Recieve Reminder')
 
     @api.model
     def send_email_reminder(self):
@@ -70,8 +71,11 @@ class email_reminder(models.Model):
 
                 # get pending leaving request
                 try:
-                    hr_holiday_ids = LR.with_env(self.env(user=user.id)).search([
-                        ('state', 'in', ('validate1', 'confirm')), ('user_manager_id', '=', user.id)])
+                    domain = [('state', 'in', ('confirm')), ('user_manager_id', '=', user.id)]
+                    if user.has_group('hr_holidays.group_hr_holidays_manager'):
+                        domain = ['|',('state', '=', 'validate1'),
+                                  '&',('state', '=', 'confirm'),('user_manager_id', '=', user.id)]
+                    hr_holiday_ids = LR.with_env(self.env(user=user.id)).search(domain)
                     count['hr_holiday_ids'] = len(hr_holiday_ids)
                 except Exception:
                     hr_holiday_ids = None
@@ -97,3 +101,53 @@ class email_reminder(models.Model):
 
                 if count.get('project_task_ids', False) or count.get('purchase_request_ids', False) or count.get('purchase_order_ids', False) or count.get('hr_holiday_ids', False) or count.get('helpdesk_ticket_ids', False):
                     template.with_context(data).send_mail(user.id,force_send=True)
+
+    @api.model
+    def send_medic_bill_reminder(self):
+        data = {}
+        template = self.env.ref('dha_medic_reminder.reminder_medical_bill_email_template')
+        current_host = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        medic_bills = self.env['medic.medical.bill'].search([('state', '=', 'done')])
+        for bill in medic_bills[:10]:
+            send_email = False
+            xn_ids = bill.medic_lab_test_compute_ids.filtered(lambda xn: xn.state != 'done')
+            if len(xn_ids):
+                send_email = True
+
+            xq_ids = bill.medic_xq_image_compute_ids.filtered(lambda xn: xn.state != 'done')
+            if len(xq_ids):
+                send_email = True
+
+            sa_ids = bill.medic_sa_image_compute_ids.filtered(lambda xn: xn.state != 'done')
+            if len(sa_ids):
+                send_email = True
+
+            dtd_ids = bill.medic_dtd_image_compute_ids.filtered(lambda xn: xn.state != 'done')
+            if len(dtd_ids):
+                send_email = True
+
+            if send_email:
+                if data.get(bill.company_check_id.name, False):
+                    data[bill.company_check_id.name].append({
+                        'bill': bill,
+                        'xn': len(xn_ids) and xn_ids,
+                        'xq': len(xq_ids) and xq_ids,
+                        'sa': len(sa_ids) and sa_ids,
+                        'dtd': len(dtd_ids) and dtd_ids,
+                    })
+                else:
+                    data[bill.company_check_id.name] = [{
+                        'bill': bill,
+                        'xn': len(xn_ids) and xn_ids,
+                        'xq': len(xq_ids) and xq_ids,
+                        'sa': len(sa_ids) and sa_ids,
+                        'dtd': len(dtd_ids) and dtd_ids,
+                    }]
+
+        config = self.env['email.reminder'].search([], order="id desc", limit=1)
+        for user in config.medical_bill_user_ids:
+            template.with_context({
+                'partner_id': user.partner_id,
+                'current_host': current_host,
+                'data': data,
+            }).send_mail(user.id, force_send=True)
