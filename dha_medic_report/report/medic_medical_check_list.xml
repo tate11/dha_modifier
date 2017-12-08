@@ -360,9 +360,10 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="" style="float:right;margin-top:-5px;">
+                <div style="float:right;margin-top:-5px;text-align:center;">
                     <img t-if="doc.customer.customer_id" class="barcode"
                          t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', doc.customer.customer_id, 75, 75)"/>
+                    <h3 style="margin-top:0;"><span style="margin-left:5px" t-esc="doc.customer_id"/></h3>
                 </div>
             </div>
             <t t-call="dha_medic_report.report_medic_medical_check_list_the_luc"/>
