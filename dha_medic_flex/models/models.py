@@ -33,7 +33,7 @@ class MedicContract(models.Model):
     @api.multi
     def action_get_emp_flex(self):
         self.write({'get_emp_time' : fields.Datetime.now()})
-        Partner = self.env['res.partner']
+        Patients = self.env['dham.patient']
         if not self.flex_id:
             raise UserError('Missing Flex Contract Id')
         conn = MySQLdb.connect(host='113.161.80.198', user='root', passwd='dha@123@', db='flexclinic', port=13306,
@@ -53,13 +53,13 @@ class MedicContract(models.Model):
                     dob = datetime(year=data[6], month=data[5], day=data[4]).strftime(DEFAULT_SERVER_DATE_FORMAT)
                 except:
                     pass
-                duplicate = self.check_partner_duplicate(data[1], mobile, dob, self.company_id)
+                duplicate = self.check_Patients_duplicate(data[1], mobile, dob, self.company_id)
                 if duplicate:
                     duplicate.write({
                         'flex_id': data[0] or '',
                         'parent_id': self.company_id.id,  
                     })
-                    Partner += duplicate
+                    Patients += duplicate
                 if not duplicate:
                     tmp_data = {
                         'flex_id': data[0]  or '',
@@ -70,40 +70,39 @@ class MedicContract(models.Model):
                         'day_of_birth' : dob,
                         'parent_id': self.company_id.id  or False,
                         'mobile': mobile,
-                        'is_patient' : True,
                     }
-                    Partner += Partner.with_context(from_external_center=True).create(tmp_data)
-        if Partner:
+                    Patients += Patients.with_context(from_external_center=True).create(tmp_data)
+        if Patients:
             self.write({
-                'employees' : [(6, 0, Partner.ids)]
+                'employees' : [(6, 0, Patients.ids)]
             })
         cur.close()
         conn.close()
 
     @api.model
-    def check_partner_duplicate(self, name, mobile, dob, comany_id):
+    def check_Patients_duplicate(self, name, mobile, dob, comany_id):
         if dob == '':
             dob = False
         if mobile == '':
             mobile = False
-        Partners = self.env['res.partner']
+        Patients = self.env['dham.patient']
         dup_mobile = False
         dup_dob = False
         if mobile:
-            dup_mobile = Partners.search([('name', '=', name), ('mobile', '=', mobile)])
+            dup_mobile = Patients.search([('name', '=', name), ('mobile', '=', mobile)])
         if dob:
-            dup_dob = Partners.search([('name', '=', name), ('day_of_birth', '=', dob)])
+            dup_dob = Patients.search([('name', '=', name), ('day_of_birth', '=', dob)])
         # kiểm tra xem nhân viên có đổi công ty không
         if dup_mobile:
-            Partners += dup_mobile
+            Patients += dup_mobile
         elif dup_dob:
-            Partners += dup_dob
-        if not Partners:
+            Patients += dup_dob
+        if not Patients:
             return False
 
-        match_company = Partners.filtered(lambda r: r.parent_id.id == comany_id.id)
+        match_company = Patients.filtered(lambda r: r.parent_id.id == comany_id.id)
         if not match_company:
-            return Partners
+            return Patients
         return match_company
 
 

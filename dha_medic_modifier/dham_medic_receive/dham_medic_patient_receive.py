@@ -103,6 +103,7 @@ class DHAMReceive(models.Model):
     company_check_id = fields.Many2one('res.partner.company.check', 'Company Check Source ID', copy=False)
     package_ids = fields.Many2many('medic.package', 'medic_patient_receive_package_ref', 'receive_id', 'package_id',
                                    'Packages', domain=[('type', '=', 'person')])
+    sale_order_id = fields.Many2one('sale.order','Sale Order Id')
 
     @api.model
     def create(self, vals):
@@ -183,6 +184,108 @@ class DHAMReceive(models.Model):
                         'product_uom': product_id.uom_id.id or False,
                         'tax_id': product_id.taxes_id.ids or [],
                     })
+
+    @api.multi
+    def action_paid(self):
+        self.write({'state': 'paid'})
+        return True
+
+    @api.multi
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
+        return True
+
+    @api.multi
+    def action_confirm(self):
+        for record in self:
+            record.sudo().routing_receive()
+            order = record.sudo().create_sale_order()
+            order.sudo().action_confirm()
+            order.sudo().action_invoice_create()
+            record.write({'state': 'confirmed','sale_order_id': order.id})
+        return True
+
+    @api.model
+    def routing_receive(self):
+        MedicalBill = self.env['medic.medical.bill']
+        MedicTest = self.env['medic.test']
+        Department = self.env['hr.department']
+
+        company_check_id = False
+        new_bill = False
+        product_ids = False
+        medical_bill_pro = self.line_ids.filtered(
+            lambda r: r.product_id.type == 'service' and r.product_id.create_medical_bill == True)
+        if medical_bill_pro:
+            product_ids = medical_bill_pro.mapped('product_id.id')
+
+        if self.medical_bill_id:
+            company_check_id = self.medical_bill_id.company_check_id.id
+            MedicalBill += self.medical_bill_id.related_medical_bill_ids
+
+        # combine các related medical
+        if product_ids and len(product_ids) > 0 and not self.medical_bill_id:
+            new_bill = MedicalBill.create({
+                'patient': self.patient.id,
+                'receive_id': self.id,
+                'service_ids': [(6, 0, product_ids)],
+                'center_id': self.center_id.id or False,
+                'building_id': False,
+                'reason': self.reason,
+                'prognostic': self.prognostic,
+                'company_check_id': company_check_id,
+            })
+            MedicalBill += new_bill
+
+            # SAVE RELATED
+            MedicalBill.write({
+                'related_medical_bill_ids': [(6, 0, MedicalBill.ids or [])]
+            })
+        elif product_ids and len(product_ids) > 0 and self.medical_bill_id:
+            self.medical_bill_id.write(
+                {'service_ids': [(4, x) for x in product_ids], 'adding_service_ids': [(4, x) for x in product_ids]})
+
+        for line in self.line_ids:
+            if line.product_id and line.product_id.type == 'service':
+                if line.product_id.service_type:
+                    is_adding = True if self.medical_bill_id else False
+                    self.env[line.product_id.service_type.model_name].create({
+                        'type': line.product_id.service_type.id,
+                        'center_id': self.center_id.id,
+                        'product_test': line.product_id.id,
+                        'patient': self.patient.id,
+                        'doctor_assign': self.doctor_assign.id or False,
+                        'related_medical_bill': [(6, 0, MedicalBill.ids)],
+                        'company_check_id': company_check_id,
+                        'is_adding': is_adding,
+                    })
+        return
+
+    @api.model
+    def create_sale_order(self):
+        SaleOrder = self.env['sale.order']
+        SaleOrderLine = self.env['sale.order.line']
+        order = SaleOrder.create({
+            'partner_id': self.patient.partner_id.id,
+            'partner_invoice_id': self.patient.partner_id.id,
+            'partner_shipping_id': self.patient.partner_id.id,
+            'date_order': datetime.today(),
+            'pricelist_id': self.pricelist_id.id,
+            'medic_receive_id' : self.id,
+        })
+        SaleOrder += order
+        for line in self.line_ids:
+            SaleOrderLine.create({
+                'name': line.name,
+                'order_id': order.id,
+                'product_id': line.product_id.id,
+                'product_uom_qty': line.product_uom_qty,
+                'product_uom': line.product_uom.id,
+                'tax_id' : [(6, 0, [line.tax_id.ids])],
+                'price_unit' : line.price_unit,
+                'sequence' :  line.sequence
+            })
+        return SaleOrder
 
 class DHAMReceiveLine(models.Model):
     _name = 'dham.patient.recieve.line'

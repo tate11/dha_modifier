@@ -149,6 +149,7 @@
         </record>
         <record id="view_medic_sa_image_search" model="ir.ui.view">
             <field name="name">sa.image.test.search</field>
+            <field name="mode">primary</field>
             <field name="model">sa.image.test</field>
             <field name="inherit_id" ref="dha_medic_modifier.view_medic_base_image_search"/>
             <field name="arch" type="xml">
@@ -158,6 +159,7 @@
         <record id="view_medic_dtd_image_search" model="ir.ui.view">
             <field name="name">dtd.image.test.search</field>
             <field name="model">dtd.image.test</field>
+            <field name="mode">primary</field>
             <field name="inherit_id" ref="dha_medic_modifier.view_medic_base_image_search"/>
             <field name="arch" type="xml">
                 <field name="customer" position="replace"/>
@@ -167,6 +169,7 @@
         <record id="view_medic_xq_image_tree" model="ir.ui.view">
             <field name="name">xq.image.test.tree</field>
             <field name="model">xq.image.test</field>
+            <field name="mode">primary</field>
             <field name="inherit_id" ref="view_base_image_test_tree"/>
             <field name="arch" type="xml">
                 <field name="customer" position="replace"/>
@@ -175,6 +178,7 @@
         <record id="view_medic_sa_image_tree" model="ir.ui.view">
             <field name="name">sa.image.test.tree</field>
             <field name="model">sa.image.test</field>
+            <field name="mode">primary</field>
             <field name="inherit_id" ref="view_base_image_test_tree"/>
             <field name="arch" type="xml">
                 <field name="customer" position="replace"/>
@@ -182,6 +186,7 @@
         </record>
         <record id="view_medic_dtd_image_tree" model="ir.ui.view">
             <field name="name">dtd.image.test.tree</field>
+            <field name="mode">primary</field>
             <field name="model">dtd.image.test</field>
             <field name="inherit_id" ref="view_base_image_test_tree"/>
             <field name="arch" type="xml">

@@ -28,7 +28,40 @@ class dha_medic_script(models.Model):
         # step by step
         # self.move_data_partner()
         # self.move_image_test()
+        # self.copy_patient_field()
+        self.get_patient_contract()
         return
+
+    @api.model
+    def get_patient_contract(self):
+        Medical = self.env['medic.medical.bill']
+        Patient = self.env['dham.patient']
+        CONTRACT = self.env['res.partner.company.check']
+        for con in CONTRACT.search([]):
+            self.env.cr.execute(
+                """
+                SELECT customer 
+                FROM medic_medical_bill
+                WHERE company_check_id = %s;   
+                """%(con.id)
+            )
+            customers = self.env.cr.fetchall()
+            patients = Patient.search([('partner_id','in',customers)])
+            con.write({'employees' : [(6,0,patients.ids)]})
+        self.env.cr.commit()
+        return True
+
+    @api.model
+    def copy_patient_field(self):
+        Patients = self.env['dham.patient']
+        MODELS = ['medic.test', 'xq.image.test','sa.image.test','dtd.image.test']
+        for model in MODELS:
+            records = self.env[model].search([])
+            for record in records:
+                patient = Patients.search([('partner_id','=', record.customer.id)])
+                record.write({'patient': patient.id})
+        self.env.cr.commit()
+        return True
 
     @api.model
     def move_image_test(self):
@@ -38,7 +71,7 @@ class dha_medic_script(models.Model):
             (self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram').id, 'dtd.image.test'),
         ]
         for case in switch_case:
-            records = self.env['medic.test'].search([('type', '=', case[0]),('state','=','done')])
+            records = self.env['medic.test'].search([('type', '=', case[0])])
             for record in records:
                 data = {'related_medical_bill': [(6, 0, record.related_medical_bill.ids or [])]}
                 for field in FIELD_NOR:
@@ -46,6 +79,7 @@ class dha_medic_script(models.Model):
                 for field in FIELD_SPEC:
                     data[field] = record[field].id or False
                 res = self.env[case[1]].create(data)
+                record.unlink()
                 self.env.cr.commit()
 
     @api.model
@@ -59,6 +93,7 @@ class dha_medic_script(models.Model):
                 'married_status': record.married_status,
                 'partner_id': record.id,
             })
+            self.env.cr.commit()
 
     @api.model
     def fix_partner_id(self):

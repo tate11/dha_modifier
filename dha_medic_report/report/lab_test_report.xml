@@ -42,29 +42,29 @@
                         <tr>
                             <td style="width:50%">
                                 <t style="float:left">Họ tên BN:
-                                    <t style="margin-left:10px" t-esc='docs[0].customer.name'/>
+                                    <t style="margin-left:10px" t-esc='docs[0].patient.name'/>
                                 </t>
                             </td>
                             <td></td>
                         </tr>
                         <tr>
                             <td style="margin-top:5px">
-                                <span t-if="docs[0].customer.sex" style="">Giới tính:
+                                <span t-if="docs[0].patient.sex" style="">Giới tính:
                                     <t style="margin-left:10px"
-                                       t-esc=" 'Nam' if docs[0].customer.sex == 'male' else 'Nữ'"/>
+                                       t-esc=" 'Nam' if docs[0].patient.sex == 'male' else 'Nữ'"/>
                                 </span>
                             </td>
                             <td>
-                                <span t-if="docs[0].customer.day_of_birth" style="">Ngày sinh:
+                                <span t-if="docs[0].patient.day_of_birth" style="">Ngày sinh:
                                     <t style="margin-left:10px"
-                                       t-esc="time.strftime('%d/%m/%Y', time.strptime(docs[0].customer.day_of_birth, '%Y-%m-%d'))"/>
+                                       t-esc="time.strftime('%d/%m/%Y', time.strptime(docs[0].patient.day_of_birth, '%Y-%m-%d'))"/>
                                 </span>
                             </td>
                         </tr>
                         <tr>
                             <td style="" colspan="2">
-                                <t t-if="docs[0].customer.contact_address" style="">Địa chỉ:
-                                    <span style="margin-left:5px" t-esc="docs[0].customer.contact_address"/>
+                                <t t-if="docs[0].patient.contact_address" style="">Địa chỉ:
+                                    <span style="margin-left:5px" t-esc="docs[0].patient.contact_address"/>
                                 </t>
                             </td>
                         </tr>
@@ -84,8 +84,8 @@
                     </tbody>
                 </table>
                 <div class="" style="float:right">
-                    <img t-if="docs[0].customer.customer_id" class="barcode"
-                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', docs[0].customer.customer_id, 100, 100)"/>
+                    <img t-if="docs[0].patient.patient_id" class="barcode"
+                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('QR', docs[0].patient.patient_id, 100, 100)"/>
                 </div>
             </div>
 

@@ -27,4 +27,5 @@
 
     'demo': [
     ],
+    'installable': False,
 }

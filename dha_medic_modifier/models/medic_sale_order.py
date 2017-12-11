@@ -19,6 +19,7 @@ class SaleOrder(models.Model):
     check_partner_company = fields.Boolean('Check Partner',compute='_compute_check_partner_')
     package_ids = fields.Many2many('medic.package', 'medic_sale_order_package_package_ref', 'order_id',
                                    'package_id', 'Packages', domain=[('type', '=', 'company')])
+    medic_receive_id = fields.Many2one('dham.patient.recieve', 'Receive Id')
 
     @api.onchange('package_ids')
     def onchange_package_ids(self):

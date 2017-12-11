@@ -30,7 +30,7 @@ class MedicMedicalBill(models.Model):
 
     day_of_birth = fields.Date(string='Day of Birth', related='customer.day_of_birth', readonly=0, track_visibility='onchange')
     type = fields.Selection([('company','Company'),('person','Person')], 'Type', default='person')
-    invoice_id = fields.Many2one('account.invoice', 'Invoice ID')
+    receive_id = fields.Many2one('dham.patient.recieve', 'Receive ID')
 
     center_id = fields.Many2one('hr.department', 'Center', readonly=1, track_visibility='onchange')
     building_id = fields.Many2one('hr.department', 'Building', track_visibility='onchange')

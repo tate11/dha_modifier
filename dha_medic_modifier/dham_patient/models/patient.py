@@ -67,7 +67,8 @@ class DHAMPatient(models.Model):
     # don thuoc
     medicine_order_ids = fields.One2many('medicine.order', 'customer', 'Medicine Order', track_visibility='onchange')
 
-    partner_id = fields.Many2one('res.partner', string='Related Partner', required=True, ondelete='cascade',
+    partner_id = fields.Many2one('res.partner', string='Related Partner',
+                                 required=True, ondelete='cascade',
                                  help='Partner-related data of the hospitals', track_visibility='onchange')
     patient_user_id = fields.Many2one('res.users', string='Responsible Odoo User', track_visibility='onchange')
     family_ids = fields.One2many('dham.patient.family', 'patient_id', string='Family', track_visibility='onchange')

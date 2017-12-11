@@ -9,11 +9,11 @@
             <tr style="">
                 <td style="width:15%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1">ID:</td>
                 <td style="width:10%;border: 1px solid #555354;">
-                    <t t-esc="doc.customer.customer_id"/>
+                    <t t-esc="doc.patient.patient_id"/>
                 </td>
                 <td style="width:10%;background:#D9E5F1;color:#137EC1;border: 1px solid #555354;">Họ tên:</td>
                 <td style="width:30%;border: 1px solid #555354;">
-                    <t t-esc="doc.customer.name"/>
+                    <t t-esc="doc.patient.name"/>
                 </td>
                 <td style="width:15%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1">Ngày khám:</td>
                 <td style="width:15%;border: 1px solid #555354;">
@@ -24,18 +24,18 @@
             <tr>
                 <td style="width:15%;border: 1px solid #555354;background:#D9E5F1;color:#137EC1">Giới tính:</td>
                 <td style="width:10%;border: 1px solid #555354;">
-                    <t t-if="doc.customer.sex == 'male'">Nam</t>
-                    <t t-if="doc.customer.sex == 'female'">Nữ</t>
+                    <t t-if="doc.patient.sex == 'male'">Nam</t>
+                    <t t-if="doc.patient.sex == 'female'">Nữ</t>
                 </td>
                 <td style="width:10%;background:#D9E5F1;color:#137EC1;border: 1px solid #555354;">Tuổi:</td>
                 <td style="width:30%;border: 1px solid #555354;">
-                    <t t-if="doc.customer.day_of_birth"
-                       t-esc="int((datetime.datetime.now() - datetime.datetime.strptime(doc.customer.day_of_birth, '%Y-%m-%d')).days/365)"/>
+                    <t t-if="doc.patient.day_of_birth"
+                       t-esc="int((datetime.datetime.now() - datetime.datetime.strptime(doc.patient.day_of_birth, '%Y-%m-%d')).days/365)"/>
                 </td>
                 <td style="width:15%;background:#D9E5F1;color:#137EC1;border: 1px solid #555354;">Năm sinh:</td>
                 <td style="width:15%;border: 1px solid #555354;">
-                    <t t-if="doc.customer.day_of_birth"
-                       t-esc="time.strftime('%Y', time.strptime(doc.customer.day_of_birth, '%Y-%m-%d'))"/>
+                    <t t-if="doc.patient.day_of_birth"
+                       t-esc="time.strftime('%Y', time.strptime(doc.patient.day_of_birth, '%Y-%m-%d'))"/>
                 </td>
             </tr>
         </table>
@@ -48,7 +48,7 @@
                 <img src="/dha_medic_report/static/img/title_head.jpg"
                      style="display:inline-block;height:150px;margin-bottom: 19px;"/>
                 <div style="background:#027CC7;color:white;display: inline-block;margin: 0 -4px !important;padding:8px;height:72px;font-size:40px">
-                    <span style="text-align:center;white-space: nowrap;" t-esc="doc.customer.name"/>
+                    <span style="text-align:center;white-space: nowrap;" t-esc="doc.patient.name"/>
                 </div>
                 <img src="/dha_medic_report/static/img/title_end.jpg"
                      style="display:inline-block;max-height:150px;margin-bottom:19px;"/>
@@ -342,7 +342,7 @@
                             </td>
                             <td style="width:68%">
                                 <span style="text-transform: uppercase;position: absolute;margin-left:20px"
-                                      t-if="doc.customer.name" t-esc="doc.customer.name"/>
+                                      t-if="doc.patient.name" t-esc="doc.patient.name"/>
                                 <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
                             </td>
                         </tr>
@@ -364,8 +364,8 @@
                                 <div>3. Số CMND hoặc Hộ chiếu:</div>
                             </td>
                             <td style="width:62%">
-                                <span style="position: absolute;margin-left:20px" t-if="doc.customer.cmnd_passport"
-                                      t-esc="doc.customer.cmnd_passport"/>
+                                <span style="position: absolute;margin-left:20px" t-if="doc.patient.cmnd_passport"
+                                      t-esc="doc.patient.cmnd_passport"/>
                                 <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
                             </td>
                         </tr>
@@ -415,8 +415,8 @@
                                 <div>6. Nghề nghiệp:</div>
                             </td>
                             <td style="width:85%">
-                                <span style="position: absolute;margin-left:20px" t-if="doc.customer.function"
-                                      t-esc="doc.customer.function"/>
+                                <span style="position: absolute;margin-left:20px" t-if="doc.patient.function"
+                                      t-esc="doc.patient.function"/>
                                 <hr style="border-top: 1px dotted #8c8b8b; display: inline-block; padding: 0px; margin-bottom: 0px;width: 100%;"/>
                             </td>
                         </tr>
@@ -663,80 +663,81 @@
     </template>
 
     <template id="page_image_test">
-        <t t-foreach="doc.medic_image_test_compute_ids"
-           t-as="dtd">
-            <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
-                <t t-set="o_title" t-value="dtd.product_test.uper_name or '' "/>
-                <t t-call="dha_medic_report.medic_medilcal_template_title"/>
-                <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
-                    <tr>
-                        <th rowspan="3"
-                            style="background:rgb(101, 156, 248);color:white;width:15%;font-weight:900;text-align:center;vertical-align: middle;">
-                            <t t-if="dtd.product_test.name" t-esc="dtd.product_test.name"/>
-                        </th>
-                        <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;text-align:left;vertical-align: middle;">
-                            Kết quả
-                        </td>
-                        <td id="ket_qua_test">
-                            <div style="margin-left:10px" t-if="dtd.result" t-raw="dtd.result"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;">KQ lần trước</td>
-                        <td>
-                            <p></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;">KQ lần trước nữa
-                        </td>
-                        <td>
-                            <p></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="3" style="text-align:center">
-                            <div t-if="dtd.image_res1">
-                                <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res1)"
-                                     style="max-height:500px;max-width:100%;margin-top:10px"/>
-                            </div>
-                            <div t-if="dtd.image_res2">
-                                <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res2)"
-                                     style="max-height:500px;max-width:100%;margin-top:10px"/>
-                            </div>
-                            <div t-if="dtd.image_res3">
-                                <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res3)"
-                                     style="max-height:500px;max-width:100%;margin-top:10px"/>
-                            </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th colspan="3" style="">
-                            <h5 style="color:#137EC1;display: inline-block">KẾT LUẬN:</h5>
-                            <span t-if="dtd.note" t-raw="dtd.note" style="font-weight:200;color:#00B948"/>
-                        </th>
-                    </tr>
-                </table>
-                <table style="margin-top:20px;width:100%">
-                    <tr>
-                        <td style="width:50%"></td>
-                        <td style="text-align:center">
-                            <strong>Bác sĩ</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:50%"></td>
-                        <td style="text-align:center">
-                            <div style="width:100%;height:80px;text-align:center">
-                                <img t-if="dtd.doctor_id.img_sign" style="width:80%;height:75px"
-                                     t-att-src="'data:image/png;base64,%s' % dtd.doctor_id.img_sign"/>
-                            </div>
-                            <br/>
-                            <strong t-if="dtd.doctor_id" t-esc="dtd.doctor_id.name"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+        <t t-foreach="[doc.medic_xq_image_compute_ids, doc.medic_sa_image_compute_ids, doc.medic_dtd_image_compute_ids]" t-as="img">
+            <t t-foreach="img" t-as="dtd">
+                <div class="page" style="margin-top:15px;margin-bottom:20px;margin-left:40px;margin-right:5px">
+                    <t t-set="o_title" t-value="dtd.product_test.uper_name or '' "/>
+                    <t t-call="dha_medic_report.medic_medilcal_template_title"/>
+                    <table class="table table-bordered" style="margin-top:30px;border: 1px solid #555354;">
+                        <tr>
+                            <th rowspan="3"
+                                style="background:rgb(101, 156, 248);color:white;width:15%;font-weight:900;text-align:center;vertical-align: middle;">
+                                <t t-if="dtd.product_test.name" t-esc="dtd.product_test.name"/>
+                            </th>
+                            <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;text-align:left;vertical-align: middle;">
+                                Kết quả
+                            </td>
+                            <td id="ket_qua_test">
+                                <div style="margin-left:10px" t-if="dtd.result" t-raw="dtd.result"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;">KQ lần trước</td>
+                            <td>
+                                <p></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background:#D9E5F1;color:#137EC1;width:25%;font-weight: 800;">KQ lần trước nữa
+                            </td>
+                            <td>
+                                <p></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="3" style="text-align:center">
+                                <div t-if="dtd.image_res1">
+                                    <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res1)"
+                                         style="max-height:500px;max-width:100%;margin-top:10px"/>
+                                </div>
+                                <div t-if="dtd.image_res2">
+                                    <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res2)"
+                                         style="max-height:500px;max-width:100%;margin-top:10px"/>
+                                </div>
+                                <div t-if="dtd.image_res3">
+                                    <img t-att-src="'data:image/png;base64,%s' % (dtd.image_res3)"
+                                         style="max-height:500px;max-width:100%;margin-top:10px"/>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" style="">
+                                <h5 style="color:#137EC1;display: inline-block">KẾT LUẬN:</h5>
+                                <span t-if="dtd.note" t-raw="dtd.note" style="font-weight:200;color:#00B948"/>
+                            </th>
+                        </tr>
+                    </table>
+                    <table style="margin-top:20px;width:100%">
+                        <tr>
+                            <td style="width:50%"></td>
+                            <td style="text-align:center">
+                                <strong>Bác sĩ</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:50%"></td>
+                            <td style="text-align:center">
+                                <div style="width:100%;height:80px;text-align:center">
+                                    <img t-if="dtd.doctor_id.img_sign" style="width:80%;height:75px"
+                                         t-att-src="'data:image/png;base64,%s' % dtd.doctor_id.img_sign"/>
+                                </div>
+                                <br/>
+                                <strong t-if="dtd.doctor_id" t-esc="dtd.doctor_id.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
         </t>
     </template>
 
@@ -838,43 +839,43 @@
                 <div style="margin-left:20px">
                     <div>- Tiền sử gia đình
                         <span style="font-size: small;margin-left:5px">(Family history of medical illness):
-                            <span style="margin-left:5px" t-if="doc.customer.tien_su_gia_dinh"
-                                  t-esc="doc.customer.tien_su_gia_dinh"/>
-                            <span style="margin-left:5px" t-if="not doc.customer.tien_su_gia_dinh"
+                            <span style="margin-left:5px" t-if="doc.patient.tien_su_gia_dinh"
+                                  t-esc="doc.patient.tien_su_gia_dinh"/>
+                            <span style="margin-left:5px" t-if="not doc.patient.tien_su_gia_dinh"
                                   t-esc="'Chưa ghi nhận tiền sử bệnh lý'"/>
                         </span>
                     </div>
                     <div>- Tiền căn
                         <span style="font-size: small;margin-left:5px">(Bệnh lý &amp; Phẩu thuật) (Past medical and
                             surgical history):
-                            <span style="margin-left:5px" t-if="doc.customer.tien_can" t-esc="doc.customer.tien_can"/>
+                            <span style="margin-left:5px" t-if="doc.patient.tien_can" t-esc="doc.patient.tien_can"/>
                         </span>
                     </div>
                     <div style="margin-top:10px">- Dị ứng thuốc
                         <span style="font-size: small;margin-left:5px">(drug allergy):
-                            <span style="margin-left:5px" t-if="doc.customer.di_ung_thuoc"
-                                  t-esc="doc.customer.di_ung_thuoc"/>
+                            <span style="margin-left:5px" t-if="doc.patient.di_ung_thuoc"
+                                  t-esc="doc.patient.di_ung_thuoc"/>
                         </span>
                     </div>
                     <div>- Hút thuốc lá
                         <span style="font-size: small;margin-left:5px">(Smoking):
-                            <span style="margin-left:5px" t-if="doc.customer.thuoc_la" t-esc="doc.customer.thuoc_la"/>
+                            <span style="margin-left:5px" t-if="doc.patient.thuoc_la" t-esc="doc.patient.thuoc_la"/>
                         </span>
                         <span style="margin-left: 70px">- Rượu
                             <span style="font-size: small;margin-left:5px">(alcolhol):
-                                <span style="margin-left:5px" t-if="doc.customer.ruou" t-esc="doc.customer.ruou"/>
+                                <span style="margin-left:5px" t-if="doc.patient.ruou" t-esc="doc.patient.ruou"/>
                             </span>
                         </span>
                         <span style="margin-left: 70px">- Thể thao
                             <span style="font-size: small;margin-left:5px">(Exercises):
-                                <span style="margin-left:5px" t-if="doc.customer.the_thao"
-                                      t-esc="doc.customer.the_thao"/>
+                                <span style="margin-left:5px" t-if="doc.patient.the_thao"
+                                      t-esc="doc.patient.the_thao"/>
                             </span>
                         </span>
                     </div>
                     <div>- Tiêm ngừa
                         <span style="font-size: small;margin-left:5px">(Vaccination):
-                            <span style="margin-left:5px" t-if="doc.customer.tiem_ngua" t-esc="doc.customer.tiem_ngua"/>
+                            <span style="margin-left:5px" t-if="doc.patient.tiem_ngua" t-esc="doc.patient.tiem_ngua"/>
                         </span>
                     </div>
                 </div>
