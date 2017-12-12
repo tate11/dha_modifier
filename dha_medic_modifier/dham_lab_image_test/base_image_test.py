@@ -31,9 +31,9 @@ class BaseTest(models.Model):
 
     patient = fields.Many2one('dham.patient', 'Patient', track_visibility='onchange', index=1)
     customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange', index=1)
-    customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
-    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='customer.sex', readonly=1)
-    day_of_birth = fields.Date(string='Day of Birth', related='customer.day_of_birth', readonly=1)
+    customer_id = fields.Char(string='Customer ID', related='patient.patient_id', readonly=1)
+    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient.sex', readonly=1)
+    day_of_birth = fields.Date(string='Day of Birth', related='patient.day_of_birth', readonly=1)
 
     center_id = fields.Many2one('hr.department', 'Center', default=_get_center_id, domain=[('type', '=', 'center')],
                                 track_visibility='onchange')
@@ -66,7 +66,7 @@ class BaseTest(models.Model):
 
     @api.onchange('result_template')
     def onchange_result_template(self):
-        if self.result_template:
+        if self.result_template and self.result_template.template:
             result = ''
             if self.result:
                 self.result += '<br/>'

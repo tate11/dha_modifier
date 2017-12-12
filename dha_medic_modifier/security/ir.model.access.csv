@@ -1,7 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_user_treatement_classify_access,treatement.classify.user,model_treatement_classify,,1,0,0,0
 access_user_res_template_access,medic.test.res.template.user,model_medic_test_res_template,,1,1,1,1
-access_user_res_partner_insurrance_type_access,res.partner.insurrance.type.user,model_res_partner_insurrance_type,,1,0,0,0
 access_user_medic_test_type_access,medic.test.type.user,model_medic_test_type,,1,0,0,0
 access_res_partner_ethnic,access_res_partner_ethnic,model_res_partner_ethnic,,1,0,0,0
 access_medic_diseases_category,access_medic_diseases_category,model_medic_diseases_category,,1,0,0,0
@@ -11,10 +10,13 @@ access_service_export_excel,access_service_export_excel,model_service_export_exc
 access_medic_package_line,access_medic_package_line,model_medic_package_line,,1,1,1,1
 access_medic_test_result,access_medic_test_result,model_medic_test_result,,1,1,1,1
 access_medic_company_contract_schedule_user,access.medic.company.contract.schedule.user,model_company_contract_schedule,base.group_user,1,0,0,0
-
+access_dham_patient,access_medic_dham_patient,model_dham_patient,,1,1,1,1
 
 access_medic_doctor_medic_medical_bill_access,medic.medical.bill.medic.doctor,model_medic_medical_bill,dha_medic_modifier.group_medical_doctor,1,1,0,0
-access_medic_doctor_medic_test_access,medic.test.medic.doctor,model_medic_test,dha_medic_modifier.group_medical_doctor,1,0,0,0
+access_medic_doctor_medic_test_access,medic.test.medic.doctor,model_medic_test,dha_medic_modifier.group_medical_doctor,1,1,1,1
+access_medic_doctor_xq_image_test_access,xq_image_test.medic.doctor,model_xq_image_test,dha_medic_modifier.group_medical_doctor,1,1,1,1
+access_medic_doctor_sa_image_test_access,sa_image_test.medic.doctor,model_sa_image_test,dha_medic_modifier.group_medical_doctor,1,1,1,1
+access_medic_doctor_dtd_image_test_access,dtd_image_test.medic.doctor,model_dtd_image_test,dha_medic_modifier.group_medical_doctor,1,0,0,0
 access_medic_doctor_medic_medical_lab_resultcriteria_access,medic.medical.lab.resultcriteria.medic.doctor,model_medic_medical_lab_resultcriteria,dha_medic_modifier.group_medical_doctor,1,0,0,0
 access_medic_doctor_medicine_order_access,medicine.order.medic.doctor,model_medicine_order,dha_medic_modifier.group_medical_doctor,1,1,1,1
 access_medic_doctor_medicine_order_package_access,medicine.order.package.medic.doctor,model_medicine_order_package,dha_medic_modifier.group_medical_doctor,1,1,1,1
@@ -31,14 +33,20 @@ access_medic_doctor_medic_medicine_description_access,medicine.description.user,
 access_medic_doctor_res_partner_access,res.partner.medic.doctor,model_res_partner,dha_medic_modifier.group_medical_doctor,1,1,1,1
 access_medic_doctor_res_partner_company_check_access,res.partner.company.check.medic.doctor,model_res_partner_company_check,dha_medic_modifier.group_medical_doctor,1,0,0,0
 
-access_user_res_partner_insurrance_access,res.partner.insurrance.medic.user,model_res_partner_insurrance,,1,1,1,1
-access_user_res_partner_family_access,res.partner.family.medic.user,model_res_partner_family,,1,1,1,1
+access_user_dham_patient_insurrance_access,dham.patient.insurrance.medic.user,model_dham_patient_insurrance,,1,1,1,1
+access_user_dham_patient_insurrance_type_access,dham.patient.insurrance.type.medic.user,model_dham_patient_insurrance_type,,1,1,1,1
+access_user_dham_patient_family_access,dham.patient.family.medic.user,model_dham_patient_family,,1,1,1,1
+
 access_user_res_partner_city_access,res.partner.city.medic.user,model_res_partner_city,,1,0,0,0
 access_user_res_partner_district_access,res.partner.district.medic.user,model_res_partner_district,,1,0,0,0
 access_user_res_partner_ward_access,res.partner.ward.medic.user,model_res_partner_ward,,1,1,1,0
 
 access_medic_nurse_medic_medical_bill_access,medic.medical.bill.medic.nurse,model_medic_medical_bill,dha_medic_modifier.group_medical_nurse,1,1,0,0
 access_medic_nurse_medic_test_access,medic.test.medic.nurse,model_medic_test,dha_medic_modifier.group_medical_nurse,1,0,0,0
+access_medic_nurse_xq_image_test_access,xq_image_test.medic.nurse,model_xq_image_test,dha_medic_modifier.group_medical_nurse,1,0,0,0
+access_medic_nurse_sa_image_test_access,sa_image_test.medic.nurse,model_sa_image_test,dha_medic_modifier.group_medical_nurse,1,0,0,0
+access_medic_nurse_dtd_image_test_access,dtd_image_test.medic.nurse,model_dtd_image_test,dha_medic_modifier.group_medical_nurse,1,0,0,0
+
 access_medic_nurse_medic_medical_lab_resultcriteria_access,medic.medical.lab.resultcriteria.medic.nurse,model_medic_medical_lab_resultcriteria,dha_medic_modifier.group_medical_nurse,1,0,0,0
 access_medic_nurse_medicine_order_access,medicine.order.medic.nurse,model_medicine_order,dha_medic_modifier.group_medical_nurse,1,0,0,0
 access_medic_nurse_medicine_order_package_access,medicine.order.package.medic.nurse,model_medicine_order_package,dha_medic_modifier.group_medical_nurse,1,0,0,0
@@ -57,3 +65,8 @@ access_medic_manager_medic_test_access,medic.test.medic.manager,model_medic_test
 access_medic_manager_medic_package_access,medic.package.medic.manager,model_medic_package,dha_medic_modifier.group_medical_manager,1,1,1,1
 access_medic_manager_res_partner_company_check_access,res.partner.company.check.medic.manager,model_res_partner_company_check,dha_medic_modifier.group_medical_manager,1,1,1,1
 access_medic_company_contract_schedule_medic_manager,access.medic.company.contract.schedule.medic.manager,model_company_contract_schedule,dha_medic_modifier.group_medical_manager,1,1,1,1
+
+access_medic_counter_user_receiver_access,access.medic.patient.receive.counter.user,model_dham_patient_recieve,dha_medic_modifier.group_medic_counter_user,1,0,0,0
+access_medic_counter_user_receiver_line_access,access.medic.patient.receive.line.counter.user,model_dham_patient_recieve_line,dha_medic_modifier.group_medic_counter_user,1,0,0,0
+access_medic_counter_leader_receiver_access,access.medic.patient.receive.counter.leader,model_dham_patient_recieve,dha_medic_modifier.group_medic_counter_leader,1,1,1,1
+access_medic_counter_leader_receiver_line_access,access.medic.patient.receive.line.counter.leader,model_dham_patient_recieve_line,dha_medic_modifier.group_medic_counter_leader,1,1,1,1

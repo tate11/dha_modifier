@@ -208,8 +208,6 @@ class DHAMReceive(models.Model):
     @api.model
     def routing_receive(self):
         MedicalBill = self.env['medic.medical.bill']
-        MedicTest = self.env['medic.test']
-        Department = self.env['hr.department']
 
         company_check_id = False
         new_bill = False

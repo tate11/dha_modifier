@@ -8,7 +8,6 @@ from . import medic_partner_company_check
 from . import medic_partner_company_check_dashboard
 from . import medic_res_partner
 from . import medic_lab_test
-from . import medic_account_invoice
 from . import medic_medical_bill
 from . import medic_hearth_center
 from . import medic_medicine_order

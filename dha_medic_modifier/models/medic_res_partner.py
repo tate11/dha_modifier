@@ -69,10 +69,6 @@ class ResPartner(models.Model):
         ('divorced', 'Divorced'),
         ('separated', 'Separated'),
     ], 'Married Status')
-    # tab gia dinh
-    # family_persons = fields.One2many('res.partner.family', 'partner_id', 'Family')
-    # tab bao hiem
-    insurrance_ids = fields.One2many('res.partner.insurrance', 'partner_id', string='Partner ID')
     # don thuoc
     medicine_order_ids = fields.One2many('medicine.order', 'customer', 'Medicine Order')
 
@@ -203,43 +199,6 @@ class ResPartner(models.Model):
                 if datetime.strptime(record.day_of_birth, '%Y-%m-%d') > now:
                     raise ValidationError(_('Day of Birth must be less than now!'))
 
-    @api.multi
-    def action_go_person_inv(self):
-        for record in self:
-            return {
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'account.invoice',
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-                'res_id': False,
-                'context': {'default_partner_id': record.id, 'form_view_ref': 'account.invoice_form',
-                            'default_order_type': 'medical'}
-            }
-
-    @api.multi
-    def open_company_check_history(self):
-        for record in self:
-            CompanyCheck = self.env['res.partner.company.check']
-            ids = CompanyCheck.search([('company_id', '=', record.id)]).ids
-            action = self.env.ref('dha_medic_modifier.action_res_partner_company_check')
-            action = action.read()[0]
-            action['domain'] = [('id', 'in', ids)]
-            return action
-
-    @api.multi
-    def action_go_select_package(self):
-        for record in self:
-            return {
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'wizard.parse.package',
-                'type': 'ir.actions.act_window',
-                'target': 'new',
-                'res_id': False,
-                'context': {'default_customer': record.id}
-            }
-
     @api.model
     def create(self, vals):
         res = super(ResPartner, self).create(vals)
@@ -297,46 +256,6 @@ class PartnerEthnic(models.Model):
 
     _sql_constraints = [
         ('name_uniq', 'unique (name)', _('The ethnic group must be unique !'))]
-
-class PartnerFamily(models.Model):
-    _name = "res.partner.family"
-
-    name = fields.Char(string='Name')
-    partner_id = fields.Many2one('res.partner', 'Partner ID', required=True, ondelete='cascade')
-    person_id = fields.Many2one('res.partner', 'Related Customer', required=True)
-    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], 'Sex')
-    day_of_birth = fields.Date('Day of Birth')
-    relation = fields.Char('Relationship')
-    mobile = fields.Char('Mobile')
-
-    @api.onchange('partner_id')
-    def onchange_partner_id(self):
-        if self.person_id:
-            self.mobile = self.person_id.mobile or ''
-            self.sex = self.person_id.sex or False
-            self.day_of_birth = self.person_id.day_of_birth
-
-
-class PartnerInsurrance(models.Model):
-    _name = 'res.partner.insurrance'
-
-    name = fields.Char('Number')
-    type = fields.Many2one('res.partner.insurrance.type')
-    join_date = fields.Date('Create Date')
-    expiry_date = fields.Date('Expiry Date')
-    partner_id = fields.Many2one('res.partner', 'Partner ID', required=True, ondelete='cascade')
-    # ma kham chua benh ban dau
-    first_code = fields.Char('Code')
-    # Noi Kham Chua benh ban dau
-    address = fields.Text('Address')
-    # kiem tra trai tuyen hay khong
-    check_line = fields.Boolean('Check Line', default=False)
-
-
-class PartnerInsurranceLines(models.Model):
-    _name = 'res.partner.insurrance.type'
-
-    name = fields.Char('Name')
 
 class PartnerDistrict(models.Model):
     _name = 'res.partner.district'

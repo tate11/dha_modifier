@@ -5,11 +5,9 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.modules import get_module_path
 from odoo.addons.dha_medic_modifier.service.service_read_xlsx import ServiceReadXlsx
 
-FIELD_NOR = ['name', 'state', 'assign_date', 'is_adding', 'image_res1', 'image_res2', 'image_res3', 'image_res4',
-             'image_res5', 'image_res6',
-             'result', 'note']
-FIELD_SPEC = ['type', 'customer', 'center_id', 'product_test', 'doctor_id', 'doctor_assign', 'medical_bill_id',
-              'company_check_id', 'result_template']
+FIELD_NOR = ['name', 'state', 'assign_date', 'is_adding', 'result', 'note','customer', 'product_test', 'doctor_id', 'medical_bill_id', 'company_check_id']
+FIELD_SPEC = ['image_res1', 'image_res2', 'image_res3',]
+
 
 
 class dha_medic_script(models.Model):
@@ -28,7 +26,7 @@ class dha_medic_script(models.Model):
         # step by step
         # self.move_data_partner()
         # self.move_image_test()
-        # self.copy_patient_field()
+        self.copy_patient_field()
         self.get_patient_contract()
         return
 
@@ -48,36 +46,54 @@ class dha_medic_script(models.Model):
             customers = self.env.cr.fetchall()
             patients = Patient.search([('partner_id','in',customers)])
             con.write({'employees' : [(6,0,patients.ids)]})
-        self.env.cr.commit()
+            self.env.cr.commit()
         return True
 
     @api.model
     def copy_patient_field(self):
         Patients = self.env['dham.patient']
-        MODELS = ['medic.test', 'xq.image.test','sa.image.test','dtd.image.test']
+        MODELS = ['medic_test', 'xq_image_test','sa_image_test','dtd_image_test','medic_medical_bill']
         for model in MODELS:
-            records = self.env[model].search([])
-            for record in records:
-                patient = Patients.search([('partner_id','=', record.customer.id)])
-                record.write({'patient': patient.id})
-        self.env.cr.commit()
+            datas = []
+            self.env.cr.execute("""
+                select a.id, b.id from %s as a, dham_patient as b where a.customer = b.partner_id;
+            """%model)
+            datas = self.env.cr.fetchall()
+            query = """
+                UPDATE %s
+                SET patient = CASE id
+            """ % (model)
+            for data in datas:
+                query += """WHEN %s THEN %s """%(data[0],data[1])
+            query += """ END WHERE id IN (%s)"""%(','.join([str(x[0]) for x in datas]))
+            self.env.cr.execute(query)
         return True
 
     @api.model
     def move_image_test(self):
+        FIELD_NOR_STR = ','.join(FIELD_NOR)
         switch_case = [
             (self.env.ref('dha_medic_modifier.medic_test_type_image_test').id, 'xq.image.test'),
             (self.env.ref('dha_medic_modifier.medic_test_type_echograph').id, 'sa.image.test'),
             (self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram').id, 'dtd.image.test'),
         ]
+        external_center = self.env.ref('dha_medic_modifier.out_center_department').id
         for case in switch_case:
             records = self.env['medic.test'].search([('type', '=', case[0])])
             for record in records:
-                data = {'related_medical_bill': [(6, 0, record.related_medical_bill.ids or [])]}
-                for field in FIELD_NOR:
-                    data[field] = record[field]
-                for field in FIELD_SPEC:
-                    data[field] = record[field].id or False
+                data = {
+                    'related_medical_bill': [(6, 0, record.related_medical_bill.ids or [])],
+                    'type' : case[0],
+                    'center_id' : external_center,
+                }
+                self.env.cr.execute("""
+                    SELECT %s 
+                    FROM medic_test
+                    WHERE id=%s;
+                """%(FIELD_NOR_STR,record.id))
+                temp = self.env.cr.fetchall()
+                data.update(dict(zip(FIELD_NOR, temp[0])))
+                data.update(record.read(FIELD_SPEC)[0])
                 res = self.env[case[1]].create(data)
                 record.unlink()
                 self.env.cr.commit()

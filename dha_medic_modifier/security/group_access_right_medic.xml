@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
 
         <record model="ir.module.category" id="module_medical_category_access_right">
                 <field name="name">DHA Medic Access Right</field>
                 <field name="sequence">1</field>
                 <!--<field name="visible" eval="0" />-->
+        </record>
+
+        <!-- COUNTER ACCESS -->
+        <record id="group_medic_counter_user" model="res.groups">
+            <field name="name">Counter User</field>
+            <field name="category_id" ref="module_medical_category_access_right"/>
+        </record>
+        <record id="group_medic_counter_leader" model="res.groups">
+            <field name="name">Counter Leader</field>
+            <field name="category_id" ref="module_medical_category_access_right"/>
+            <field name="implied_ids" eval="[(4, ref('group_medic_counter_user'))]"/>
         </record>
 
         <record id="group_medical_nurse" model="res.groups">
@@ -21,7 +32,7 @@
         <record id="group_medical_manager" model="res.groups">
             <field name="name">Manager</field>
             <field name="category_id" ref="module_medical_category_access_right"/>
-            <field name="implied_ids" eval="[(4, ref('group_medical_doctor'))]"/>
+            <field name="implied_ids" eval="[(4, ref('group_medical_doctor')),(4, ref('group_medic_counter_leader'))]"/>
         </record>
 
         <!--<record model='ir.ui.menu' id='oeh_medical_edit_patient'>-->

@@ -21,10 +21,10 @@ class MedicAppoint(models.Model):
 
     patient = fields.Many2one('dham.patient', 'Patient', track_visibility='onchange', index=1)
     customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange')
-    customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
-    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='customer.sex', readonly=1)
+    customer_id = fields.Char(string='Customer ID', related='patient.patient_id', readonly=1)
+    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient.sex', readonly=1)
 
-    day_of_birth = fields.Date(string='Day of Birth', related='customer.day_of_birth', readonly=1)
+    day_of_birth = fields.Date(string='Day of Birth', related='patient.day_of_birth', readonly=1)
 
     doctor_assign = fields.Many2one('hr.employee', 'Assigned By', track_visibility='onchange')
     assign_date = fields.Datetime('Appoint Date', default=lambda *a: datetime.datetime.now(), track_visibility='onchange')
@@ -48,33 +48,28 @@ class MedicAppoint(models.Model):
     @api.multi
     def action_validate(self):
         self.write({'state': 'validate'})
-        AccountInvoice = self.env['account.invoice']
-        AccountInvoiceLine = self.env['account.invoice.line']
-        default_account_id = False
-        default_journal = AccountInvoice._default_journal() or False
-        if default_journal:
-            default_account_id = AccountInvoiceLine.with_context(journal_id=default_journal.id)._default_account() or False
-        invoice_line_ids = []
+        Receive = self.env['dham.patient.recieve']
+        ReceiveLine = self.env['dham.patient.recieve.line']
+        line_ids = []
         for line in self.line_ids:
-            invoice_line_ids.append({
+            line_ids.append({
                 'product_id': line.product_id.id,
-                'uom_id': line.product_id.uom_id.id or False,
                 'price_unit': line.product_id.lst_price,
-                'invoice_line_tax_ids': line.product_id.taxes_id.ids or [],
                 'name': line.product_id.description or line.product_id.name,
-                'quantity': line.qty,
-                'account_id': default_account_id,
+                'product_uom_qty': 1,
+                'product_uom': line.product_id.uom_id.id or False,
+                'tax_id': line.product_id.taxes_id.ids or [],
             })
         return {
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'account.invoice',
+            'res_model': 'dham.patient.recieve',
             'type': 'ir.actions.act_window',
             'target': 'current',
             'res_id': False,
-            'context': {'default_partner_id': self.customer.id, 'default_medical_bill_id': self.medical_bill_id .id,
-                        'default_invoice_line_ids': invoice_line_ids, 'form_view_ref': 'account.invoice_form','default_doctor_assign': self.doctor_assign.id
-                , 'default_order_type': 'medical', 'default_center_id' : self.medical_bill_id.center_id.id or False,'no_onchange_package' : True}
+            'context': {'default_patient': self.patient.id, 'default_medical_bill_id': self.medical_bill_id .id,
+                        'default_line_ids': line_ids, 'default_doctor_assign': self.doctor_assign.id
+               , 'default_center_id' : self.medical_bill_id.center_id.id or False,'no_onchange_package' : True}
         }
 
     @api.model

@@ -2,10 +2,8 @@
 <odoo>
     <data noupdate="1">
 
-        <record id="partner_insuran_type" model="res.partner.insurrance.type">
+        <record id="partner_insuran_type" model="dham.patient.insurrance.type">
             <field name="name">BHYT</field>
         </record>
-
-
     </data>
 </odoo>

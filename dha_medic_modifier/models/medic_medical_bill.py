@@ -20,15 +20,15 @@ class MedicMedicalBill(models.Model):
 
     patient = fields.Many2one('dham.patient', 'Patient', track_visibility='onchange', index=1)
     customer = fields.Many2one('res.partner', 'Customer', track_visibility='onchange')
-    customer_name = fields.Char( 'Name', related='customer.name', readonly=1)
-    customer_id = fields.Char(string='Customer ID', related='customer.customer_id', readonly=1)
-    customer_parent_id = fields.Many2one('res.partner', string='Customer Company ID', related='customer.parent_id', readonly=1, store=1)
-    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='customer.sex', readonly=0, track_visibility='onchange')
-    description = fields.Char(string='Description', related='customer.description')
+    customer_name = fields.Char( 'Name', related='patient.name', readonly=1)
+    customer_id = fields.Char(string='Customer ID', related='patient.patient_id', readonly=1)
+    customer_parent_id = fields.Many2one('res.partner', string='Customer Company ID', related='patient.parent_id', readonly=1, store=1)
+    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient.sex', readonly=0, track_visibility='onchange')
+    description = fields.Char(string='Description', related='patient.description')
     check_vip = fields.Boolean('Check VIP', compute='_compute_check_vip')
-    customer_image_small = fields.Binary('Customer Image', related='customer.image_small', readonly=1)
+    customer_image_small = fields.Binary('Customer Image', related='patient.image_small', readonly=1)
 
-    day_of_birth = fields.Date(string='Day of Birth', related='customer.day_of_birth', readonly=0, track_visibility='onchange')
+    day_of_birth = fields.Date(string='Day of Birth', related='patient.day_of_birth', readonly=0, track_visibility='onchange')
     type = fields.Selection([('company','Company'),('person','Person')], 'Type', default='person')
     receive_id = fields.Many2one('dham.patient.recieve', 'Receive ID')
 
@@ -136,8 +136,8 @@ class MedicMedicalBill(models.Model):
     @api.multi
     def _compute_check_vip(self):
         for record in self:
-            if record.customer:
-                if record.customer.category_id.filtered(lambda r: r.name == 'VIP'):
+            if record.patient:
+                if record.patient.category_id.filtered(lambda r: r.name == 'VIP'):
                     record.check_vip = True
     @api.multi
     def _compute_test_done_status(self):
