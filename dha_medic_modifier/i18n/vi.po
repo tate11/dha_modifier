@@ -18,19 +18,26 @@ msgstr ""
 
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_customer_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_customer_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_customer_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_customer_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_customer_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dham_patient_patient_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_customer_id
+
 msgid "Customer ID"
-msgstr "Mã Khách Hàng"
+msgstr "Mã Bệnh Nhân"
 
 #. module: dha_medic_modifier
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_sex
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_sex
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_sex
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_sex
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_sex
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_sex
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_family_sex
@@ -42,6 +49,9 @@ msgstr "Giới Tính"
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_day_of_birth
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_day_of_birth
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_day_of_birth
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_day_of_birth
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_day_of_birth
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_day_of_birth
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_res_partner_family_day_of_birth
@@ -74,18 +84,23 @@ msgid "Packages"
 msgstr "Gói"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_customer
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_customer
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_customer
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_customer
-msgid "Customer"
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_patient
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_patient
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_patient
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_patient
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_patient
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_patient
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_patient
+msgid "Patient"
 msgstr "Bệnh Nhân"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_doctor_assign
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_doctor_assign
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_doctor_assign
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_doctor_assign
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_doctor_assign
 msgid "Assigned By"
 msgstr "Bác sĩ chỉ định"
 
@@ -99,6 +114,9 @@ msgstr "Bác Sĩ"
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_appoint_assign_date
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_assign_date
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_assign_date
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_assign_date
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_assign_date
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_assign_date
 msgid "Assigned Date"
 msgstr "Ngày chỉ định"
 
@@ -132,6 +150,9 @@ msgstr "Chuyên Khoa"
 #. module: dha_medic_modifier
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_account_invoice_center_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_center_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_center_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_center_id
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_center_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_medical_bill_center_id
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medicine_order_center_id
 msgid "Center"
@@ -219,46 +240,68 @@ msgstr "Số Xét Nghiệm"
 
 #. module: dha_medic_modifier
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_name
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_name
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_name
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_name
 msgid "Number"
 msgstr "Số"
 
 #. module: dha_medic_modifier
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_type
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_type
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_type
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_type
 msgid "Type"
-msgstr "Xét Nghiệm"
+msgstr "Loại"
 
 #. module: dha_medic_modifier
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_note
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_note
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_note
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_note
 msgid "Note"
 msgstr "Kết Luận"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res1
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_image_res1
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_image_res1
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_image_res1
+
 msgid "Image 1"
 msgstr "Hình 1"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res2
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_image_res2
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_image_res2
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_image_res2
 msgid "Image 2"
 msgstr "Hình 2"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res3
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_image_res3
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_image_res3
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_image_res3
 msgid "Image 3"
 msgstr "Hình 3"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res4
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_image_res4
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_image_res4
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_image_res4
 msgid "Image 4"
 msgstr "Hình 4"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res5
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_image_res5
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_image_res5
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_image_res5
 msgid "Image 5"
 msgstr "Hình 5"
 
 #. module: dha_medic_modifier
-#: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_image_res6
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_image_res6
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_image_res6
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_image_res6
 msgid "Image 6"
 msgstr "Hình 6"
 
@@ -581,6 +624,9 @@ msgstr "Nữ"
 
 #. module: dha_medic_modifier
 #: model:ir.model.fields,field_description:dha_medic_modifier.field_medic_test_product_test
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_xq_image_test_product_test
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_sa_image_test_product_test
+#: model:ir.model.fields,field_description:dha_medic_modifier.field_dtd_image_test_product_test
 msgid "Service"
 msgstr "Dịch Vụ"
 

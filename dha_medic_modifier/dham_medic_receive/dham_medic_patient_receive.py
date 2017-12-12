@@ -54,18 +54,18 @@ class DHAMReceive(models.Model):
             if record.patient:
                 record.insurrance_ids = record.patient.insurrance_ids
 
-    name = fields.Char('Receive Number')
+    name = fields.Char('Receive Number', track_visibility='onchange')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
         ('paid', 'Paid'),
         ('cancel','Canceled')
-    ], readonly=1, index=1, string='Status', default='draft')
+    ], readonly=1, index=1, string='Status', default='draft', track_visibility='onchange')
 
-    user_id = fields.Many2one('res.users', 'Responsible', default= lambda self: self.env.user.id or False)
-    date = fields.Datetime('Create Time', default=lambda self: fields.Datetime.now(), readonly=1)
+    user_id = fields.Many2one('res.users', 'Responsible', default= lambda self: self.env.user.id or False, track_visibility='onchange')
+    date = fields.Datetime('Create Time', default=lambda self: fields.Datetime.now(), readonly=1, track_visibility='onchange')
 
-    patient = fields.Many2one('dham.patient', 'Patient', required=1)
+    patient = fields.Many2one('dham.patient', 'Patient', required=1, track_visibility='onchange')
     partner_id = fields.Many2one('res.partner', 'Partner ID', related='patient.partner_id', store=1)
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', related='patient.sex', readonly=1)
     day_of_birth = fields.Date(string='Day of Birth', related='patient.day_of_birth', readonly=1)
@@ -73,7 +73,7 @@ class DHAMReceive(models.Model):
                                       readonly=1)
 
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get())
-    pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', required=True, readonly=True, states={'draft': [('readonly', False)]})
+    pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', required=True, readonly=True, states={'draft': [('readonly', False)]}, track_visibility='onchange')
     currency_id = fields.Many2one("res.currency", related='pricelist_id.currency_id', string="Currency", readonly=True, required=True)
 
     amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all',
@@ -84,11 +84,11 @@ class DHAMReceive(models.Model):
                                    track_visibility='always')
 
     line_ids = fields.One2many('dham.patient.recieve.line', 'parent_id', string='Services',required=1)
-    note = fields.Text('Note')
+    note = fields.Text('Note', track_visibility='onchange')
     # ly do
-    reason = fields.Text('Reason')
+    reason = fields.Text('Reason', track_visibility='onchange')
     # trieu chung
-    prognostic = fields.Text('Prognostic')
+    prognostic = fields.Text('Prognostic', track_visibility='onchange')
 
     # PHong Kham
 
@@ -99,11 +99,11 @@ class DHAMReceive(models.Model):
     room_id = fields.Many2one('hr.department', 'Room', domain=[('type', '=', 'room')], track_visibility='onchange')
 
     doctor_assign = fields.Many2one('hr.employee', 'Assigned By', track_visibility='onchange')
-    medical_bill_id = fields.Many2one('medic.medical.bill', 'Medical Order')
-    company_check_id = fields.Many2one('res.partner.company.check', 'Company Check Source ID', copy=False)
+    medical_bill_id = fields.Many2one('medic.medical.bill', 'Medical Order', track_visibility='onchange')
+    company_check_id = fields.Many2one('res.partner.company.check', 'Company Check Source ID', copy=False, track_visibility='onchange')
     package_ids = fields.Many2many('medic.package', 'medic_patient_receive_package_ref', 'receive_id', 'package_id',
                                    'Packages', domain=[('type', '=', 'person')])
-    sale_order_id = fields.Many2one('sale.order','Sale Order Id')
+    sale_order_id = fields.Many2one('sale.order','Sale Order Id', track_visibility='onchange')
 
     @api.model
     def create(self, vals):

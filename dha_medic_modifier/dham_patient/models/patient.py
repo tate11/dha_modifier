@@ -65,7 +65,7 @@ class DHAMPatient(models.Model):
     blood_type = fields.Selection(BLOOD_TYPE, string='Blood Type')
     insurrance_ids = fields.One2many('dham.patient.insurrance', 'patient_id', string='Patient ID', track_visibility='onchange')
     # don thuoc
-    medicine_order_ids = fields.One2many('medicine.order', 'customer', 'Medicine Order', track_visibility='onchange')
+    medicine_order_ids = fields.One2many('medicine.order', 'patient', 'Medicine Order', track_visibility='onchange')
 
     partner_id = fields.Many2one('res.partner', string='Related Partner',
                                  required=True, ondelete='cascade',

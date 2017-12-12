@@ -69,23 +69,6 @@ class ResPartner(models.Model):
         ('divorced', 'Divorced'),
         ('separated', 'Separated'),
     ], 'Married Status')
-    # don thuoc
-    medicine_order_ids = fields.One2many('medicine.order', 'customer', 'Medicine Order')
-
-    # TESTs
-    medic_lab_test_compute_ids = fields.Many2many('medic.test', 'Lab Tests', compute='_get_medic_test_ids')
-    medic_image_test_compute_ids = fields.Many2many('medic.test', 'Image Tests', compute='_get_medic_test_ids')
-    medic_test_ids = fields.One2many('medic.test', 'customer', 'Tests', domain=[('state', 'in', ['new', 'processing'])])
-
-    # Tien su benh.
-    # tien_su_gia_dinh = fields.Char('Family history of medical illness')
-    # tien_can = fields.Char('Past medical and surgical history')
-    # di_ung_thuoc = fields.Char('Drug allergy')
-    # thuoc_la = fields.Char('Smoking')
-    # ruou = fields.Char('Alcolhol')
-    # the_thao = fields.Char('Exercises')
-    # tiem_ngua = fields.Char('Vaccination')
-
 
     # tab kham cho cong ty
     company_medial_ids = fields.One2many('res.partner.company.check', 'company_id', 'Company Check')
@@ -170,23 +153,6 @@ class ResPartner(models.Model):
             'country_id.address_format', 'country_id.code', 'country_id.name',
             'company_name', 'ward.name', 'city_dropdown.name', 'district.name'
         ]
-
-    def _get_company_check_number(self):
-        CompanyCheck = self.env['res.partner.company.check']
-        for record in self:
-            record.total_history = len(CompanyCheck.search([('company_id', '=', record.id)]))
-
-    def _get_medic_test_ids(self):
-        MedictTest = self.env['medic.test']
-        lab_type = [self.env.ref('dha_medic_modifier.medic_test_type_lab_test').id]
-        image_type = [self.env.ref('dha_medic_modifier.medic_test_type_image_test').id,
-                      self.env.ref('dha_medic_modifier.medic_test_type_echograph').id,
-                      self.env.ref('dha_medic_modifier.medic_test_type_electrocardiogram').id]
-        for record in self:
-            record.medic_lab_test_compute_ids = MedictTest.search(
-                [('customer', '=', record.id), ('type', 'in', lab_type)])
-            record.medic_image_test_compute_ids = MedictTest.search(
-                [('customer', '=', record.id), ('type', 'in', image_type)])
 
     _sql_constraints = [
         ('cmnd_passport_uniq', 'unique (cmnd_passport)', _('CMND/PassPort must be unique !'))]
