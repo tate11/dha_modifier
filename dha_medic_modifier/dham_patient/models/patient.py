@@ -162,6 +162,18 @@ class DHAMPatient(models.Model):
             res['domain']['ward'] = [('parent_code', '=', self.district.code)]
         return res
 
+    @api.multi
+    def action_go_receive(self):
+        return {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'dham.patient.recieve',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_id': False,
+            'context': {'default_patient': self.id, 'no_onchange_package': True}
+        }
+
     @api.depends('patient_id')
     def _compute_barcode(self):
         Report = self.env['report']

@@ -20,10 +20,9 @@
             <field name="model">dham.patient</field>
             <field name="arch" type="xml">
                 <form string="Patients">
-                    <!--<header>-->
-                        <!--<button name="action_go_person_inv" string="To Invoice" type="object" class="oe_highlight"-->
-                                <!--attrs="{'invisible': [('company_type','!=','person')]}"/>-->
-                    <!--</header>-->
+                    <header>
+                        <button name="action_go_receive" string="To Receive" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
                         <field name="image" widget='image' class="oe_avatar"
                                options='{"preview_image": "image_medium", "size": [90, 90]}'/>
