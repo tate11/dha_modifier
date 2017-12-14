@@ -11,7 +11,7 @@ class MedicContract(models.Model):
         contract_ids = self.search([('doctor_ids','in',[employee_id.id]),('state','=','processing')])
         if len(contract_ids) >0:
             return {
-                'contracts': contract_ids.read(['name','id']),
+                'contracts': contract_ids.read(['name','id','company_id','state']),
                 'doctor_id': employee_id.id,
                 'buildings_type': employee_id.department_id.buildings_type.id,
                 'success': True,

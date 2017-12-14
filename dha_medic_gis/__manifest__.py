@@ -26,6 +26,6 @@
         'data/partner_type_data.xml',
         # 'security/ir.model.access.csv',
         'views/templates.xml',
-        'views/res_partner_views.xml',
+        'views/res_partner.xml',
     ],
 }

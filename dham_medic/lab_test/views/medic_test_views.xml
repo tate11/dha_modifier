@@ -325,6 +325,7 @@
             <field name="arch" type="xml">
                 <tree string="Treatement Template">
                     <field name="name"/>
+                    <field name="buildings_type"/>
                     <field name="type"/>
                     <field name="template"/>
                 </tree>
@@ -339,6 +340,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="buildings_type"/>
                             <field name="type"/>
                             <field name="template"/>
                         </group>

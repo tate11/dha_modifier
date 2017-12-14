@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="dha_medic_modifier.view_partner_form"/>
             <field name="priority" eval="8" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='customer_id']" position="after">
+                <xpath expr="//field[@name='website']" position="after">
                     <field name="partner_type_id" />
                 </xpath>
             </field>

@@ -7,6 +7,12 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+class ResPartnerType(models.Model):
+    _name = 'res.partner.type'
+
+    name = fields.Char('Name')
+    code = fields.Char('Code')
+
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
@@ -37,7 +43,6 @@ class ResPartner(models.Model):
 
     @api.model
     def get_partners(self):
-        # return self.import_ttvh()
         begin = self._context.get('begin', 0)
         domain = []
         if begin > 0:
@@ -56,14 +61,14 @@ class ResPartner(models.Model):
                 types.update({'company': 'Công Ty'})
 
             addr = selcted._display_address(True)
-            # if not (selcted.lat and selcted.lng):
-            #     try:
-            #         if addr and len(addr) > 0:
-            #             data = self.get_lat_lng(addr)
-            #             if data:
-            #                 selcted.write(data)
-            #     except Exception, e:
-            #         True
+            if not (selcted.lat and selcted.lng):
+                try:
+                    if addr and len(addr) > 0:
+                        data = self.get_lat_lng(addr)
+                        if data:
+                            selcted.write(data)
+                except Exception, e:
+                    True
             if selcted.partner_type_id.code and not types.get(selcted.partner_type_id.code):
                 types.update({selcted.partner_type_id.code: selcted.partner_type_id.name})
 
@@ -95,41 +100,39 @@ class ResPartner(models.Model):
         else:
             return False
 
+    @api.model
     def import_ttvh(self):
-        W = px.load_workbook('/home/dham/Desktop/dhaaddon_enterprise/tgl-despacito/dha_modifier/dha_medic_gis/static/src/123123.xlsx')
-        p = W.get_sheet_by_name(name='Sheet1')
+        try:
+            W = px.load_workbook('/home/dham/Desktop/dhaaddon_enterprise/tgl-despacito/dha_modifier/dha_medic_gis/static/src/123123.xlsx')
+            p = W.get_sheet_by_name(name='Sheet1')
 
-        type = {
-            'vh_tdtt': 14,
-            'văn hóa': 10,
-            'tdtt': 11,
-            'nhà thiếu nhi': 12,
-        }
+            type = {
+                'vh_tdtt': self.env.ref('dha_medic_gis.sports_culture_center').id,
+                'văn hóa': self.env.ref('dha_medic_gis.culture_center').id,
+                'tdtt': self.env.ref('dha_medic_gis.sports_center').id,
+                'nhà thiếu nhi': self.env.ref('dha_medic_gis.children_house').id,
+            }
 
-        index = 0
-        for row in p.iter_rows():
-            if index != 0:
-                try:
-                    addr = row[2].internal_value.encode('utf-8') + ',Q.' + str(row[0].internal_value)
-                    data = {
-                        'street': addr,
-                        'name': row[1].internal_value,
-                        'city_dropdown': 50,
-                        'country_id': 243,
-                        'partner_type_id': type.get(row[9].internal_value.encode('utf-8').strip().lower(), 1)
-                    }
-                    existed = self.search([('street', '=', data['street'])], limit=1)
-                    if existed:
-                        existed.write(data)
-                    else:
-                        self.create(data)
-                except Exception, e:
-                    print e
-            else:
-                index += 1
-
-class ResPartnerType(models.Model):
-    _name = 'res.partner.type'
-
-    name = fields.Char('Name')
-    code = fields.Char('Code')
+            index = 0
+            for row in p.iter_rows():
+                if index != 0:
+                    try:
+                        addr = row[2].internal_value.encode('utf-8') + ',Q.' + str(row[0].internal_value)
+                        data = {
+                            'street': addr,
+                            'name': row[1].internal_value,
+                            'city_dropdown': 50,
+                            'country_id': 243,
+                            'partner_type_id': type.get(row[9].internal_value.encode('utf-8').strip().lower(), 1)
+                        }
+                        existed = self.search([('street', '=', data['street'])], limit=1)
+                        if existed:
+                            existed.write(data)
+                        else:
+                            self.create(data)
+                    except Exception, e:
+                        print e
+                else:
+                    index += 1
+        except Exception:
+            True

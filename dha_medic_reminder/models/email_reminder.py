@@ -114,35 +114,30 @@ class email_reminder(models.Model):
             if len(xn_ids):
                 send_email = True
 
-            xq_ids = bill.medic_xq_image_compute_ids.filtered(lambda xn: xn.state != 'done')
+            xq_ids = bill.medic_xq_image_compute_ids.filtered(lambda img: img.state != 'done')
             if len(xq_ids):
                 send_email = True
 
-            sa_ids = bill.medic_sa_image_compute_ids.filtered(lambda xn: xn.state != 'done')
+            sa_ids = bill.medic_sa_image_compute_ids.filtered(lambda sa: sa.state != 'done')
             if len(sa_ids):
                 send_email = True
 
-            dtd_ids = bill.medic_dtd_image_compute_ids.filtered(lambda xn: xn.state != 'done')
+            dtd_ids = bill.medic_dtd_image_compute_ids.filtered(lambda dtd: dtd.state != 'done')
             if len(dtd_ids):
                 send_email = True
 
             if send_email:
+                info = {
+                    'bill': bill,
+                    'xn': len(xn_ids) and xn_ids or False,
+                    'xq': len(xq_ids) and xq_ids or False,
+                    'sa': len(sa_ids) and sa_ids or False,
+                    'dtd': len(dtd_ids) and dtd_ids or False,
+                }
                 if data.get(bill.company_check_id.name, False):
-                    data[bill.company_check_id.name].append({
-                        'bill': bill,
-                        'xn': len(xn_ids) and xn_ids,
-                        'xq': len(xq_ids) and xq_ids,
-                        'sa': len(sa_ids) and sa_ids,
-                        'dtd': len(dtd_ids) and dtd_ids,
-                    })
+                    data[bill.company_check_id.name].append(info)
                 else:
-                    data[bill.company_check_id.name] = [{
-                        'bill': bill,
-                        'xn': len(xn_ids) and xn_ids,
-                        'xq': len(xq_ids) and xq_ids,
-                        'sa': len(sa_ids) and sa_ids,
-                        'dtd': len(dtd_ids) and dtd_ids,
-                    }]
+                    data[bill.company_check_id.name] = [info]
 
         config = self.env['email.reminder'].search([], order="id desc", limit=1)
         for user in config.medical_bill_user_ids:

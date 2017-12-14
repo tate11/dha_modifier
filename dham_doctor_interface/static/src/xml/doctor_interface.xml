@@ -8,9 +8,11 @@
                 display: none;
             }
             .modal.in {
-                left: auto;
-                top: 45px;
+                top: 135px;
                 pointer-events: none !important;
+                bottom: 29px;
+                right: 30px;
+                left: -3%;
             }
             .modal.in > .modal-dialog {
                 width: 70% !important;
@@ -22,57 +24,261 @@
             .patient_content h3 {
                 margin: 5px 0;
             }
+            #menu_item > ul {
+                display: flex;
+                justify-content: center;
+                font-size: 30px;
+                padding: 10px;
+                border-bottom: 1px solid #86597b;
+                height: 80px;
+            }
+            .custom_menu > li {
+                cursor: pointer;
+            }
+
+            .wrap_view {
+                display: inline-flex;
+            }
+
+            .wrap_view .tab-content {
+                background-color: white;
+                display: inline-block;
+                width: 75%;
+                height: 100%;
+            }
+
+            .patient-info {
+                margin-right: 30px;
+                display: inline-block;
+                width: 25%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .patient-info #patient_view {
+                display: inline-block;
+                background-color: white;
+                height: 45%;
+                padding-top: 30px;
+            }
+
+            .patient-info #treatmented {
+                padding-top: 30px;
+                background-color: white;
+                height: 52%;
+                margin-top: 10%;
+                margin-top: 10%;
+                height: 100%;
+                width: 100%;
+            }
+
+            .contract-wrap {
+                border-radius:7px;
+                padding:10px;
+                font-size:16px;
+                width:70%;
+            }
+            .row-tra-lai {
+                background-color: rgba(39, 162, 77, 0.2);
+            }
+            .row-tiep-nhan {
+                background-color: rgba(228, 13, 3, 0.2);
+            }
+            #contract_view,
+            .wrap_view {
+                position: absolute;
+                left: 30px;
+                right: 30px;
+                bottom: 30px;
+                top: 90px;
+            }
+
+            #contract_view {
+                background-color: white;
+                padding: 40px;
+            }
+
+            .doctor-ui-title {
+                height: 60px;
+                background-color: white;
+            }
         </style>
 
-        <div class="container-fluid" style="background-color:white;height:100%;">
-            <div class="row">
-                <h1 class="ui_title">Contracts</h1>
+        <div class="container-fluid" style="height:100%;padding:0;position:relative;">
+            <div class="doctor-ui-title">
+                <span style="margin: 0;line-height: 60px;margin-left: 20px;font-weight: 500;font-size: 22px;">Contract</span>
+            </div>
+            <div id="contract_view" class="tab-pane fade in">
                 <div class="contract_content"/>
-                <div class="patient_content" style="display:none;">
-                    <div class="col-xs-12">
-                        <h3><strong>Contract: </strong><span class="contract_name"/></h3>
+            </div>
+            <div class="wrap_view" style="display:none;">
+                <div class="patient-info">
+                    <div id="patient_view" style="padding: 5px;">
+                        <div class="patient_content">
+                            <div class="col-xs-12">
+                                <h3><strong>Contract: </strong><span class="contract_name"/></h3>
+                            </div>
+                            <div class="col-xs-8">
+                                <h3 style="display: inline-flex;">
+                                    <strong>ID: </strong>
+                                    <input type="text" class="patient_id" style="width:150px;display:inline-block;"/>
+                                </h3>
+                            </div>
+                            <div class="col-xs-8">
+                                <h3><strong>Patient: </strong><span class="patient_name"/></h3>
+                            </div>
+                            <div class="col-xs-8">
+                                <h3><strong>Day of birth: </strong><span style="white-space:nowrap;" class="patient_dob"/></h3>
+                            </div>
+                            <div class="col-xs-8">
+                                <h3><strong>Sex: </strong><span class="patient_sex"/></h3>
+                            </div>
+                            <div class="col-xs-8">
+                                <h3><strong>Check in: </strong><span style="white-space:nowrap;" class="patient_check_in"/></h3>
+                            </div>
+                            <div class="col-xs-8">
+                                <h3><strong>Check out: </strong><span style="white-space:nowrap;" class="patient_check_out"/></h3>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-8">
-                        <h3><strong>ID: </strong><input type="text" class="patient_id" style="width:150px;display:inline-block;"/></h3>
-                    </div>
-                    <div class="col-xs-8">
-                        <h3><strong>Patient: </strong><span class="patient_name"/></h3>
-                    </div>
-                    <div class="col-xs-8">
-                        <h3><strong>Day of birth: </strong><span class="patient_dob"/></h3>
-                    </div>
-                    <div class="col-xs-8">
-                        <h3><strong>Sex: </strong><span class="patient_sex"/></h3>
+                    <div id="treatmented">
+                        <div class="treatmented_content"/>
                     </div>
                 </div>
-                <hr/>
-                <div class="treatmented col-xs-12" style="display:none;padding: 0;">
-                    <h1>Treatmented</h1>
-                    <div class="treatmented_content"/>
+
+                <div class="tab-content" style="background-color:white;">
+                    <div id="kham_benh" class="tab-pane fade in"/>
+
+                    <div id="tiep_nhan" class="tab-pane fade in">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#check_in">Check In</a></li>
+                            <li><a data-toggle="tab" href="#check_list_in">Patients List</a></li>
+                        </ul>
+
+                        <div class="tab-content" style="width: 100%;">
+                            <div id="check_in" class="tab-pane fade in active"/>
+                            <div id="check_list_in" class="tab-pane fade"/>
+                        </div>
+                    </div>
+
+                    <div id="tra_ho_so" class="tab-pane fade in">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#check_out">Check Out</a></li>
+                            <li><a data-toggle="tab" href="#check_list_out">Patients List</a></li>
+                        </ul>
+
+                        <div class="tab-content" style="width: 100%;">
+                            <div id="check_out" class="tab-pane fade in active"/>
+                            <div id="check_list_out" class="tab-pane fade"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </t>
 
     <t t-name="DoctorContract">
-        <t t-foreach="contracts" t-as="c">
-            <div class="col-xs-3 " style="cursor: pointer;">
-                <div style="border: 1px solid green;border-radius: 7px;padding: 10px;font-size: 16px;"
-                     t-attf-class="contract_#{c['id']}">
-                    <span><t t-esc="c['name']"/></span>
-                </div>
-            </div>
-
-        </t>
+        <table id="custom-contract-table" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Contract</th>
+                    <th>Company</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="contracts" t-as="c">
+                    <tr t-attf-class="contract-wrap contract_#{c['id']}" style="cursor:pointer;">
+                        <td><span><t t-esc="c['name']"/></span></td>
+                        <td><span><t t-esc="c['company_id'][1]"/></span></td>
+                        <td><span><t t-esc="c['state']"/></span></td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
     </t>
 
     <t t-name="Treatmented">
         <ul class="treatmented" style="list-style: none;padding: 0 16px;">
             <t t-foreach="treatmented" t-as="tr">
-                <li><h3>
-                    <strong><t t-esc="tr['buildings_type'][1]"/> - <t t-esc="tr['doctor_id'][1]"/></strong>
-                </h3></li>
+                <li style="color:green;">
+                    <h3>
+                        <strong style="white-space:nowrap;">
+                            + <t t-esc="tr['buildings_type'][1]"/> -
+                            <t t-esc="tr['doctor_id'][1]"/>
+                        </strong>
+                    </h3>
+                </li>
             </t>
+            <t t-foreach="not_treatmented" t-as="not_tr">
+                <li style="color:red;">
+                    <h3>
+                        <strong style="white-space:nowrap;">
+                            + <t t-esc="not_tr['buildings_type'][1]"/> -
+                            <t t-esc="not_tr['doctor_id'][1]"/>
+                        </strong>
+                    </h3>
+                </li>
+            </t>
+        </ul>
+    </t>
+
+    <t t-name="SuccessPartner">
+        <div style="text-align:center;">
+            <i class="fa fa-check-circle-o" style="font-size:300px;color:green;" aria-hidden="true"/>
+            <h1><t t-esc="patient['customer']"/> <t t-esc="patient['action']"/> success</h1>
+        </div>
+    </t>
+
+    <t t-name="FailedPartner">
+        <div style="text-align:center;">
+            <i class="fa fa-times-circle-o" style="font-size:300px;color:red;" aria-hidden="true"/>
+            <h1><t t-esc="patient['customer']"/> <t t-esc="patient['action']"/> failed</h1>
+            <h4>Not completed treatment</h4>
+            <t t-foreach="patient[]"/>
+            <h5>+ <t t-esc="patient['action']"/></h5>
+        </div>
+    </t>
+
+    <t t-name="PatientList">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Check in</th>
+                    <th>Check out</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="patients" t-as="p">
+                    <tr t-att-class="p.time_tiep_nhan!=false and p.time_tra_lai!=false and 'row-tra-lai' or 'row-tiep-nhan'">
+                        <td><t t-esc="p.customer_id"/> </td>
+                        <td><t t-esc="p.customer[1]"/> </td>
+                        <td>
+                            <t t-if="p.time_tiep_nhan" t-esc="p.time_tiep_nhan"/>
+                            <t t-else="">
+                                <span>Chưa tiếp nhận</span>
+                            </t>
+                        </td>
+                        <td>
+                            <t t-if="p.time_tra_lai" t-esc="p.time_tra_lai"/>
+                            <t t-else="">
+                                <span>Chưa trả hồ sơ</span>
+                            </t>
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </t>
+
+    <t t-name="DoctorMenu">
+        <ul class="o_menu_sections custom_menu">
+            <li class="back_to_contract"><a>Contract</a></li>
+            <li style="display:none;"><a data-toggle="tab" href="#tiep_nhan">Check In</a></li>
+            <li style="display:none;"><a data-toggle="tab" href="#tra_ho_so">Check Out</a></li>
+            <li style="display:none;"><a data-toggle="tab" href="#kham_benh">Doctor</a></li>
         </ul>
     </t>
 </templates>

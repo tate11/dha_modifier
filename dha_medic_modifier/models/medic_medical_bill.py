@@ -105,6 +105,10 @@ class MedicMedicalBill(models.Model):
     de_nghi = fields.Text('Suggestion')
     phan_loai_char = fields.Char('Phan Loai', compute='_compute_phanl_loai_char')
 
+    # Thoi gian tiep nhan va tra lai ho so kham ngoai vien
+    time_tiep_nhan = fields.Datetime('Thoi gian tiep nhan')
+    time_tra_lai = fields.Datetime('Thoi gian tra lai')
+
     @api.one
     @api.depends('phan_loai')
     def _compute_phanl_loai_char(self):
@@ -339,10 +343,10 @@ class MedicSubTreatment(models.Model):
     check_nhi = fields.Boolean('Check Nhi', compute='_compute_check_show_result')
 
     #Mat
-    phai_ko_kinh = fields.Char('Right w/o glass')
-    phai_co_kinh = fields.Char('Right w glass')
-    trai_co_kinh = fields.Char('Left w glass')
-    trai_ko_kinh = fields.Char('Left w/o glass')
+    phai_ko_kinh = fields.Char('Right w/o glass', default='10/10')
+    phai_co_kinh = fields.Char('Right w glass', default='10/10')
+    trai_co_kinh = fields.Char('Left w glass', default='10/10')
+    trai_ko_kinh = fields.Char('Left w/o glass', default='10/10')
     check_mat = fields.Boolean('Check Mat', compute='_compute_check_show_result')
 
     #tai mui hong
@@ -366,37 +370,77 @@ class MedicSubTreatment(models.Model):
     #khoa san
     check_san = fields.Char('Check San', compute='_compute_check_show_result')
 
+    xn_note = fields.Text('Kết luận xét nghiệm')
+    lab_test_ids = fields.Many2many('medic.test', string='Lab Tests', compute='_compute_test')
+    xq_image_ids = fields.Many2many('xq.image.test', string='X-quang Image Tests', compute='_compute_test')
+    sa_image_ids = fields.Many2many('sa.image.test', string='Sieu Am Image Tests', compute='_compute_test')
+    dtd_image_ids = fields.Many2many('dtd.image.test', string='Dien Tam Do Image Tests', compute='_compute_test')
+
     @api.onchange('th_tmp')
     def onchange_th_tmp(self):
         self.tuan_hoan = self.th_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('hh_tmp')
     def onchange_hh_tmp(self):
         self.ho_hap = self.hh_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('ti_h_tmp')
     def onchange_ti_h_tmp(self):
         self.tieu_hoa = self.ti_h_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('ttn_tmp')
     def onchange_ttn_tmp(self):
         self.than_tiet_nieu = self.ttn_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('cxk_tmp')
     def onchange_cxk_tmp(self):
         self.co_xuong_khop = self.cxk_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('tk_tmp')
     def onchange_tk_tmp(self):
         self.than_kinh = self.tk_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('tt_tmp')
     def onchange_tt_tmp(self):
         self.tam_than = self.tt_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
 
     @api.onchange('nt_tmp')
     def onchange_nt_tmp(self):
         self.noi_tiet = self.nt_tmp.template or ''
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
+
+    @api.onchange('tuan_hoan', 'ho_hap', 'tieu_hoa', 'than_tiet_nieu', 'co_xuong_khop', 'than_kinh', 'tam_than',
+                  'noi_tiet')
+    def onchange_tuan_hoan(self):
+        list = self._check_internal_note()
+        self.treatment_note = '\n'.join(list)
+
+    def _check_internal_note(self):
+        list = []
+        fields = ['tuan_hoan', 'ho_hap', 'tieu_hoa', 'than_tiet_nieu', 'co_xuong_khop', 'than_kinh', 'tam_than',
+                  'noi_tiet']
+        for field in fields:
+            if self[field].lower() != 'bình thường':
+                list.append(self[field] or '')
+
+        if not len(list):
+            list.append('Bình thường')
+        return list
 
     @api.depends('buildings_type')
     def _compute_check_show_result(self):
@@ -426,6 +470,15 @@ class MedicSubTreatment(models.Model):
             except:
                 pass
 
+    def _compute_test(self):
+        internal_id = self.env.ref('dha_medic_modifier.khoa_nhi')
+        for record in self:
+            if record.buildings_type == internal_id:
+                record.lab_test_ids = record.parent_id.medic_lab_test_compute_ids
+                record.xq_image_ids = record.parent_id.medic_xq_image_compute_ids
+                record.sa_image_ids = record.parent_id.medic_sa_image_compute_ids
+                record.dtd_image_ids = record.parent_id.medic_dtd_image_compute_ids
+
     @api.onchange('treatment_template')
     def onchange_treatment_template(self):
         self.treatment_note = False
@@ -448,6 +501,7 @@ class TreatmentTemplate(models.Model):
 
     name = fields.Char('Name', required=1)
     template = fields.Text('Template', required=1)
+    buildings_type = fields.Many2one('hr.department.building.type', string='Building')
     type = fields.Selection([
         ('th','Cardiovascular System'),('hh','Respiratory System'),
         ('ti_h', 'Gastroinestinal System'),('ttn','Genito-urinary System'),
